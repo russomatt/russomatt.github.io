@@ -1,26 +1,39 @@
-/* style sheet */
+---
+---
+$primary: #000;
+$size: 85px;
+
+@mixin border($radius: 5px){
+	-ms-border-radius: $radius;
+	-moz-border-radius: $radius;	
+	-webkit-border-radius: $radius;
+	border-radius: $radius;
+}
 
 body{
 	height:100%;
-	background-color: 
 }
 .container{
 	width: 100%;
 }
 .row{
-/*	width: 100%;
-*/	padding:20px;
+	padding:20px;
+	margin-left: -15px;
 }
 .tile{
 	width: 33%;
 	height:450px;
-	background-color: red;
 	display: inline-block;
 	margin-bottom: 4px;
-
+	float: left;
+	margin-left: 5px;
 }
 .tile h2,.tile p{
 	margin-left: 20px;
+}
+a{
+	color: $primary;
+	font-weight: bold;
 }
 .tile p{
 	color:#fff;
@@ -31,7 +44,6 @@ body{
 	padding-top: 18px;
 	border-top: 2px solid rgba(255,255,255,.7);
 	max-width: 90%;
-
 }
 #pipeline-explorer{
   background: linear-gradient(
@@ -60,12 +72,37 @@ body{
     transition:.2s;
 
 }
+#svg-excercise{
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.75), 
+      rgba(0, 0, 0, 0.75)
+    ),
+	url("../img/kandinsk.jpg");
+	background-size: cover;
+	-webkit-transition:.2s;
+    transition:.2s;
+}
+#svg-excercise:hover{
+	-webkit-transition:.2s; /* Safari */
+    transition:.2s;
+	  background: linear-gradient(
+      rgba(0, 0, 0, 0.0), 
+      rgba(0, 0, 0, 0.0)
+    ),
+	url("../img/kandinsk.jpg");
+	background-size: cover;
+}
+#svg-excercise:hover h2, #svg-excercise:hover p{
+	opacity:0;
+	-webkit-transition:.2s;
+    transition:.2s;
+}
 h1{
-	font-size: 80pt;
+	font-size: $size;
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	font-weight: bold;
 	line-height: 104pt;
-	color: #000;
+	color: $primary;
 	margin-bottom: 0;
 }
 h2{
@@ -90,7 +127,6 @@ h2{
 	color:#fff;
 	font-size: 16pt;
 	}
-
 }
 
 @media (max-width: 500px) {
