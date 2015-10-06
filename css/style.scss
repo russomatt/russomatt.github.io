@@ -97,6 +97,34 @@ a{
 	-webkit-transition:.2s;
     transition:.2s;
 }
+#hw2{
+  background: linear-gradient(
+      rgba(0, 0, 0, 0.75), 
+      rgba(0, 0, 0, 0.75)
+    );
+  background-color: #46EA78;
+	background-size: cover;
+	-webkit-transition:.2s;
+    transition:.2s;
+}
+#hw2:hover{
+	-webkit-transition:.2s; /* Safari */
+    transition:.2s;
+	  background: linear-gradient(
+      rgba(0, 0, 0, 0.0), 
+      rgba(0, 0, 0, 0.0)
+    );
+	background-color: #00EA96;
+	background-size: cover;
+		-webkit-transition:.2s;
+    transition:.2s;
+
+}
+#hw2:hover h2, #hw2:hover p{
+	opacity:0;
+	-webkit-transition:.2s;
+    transition:.2s;
+}
 h1{
 	font-size: $size;
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
