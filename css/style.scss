@@ -9,9 +9,9 @@ $size: 85px;
 	-webkit-border-radius: $radius;
 	border-radius: $radius;
 }
-
-body{
+html, body{
 	height:100%;
+	margin:0;
 }
 .container{
 	width: 100%;
@@ -56,7 +56,7 @@ a{
     transition:.2s;
 }
 #pipeline-explorer:hover{
-		-webkit-transition:.2s; /* Safari */
+	-webkit-transition:.2s; /* Safari */
     transition:.2s;
 
 	  background: linear-gradient(
@@ -113,6 +113,20 @@ h2{
 	color: #fff;
 	margin-bottom: 0;
 }
+#button {
+	width: 100px;
+	height: 80px;
+    border-radius: 50%;
+    background-color: #ccc;
+    position: fixed;
+    top: 10%;
+    left: 45%;
+    text-align: center;
+    padding-top: 20px;
+    color:white;
+	font-size: 14px;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
 @media (max-width: 900px) {
 	h1{
 		font-size: 60pt;
@@ -133,7 +147,6 @@ h2{
 	h1{
 		font-size: 40pt;
 		line-height: 58pt;
-
 	}
 	.tile h2{
 	font-size: 20pt;
