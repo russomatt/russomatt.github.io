@@ -1,0 +1,75 @@
+---
+layout: default
+title: js
+---
+
+<!-- this group maker was made as a method of procrastination, 
+please do not judge my bad code or inline styles, thanks! -->
+
+<div id="groupHolder" style="margin: 50px auto 0 auto;width:400px;height:50px;">
+<h1 style="font-size:30px;color:#323431;border-top:5px solid #323431;line-height:40px;" >Group</h1>
+<p id="groups" style="font-family:helvetica-neue,helvetica,arial;color:#323431;">
+</p>
+</div>
+<p id="click" style="font-family:helvetica-neue,helvetica,arial;color:#323431;width:400px;margin:100px auto;cursor:pointer;">
+click
+</p>
+
+<script>
+
+	var roster = [
+	"Becca",
+	"Graham",
+	"Aaron",
+	"Ari",
+	"Matt",
+	"Hannah",
+	"Danny",
+	"Ramin",
+	"Michelle",
+	"Hinako",
+	"Lena",
+	"Regina",
+	"Logan",
+	"Austin",
+	"Elizabeth",
+	"Min",
+	"Daniela",
+	"Aaron",
+	"Liz",
+	"Dominik"
+	];
+
+	function makeGroup(data) {
+		if (data.length > 8) {
+			var index = Math.floor(Math.random() * data.length);
+			var name = data[index];
+			data.splice(index, 1);
+			var index2 = Math.floor(Math.random() * data.length);
+			var name2 = data[index2];
+			data.splice(index2, 1);
+			var index3 = Math.floor(Math.random() * data.length);
+			var name3 = data[index3];
+			data.splice(index3, 1);
+			document.getElementById('groups').innerHTML = name + ", " + name2 + ", " + name3;
+		} else if (data.length > 0) {
+			var index = Math.floor(Math.random() * data.length);
+			var name = data[index];
+			data.splice(index, 1);
+			var index2 = Math.floor(Math.random() * data.length);
+			var name2 = data[index2];
+			data.splice(index2, 1);
+			var index3 = Math.floor(Math.random() * data.length);
+			var name3 = data[index3];
+			data.splice(index3, 1);
+			var index4 = Math.floor(Math.random() * data.length);
+			var name4 = data[index4];
+			data.splice(index4, 1);
+			document.getElementById('groups').innerHTML = name + ", " + name2 + ", " + name3  + ", " + name4;
+		} else document.getElementById('groups').innerHTML = "groups!";
+	}
+
+	d3.select("#click").on('click', function() {
+		makeGroup(roster)
+	});
+</script>
