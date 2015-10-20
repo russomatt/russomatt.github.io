@@ -1,0 +1,44 @@
+---
+layout: default
+---
+<!-- <svg width="720" height="120">
+</svg>
+ -->
+ <h1> look in the console</h1>
+<script type="text/javascript">
+
+	// d3.text("data/tdextData.txt", function(error, data) {
+	// 	if (error) {
+	// 		console.log("u suk");
+	// 	} else console.log(data);
+
+	// });
+
+	// d3.csv("data/csvData.csv", function(error, data) {
+	// 	if (error) {
+	// 		console.log(error.status, error.statusText);
+	// 	} else {
+	// 		//this where you can manipulate the data
+	// 		console.log(data);
+	// 		data.forEach(function(dataPoint) {
+	// 			dataPoint.radius = parseFloat(dataPoint.radius);
+	// 			dataPoint.x = parseFloat(dataPoint.x);
+	// 			console.log(dataPoint);
+	// 		});
+	// 		draw(data);
+	// 	}
+
+	// });
+
+	d3.csv("data/Leading_Causes_of_Death_by_ZIP_Code__1999-2013.csv", function(error, data) {
+		if (error) {
+			console.log(error.status, error.statusText);
+		} else {
+			//this where you can manipulate the data
+			console.log(data);
+		}
+
+	});
+
+
+</script>

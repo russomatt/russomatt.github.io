@@ -17,16 +17,18 @@ html, body{
 	width: 100%;
 }
 .row{
-	padding:20px;
-	margin-left: -15px;
+	// padding:1%;
+	// margin-left: -1%;
 }
 .tile{
-	width: 33%;
+	width: 32.5%;
 	height:450px;
 	display: inline-block;
 	margin-bottom: 4px;
 	float: left;
-	margin-left: 5px;
+	margin-left: .25%;
+	margin-right:.25%;
+	background-color: rgba(38,161,134,.5);
 }
 .tile h2,.tile p{
 	margin-left: 20px;
@@ -46,84 +48,34 @@ a{
 	max-width: 90%;
 }
 #pipeline-explorer{
-  background: linear-gradient(
-      rgba(0, 0, 0, 0.75), 
-      rgba(0, 0, 0, 0.75)
-    ),
-	url("../img/pipeline-explorer.png");
-	background-size: cover;
+    background-size: cover;
 	-webkit-transition:.2s;
     transition:.2s;
 }
-#pipeline-explorer:hover{
-	-webkit-transition:.2s; /* Safari */
-    transition:.2s;
 
-	  background: linear-gradient(
-      rgba(0, 0, 0, 0.0), 
-      rgba(0, 0, 0, 0.0)
-    ),
-	url("../img/pipeline-explorer.png");
-	background-size: cover;
-}
-#pipeline-explorer:hover h2, #pipeline-explorer:hover p{
-	opacity:0;
-	-webkit-transition:.2s;
-    transition:.2s;
-
-}
 #svg-excercise{
-  background: linear-gradient(
-      rgba(0, 0, 0, 0.75), 
-      rgba(0, 0, 0, 0.75)
-    ),
-	url("../img/kandinsk.jpg");
 	background-size: cover;
 	-webkit-transition:.2s;
     transition:.2s;
-}
-#svg-excercise:hover{
-	-webkit-transition:.2s; /* Safari */
-    transition:.2s;
-	  background: linear-gradient(
-      rgba(0, 0, 0, 0.0), 
-      rgba(0, 0, 0, 0.0)
-    ),
-	url("../img/kandinsk.jpg");
-	background-size: cover;
-}
-#svg-excercise:hover h2, #svg-excercise:hover p{
-	opacity:0;
-	-webkit-transition:.2s;
-    transition:.2s;
+	background-color: rgba(38,161,134,.55);
 }
 #hw2{
-  background: linear-gradient(
-      rgba(0, 0, 0, 0.75), 
-      rgba(0, 0, 0, 0.75)
-    );
-  background-color: #46EA78;
-	background-size: cover;
-	-webkit-transition:.2s;
-    transition:.2s;
-}
-#hw2:hover{
 	-webkit-transition:.2s; /* Safari */
     transition:.2s;
-	  background: linear-gradient(
-      rgba(0, 0, 0, 0.0), 
-      rgba(0, 0, 0, 0.0)
-    );
-	background-color: #00EA96;
+	background-color: rgba(38,161,134,.60);
 	background-size: cover;
-		-webkit-transition:.2s;
-    transition:.2s;
-
-}
-#hw2:hover h2, #hw2:hover p{
-	opacity:0;
 	-webkit-transition:.2s;
     transition:.2s;
+    opacity:1;
+}
+#data{
+	-webkit-transition:.2s; /* Safari */
+    transition:.2s;
+	background-color: rgba(38,161,134,.65);
+	background-size: cover;
+	-webkit-transition:.2s;
+    transition:.2s;
+    opacity:1;
 }
 h1{
 	font-size: $size;

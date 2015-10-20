@@ -1,0 +1,7 @@
+[
+	{"x" : 40, "radius" : 10, "color" : "red"},
+	{"x" : 80, "radius" : 20, "color" : "green"},
+	{"x" : 120, "radius" : 30, "color" : "blue"},
+	{"x" : 200, "radius" : 40, "color" : "yellow"}
+]
+
