@@ -1,13 +1,13 @@
 ---
 layout: default
-title: js
+title: Random Groups
 ---
 
 <!-- this group maker was made as a method of procrastination, 
 please do not judge my bad code or inline styles, thanks! -->
 
 <style>
-	p {display: block;}
+	p div{ margin-bottom: 15px;}
 </style>
 
 <div id="groupHolder" style="margin: 50px auto 0 auto;width:400px;height:50px;">
@@ -15,7 +15,7 @@ please do not judge my bad code or inline styles, thanks! -->
 <p id="groups" style="font-family:helvetica-neue,helvetica,arial;color:#323431;">
 </p>
 </div>
-<p id="click" style="font-family:helvetica-neue,helvetica,arial;color:#323431;width:400px;margin:100px auto;cursor:pointer;">
+<p id="click" style="font-family:helvetica-neue,helvetica,arial;color:#323431;width:400px;margin:220px auto;cursor:pointer;font-style:italic;">
 click
 </p>
 
@@ -45,6 +45,8 @@ click
 	];
 
 	var groups = document.getElementById('groups');
+	var newGroup = document.createElement('div');
+
 
 	function makeGroup(data) {
 		if (data.length > 8) {	
@@ -59,10 +61,9 @@ click
 			var name3 = data[index3];
 			data.splice(index3, 1);
 
-			var newGroup = document.createElement('ul');
 
-			newGroup.innerHTML = name + ", " + name2 + ", " + name3 +  " / ";
-			groups.appendChild(newGroup.firstChild)
+			newGroup.innerHTML =  "<div>" + name + ", " + name2 + ", " + name3 +  "</div>";
+			groups.appendChild(newGroup.firstChild);
 		} else if (data.length > 0) {
 			var index = Math.floor(Math.random() * data.length);
 			var name = data[index];
@@ -76,10 +77,9 @@ click
 			var index4 = Math.floor(Math.random() * data.length);
 			var name4 = data[index4];
 			data.splice(index4, 1);
-			var newGroup = document.createElement('ul');
 
-			newGroup.innerHTML = name + ", " + name2 + ", " + name3; + " / ";
-			groups.appendChild(newGroup.firstChild)
+			newGroup.innerHTML = "<div>" + name + ", " + name2 + ", " + name3 + ", " + name4 + "</div>";
+			groups.appendChild(newGroup.firstChild);
 		} else return;
 	}
 
