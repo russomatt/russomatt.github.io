@@ -39,7 +39,6 @@ click
 	"Elizabeth",
 	"Min",
 	"Daniela",
-	"Aaron",
 	"Liz",
 	"Dominik"
 	];
@@ -49,7 +48,7 @@ click
 
 
 	function makeGroup(data) {
-		if (data.length > 8) {	
+		if (data.length > 4) {	
 
 			var index = Math.floor(Math.random() * data.length);
 			var name = data[index];
@@ -61,7 +60,7 @@ click
 			var name3 = data[index3];
 			data.splice(index3, 1);
 
-
+			console.log(data);
 			newGroup.innerHTML =  "<div>" + name + ", " + name2 + ", " + name3 +  "</div>";
 			groups.appendChild(newGroup.firstChild);
 		} else if (data.length > 0) {
@@ -77,7 +76,8 @@ click
 			var index4 = Math.floor(Math.random() * data.length);
 			var name4 = data[index4];
 			data.splice(index4, 1);
-
+			
+			console.log(data);
 			newGroup.innerHTML = "<div>" + name + ", " + name2 + ", " + name3 + ", " + name4 + "</div>";
 			groups.appendChild(newGroup.firstChild);
 		} else return;
