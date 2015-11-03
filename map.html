@@ -1,0 +1,53 @@
+---
+layout: default
+title: map
+---
+
+<script type="text/javascript">
+
+var svg = d3.select("body").append("svg")
+	.attr("width", "100%")
+	.attr("height", "100%");
+
+	d3.json("data/world.json", function(error, data) {
+		console.log(data);
+		    // selecting the objects from the data
+		var featureCollection = topojson.feature(data, data.objects.countries),
+			// d3 type of projection
+			proj = d3.geo.mercator(),
+			// d3 path generator using this projection to create these paths
+			path = d3.geo.path().projection(proj);
+
+		var paths = svg.selectAll("path")
+			.data(featureCollection.features, function(d){
+				return d.id;
+			});
+
+		paths.enter().append("path")
+			.attr("d", path)
+			.attr("fill", "#254152");
+
+		paths.attr("fill", function(d){
+			return d.id === "BR" ? "#F0AE9C" : "#254152";
+		});
+
+		var points = [
+		// longitude then laditude
+		{ "name" : "Boston", "coords" : [-71.0589, 42.3601]}
+		];
+
+		var points = svg.selectAll("circle")
+			.data(points, function(d){
+				return d.name;
+			});
+
+		points.enter().append("circle")
+			.attr("fill", "#FFDE08")
+			.attr("r", 5)
+			.attr("transform", function(d){
+				return "translate(" + proj(d.coords) + ")";
+			});
+	});
+
+
+</script>

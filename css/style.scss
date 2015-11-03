@@ -11,6 +11,7 @@ $size: 85px;
 }
 html, body{
 	height:100%;
+	width:100%;
 	margin:0;
 }
 .container{
@@ -28,7 +29,7 @@ html, body{
 	float: left;
 	margin-left:.25%;
 	margin-right:.25%;
-	background-color: rgba(38,161,134,.5);
+	background-color: #1C1F23;
 }
 .tile h2,.tile p{
 	margin-left: 20px;
@@ -57,12 +58,12 @@ a{
 	background-size: cover;
 	-webkit-transition:.2s;
     transition:.2s;
-	background-color: rgba(38,161,134,.55);
+	// background-color: rgba(38,161,134,.55);
 }
 #hw2{
 	-webkit-transition:.2s; /* Safari */
     transition:.2s;
-	background-color: rgba(38,161,134,.60);
+	// background-color: rgba(38,161,134,.60);
 	background-size: cover;
 	-webkit-transition:.2s;
     transition:.2s;
@@ -71,7 +72,7 @@ a{
 #data{
 	-webkit-transition:.2s; /* Safari */
     transition:.2s;
-	background-color: rgba(38,161,134,.65);
+	// background-color: rgba(38,161,134,.65);
 	background-size: cover;
 	-webkit-transition:.2s;
     transition:.2s;
@@ -107,6 +108,10 @@ h2{
 	font-size: 14px;
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	cursor:pointer;
+}
+#mockups{
+	text-align:center;
+	background-color:#1C1F23; 
 }
 @media (max-width: 900px) {
 	h1{
