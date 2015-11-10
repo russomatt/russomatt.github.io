@@ -1,0 +1,347 @@
+---
+layout: default
+title: interact with data
+---
+<style>
+/*	#novControls{
+		background-color: #ccc;
+		position:absolute;
+		top:0;
+		bottom:0;
+		width: 200px;
+	}
+*/	svg {
+		background-color: #1C1F23;
+		/*margin-left: 200px;*/
+	}
+</style>
+<!-- <div id="novControls">
+ -->
+<h1>
+this is bad
+</h1>
+<select id="yearDropdown">
+</select>
+<!-- </div> -->
+<svg width="100%" height="500">
+</svg>
+<script type="text/javascript">
+	var raw_data = [],
+	    year = "",
+	    count = "",
+	    aid = [],
+	    alz = [],
+	    can = [],
+	    cld = [],
+	    cpd = [],
+	    dia = [],
+	    hiv = [],
+	    hom = [],
+	    htd = [],
+	    hyp = [],
+	    inj = [],
+	    liv = [],
+	    oth = [],
+	    pnf = [],
+	    stk = [],
+	    sui = [],
+	    s_aid = [],
+	    s_alz = [],
+	    s_can = [],
+	    s_cld = [],
+	    s_cpd = [],
+	    s_dia = [],
+	    s_hiv = [],
+	    s_hom = [],
+	    s_htd = [],
+	    s_hyp = [],
+	    s_inj = [],
+	    s_liv = [],
+	    s_oth = [],
+	    s_pnf = [],
+	    s_stk = [],
+	    s_sui = [];
+	    
+	d3.csv("/data/Leading_Causes_of_Death_by_ZIP_Code__1999-2013.csv", function(error, data){
+		raw_data = data.filter(function(d){
+			return d.ZIP === "94110";
+		});
+
+		var years = [];
+		var key = "Year";
+		var lable  = "";
+		raw_data.forEach(function(d){
+			d.year = parseFloat(d.Year);
+			if ( years.indexOf(d.year) == -1) {
+				return years.push(d.year);
+			}
+		});
+
+		raw_data.forEach(function(d){
+			d.lable = d.Causes_of_Death;
+			if ( d.lable == "AID") {
+				return aid.push(parseFloat(d.Count));
+			}
+			if ( d.lable == "ALZ") {
+				return alz.push(parseFloat(d.Count));
+			}
+			if ( d.lable == "CAN") {
+				return can.push(parseFloat(d.Count));
+			}
+			if ( d.lable == "CLD") {
+				return cld.push(parseFloat(d.Count));
+			}
+			if ( d.lable == "CPD") {
+				return cpd.push(parseFloat(d.Count));
+			}
+			if ( d.lable == "DIA") {
+				return dia.push(parseFloat(d.Count));
+			}
+			if ( d.lable == "HIV") {
+				return hiv.push(parseFloat(d.Count));
+			}
+			if ( d.lable == "HOM") {
+				return hom.push(parseFloat(d.Count));
+			}
+			if ( d.lable == "HTD") {
+				return htd.push(parseFloat(d.Count));
+			}
+			if ( d.lable == "HYP") {
+				return hyp.push(parseFloat(d.Count));
+			}
+			if ( d.lable == "INJ") {
+				return inj.push(parseFloat(d.Count));
+			}
+			if ( d.lable == "LIV") {
+				return liv.push(parseFloat(d.Count));
+			}
+			if ( d.lable == "OTH") {
+				return oth.push(parseFloat(d.Count));
+			}
+			if ( d.lable == "PNF") {
+				return pnf.push(parseFloat(d.Count));
+			}
+			if ( d.lable == "STK") {
+				return stk.push(parseFloat(d.Count));
+			}
+			if ( d.lable == "SUI") {
+				return sui.push(parseFloat(d.Count));
+			}
+
+		});
+
+		years.sort();
+		year = years[0];
+
+		d3.select("#yearDropdown").selectAll("option")
+			.data(years).enter().append("option")
+			.attr("value", function(d){
+				return d;
+			})
+			.text(function(d){
+				return d;
+			})
+
+		// console.log(years);
+		// console.log(counts);
+
+		d3.select("#yearDropdown").on("change", function(d){
+
+			// year = years[this.selectedIndex]
+			s_aid = aid[this.selectedIndex];
+			s_alz = alz[this.selectedIndex];
+			s_can = can[this.selectedIndex];
+			s_cld = cld[this.selectedIndex];
+			s_cpd = cpd[this.selectedIndex];
+			s_dia = dia[this.selectedIndex];
+			s_hiv = hiv[this.selectedIndex];
+			s_hom = hom[this.selectedIndex];
+			s_hyp = hyp[this.selectedIndex];
+			s_hyp = hyp[this.selectedIndex];
+			s_inj = inj[this.selectedIndex];
+			s_liv = liv[this.selectedIndex];
+			s_oth = oth[this.selectedIndex];
+			s_pnf = pnf[this.selectedIndex];
+			s_stk = stk[this.selectedIndex];
+			s_sui = sui[this.selectedIndex];
+			draw();
+		})	
+
+		draw();
+	});
+
+	function draw() {
+
+		var year_data = raw_data.filter(function(d){
+			return d.year === year;
+		});
+		// var sui = raw_data.filter(function(d){
+		// 	return year.Causes_of_Death == "HOM";
+		// });
+		// var cause =  year.Causes_of_Death == "HOM";
+
+		var scale = d3.scale.linear()
+			.domain([0, 100])
+			.range([20,250]);
+
+		// var circle1 = d3.select("svg").selectAll("circle")
+		// 	.data([s_aid]); 
+		var	circle2 = d3.select("svg").selectAll("circle")
+			.data([s_alz]);
+		var	circle3 = d3.select("svg").selectAll("circle")
+			.data([s_can]);
+		var	circle4 = d3.select("svg").selectAll("circle")
+			.data([s_cld]);
+		// var	circle5 = d3.select("svg").selectAll("circle")
+		// 	.data([s_cpd]);
+		var	circle6 = d3.select("svg").selectAll("circle")
+			.data([s_dia]);
+		// var	circle7 = d3.select("svg").selectAll("circle")
+		// 	.data([s_hiv]);
+		// var	circle8 = d3.select("svg").selectAll("circle")
+		// 	.data([s_hom]);
+		// var	circle9 = d3.select("svg").selectAll("circle")
+		// 	.data([s_hyp]);
+		// var	circle10 = d3.select("svg").selectAll("circle")
+		// 	.data([s_hyp]);
+		// var	circle11 = d3.select("svg").selectAll("circle")
+		// 	.data([s_inj]);
+		// var	circle12 = d3.select("svg").selectAll("circle")
+		// 	.data([s_liv]);
+		// var	circle13 = d3.select("svg").selectAll("circle")
+		// 	.data([s_oth]);
+		// var	circle14 = d3.select("svg").selectAll("circle")
+		// 	.data([s_pnf]);
+		// var	circle15 = d3.select("svg").selectAll("circle")
+		// 	.data([s_stk]);
+		// var	circle16 = d3.select("svg").selectAll("circle")
+		// 	.data([s_sui]);
+
+
+		circle2.enter().append("circle")
+			.attr("r", 5)
+			.attr("cx", 200)
+			.attr("cy", 150)
+			.attr("fill", "#F8F8F8");
+		circle3.enter().append("circle")
+			.attr("r", 5)
+			.attr("cx", 300)
+			.attr("cy", 150)
+			.attr("fill", "#F8F8F8");
+		circle4.enter().append("circle")
+			.attr("r", 5)
+			.attr("cx", 400)
+			.attr("cy", 150)
+			.attr("fill", "#F8F8F8");
+		// circle5.enter().append("circle")
+		// 	.attr("r", 5)
+		// 	.attr("cx", 500)
+		// 	.attr("cy", 150);
+		circle6.enter().append("circle")
+			.attr("r", 5)
+			.attr("cx", 600)
+			.attr("cy", 150)
+			.attr("fill", "#F8F8F8");
+		// circle7.enter().append("circle")
+		// 	.attr("r", 5)
+		// 	.attr("cx", 600)
+		// 	.attr("cy", 150)
+		// circle8.enter().append("circle")
+		// 	.attr("r", 5)
+		// 	.attr("cx", 700)
+		// 	.attr("cy", 150);
+
+
+
+		// circle1.transition().duration(500)
+		// 	.attr("r", function(d){
+		// 		return scale(d);
+		// 	});	
+
+		circle2.transition().duration(500)
+			.attr("r", function(d){
+				return scale(d);
+			});	
+
+		circle3.transition().duration(500)
+			.attr("r", function(d){
+				return scale(d);
+			});	
+
+		circle4.transition().duration(500)
+			.attr("r", function(d){
+				return scale(d);
+			});	
+
+		// circle5.transition().duration(500)
+		// 	.attr("r", function(d){
+		// 		return scale(d);
+		// 	});	
+
+		circle6.transition().duration(500)
+			.attr("r", function(d){
+				return scale(d);
+			});	
+
+		// circle7.transition().duration(500)
+		// 	.attr("r", function(d){
+		// 		return scale(d);
+		// 	});	
+
+		// circle8.transition().duration(500)
+		// 	.attr("r", function(d){
+		// 		return scale(d);
+		// 	});	
+		// svg.selectAll("circle").on("mouseover", function(d){
+		// 	d3.select(this).attr("fill", "pink")
+		// })
+		// .on("mouseout", function(d){
+		// 	d3.select(this).attr("fill", "black")
+		// })
+		
+	}
+
+	var svg = d3.select("body").append("svg")
+	.attr("width", "100%")
+	.attr("height", "100%");
+
+	d3.json("data/sf.json", function(error, data) {
+		console.log(data);
+		    // selecting the objects from the data
+		var featureCollection = topojson.feature(data, data.objects.countries),
+			// d3 type of projection
+			proj = d3.geo.mercator(),
+			// d3 path generator using this projection to create these paths
+			path = d3.geo.path().projection(proj);
+
+		var paths = svg.selectAll("path")
+			.data(featureCollection.features, function(d){
+				return d.id;
+			});
+
+		paths.enter().append("path")
+			.attr("d", path)
+			.attr("fill", "#F8F8F8");
+
+		// paths.attr("fill", function(d){
+		// 	return d.id === "BR" ? "#F0AE9C" : "#254152";
+		// });
+
+		// var points = [
+		// // longitude then laditude
+		// { "name" : "Boston", "coords" : [-71.0589, 42.3601]}
+		// ];
+
+		// var points = svg.selectAll("circle")
+		// 	.data(points, function(d){
+		// 		return d.name;
+		// 	});
+
+		// points.enter().append("circle")
+		// 	.attr("fill", "#FFDE08")
+		// 	.attr("r", 5)
+		// 	.attr("transform", function(d){
+		// 		return "translate(" + proj(d.coords) + ")";
+		// 	});
+	});
+</script>

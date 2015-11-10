@@ -1,0 +1,121 @@
+---
+layout: default
+title: interact with data
+---
+<style>
+	#novControls{
+		background-color: #ccc;
+		position:absolute;
+		top:0;
+		bottom:0;
+		width: 200px;
+	}
+	svg {
+		background-color: red;
+		margin-left: 200px;
+	}
+</style>
+<div id="novControls">
+<select id="yearDropdown">
+</select>
+</div>
+<svg width="500" height="500">
+</svg>
+<script>
+	var raw_data = [],
+	    year = "",
+	    count = "",
+	    counts = [];
+	    
+	d3.csv("/data/Leading_Causes_of_Death_by_ZIP_Code__1999-2013.csv", function(error, data){
+		raw_data = data.filter(function(d){
+			return d.ZIP === "94110";
+		});
+
+		var years = [];
+		var key = "Year";
+		var lable  = "";
+		raw_data.forEach(function(d){
+			d.year = parseFloat(d.Year);
+			if ( years.indexOf(d.year) == -1) {
+				return years.push(d.year);
+			}
+		});
+
+		raw_data.forEach(function(d){
+			d.lable = d.Causes_of_Death;
+			if ( d.lable == "HOM") {
+				return counts.push(parseFloat(d.Count));
+			}
+		});
+
+		// raw_data.forEach(function(d){
+		// 	d.count = parseFloat(d.Count);
+		// 	if ( counts.indexOf(d.count) == -1) {
+		// 		return counts.push(d.count);
+		// 	}
+		// })
+		years.sort();
+		year = years[0];
+
+		d3.select("#yearDropdown").selectAll("option")
+			.data(years).enter().append("option")
+			.attr("value", function(d){
+				return d;
+			})
+			.text(function(d){
+				return d;
+			})
+
+		console.log(years);
+		console.log(counts);
+
+		d3.select("#yearDropdown").on("change", function(d){
+			year = years[this.selectedIndex]
+			count = counts[this.selectedIndex]
+			draw();
+		})	
+
+
+		draw();
+	});
+
+	function draw() {
+
+		var year_data = raw_data.filter(function(d){
+			return d.year === year;
+		});
+		var sui = raw_data.filter(function(d){
+			return year.Causes_of_Death == "HOM";
+		});
+		var cause =  year.Causes_of_Death == "HOM";
+
+		var scale = d3.scale.linear()
+			.domain([0, 100])
+			.range([20,250]);
+
+		var circle = d3.select("svg").selectAll("circle")
+			.data([count]);
+
+		circle.enter().append("circle")
+			.attr("r", 0)
+			.attr("cx", 250)
+			.attr("cy", 250);
+
+		circle.transition().duration(500)
+			.attr("r", function(d){
+				return scale(d);
+			});	
+
+		circle.on("mouseover", function(d){
+			d3.select(this).attr("fill", "pink")
+		})
+		.on("mouseout", function(d){
+			d3.select(this).attr("fill", "black")
+		})
+		
+		// console.log(objs);
+	}
+
+	
+</script>
