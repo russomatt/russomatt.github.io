@@ -1,0 +1,56 @@
+---
+layout: default
+title: interact with data
+---
+
+<!-- carisa -->
+
+<script type="text/javascript">
+	var width = "800"
+var height = "1000"
+
+	var svg = d3.select("body").append("svg")
+	.attr("width", width)
+	.attr("height", height);
+
+	d3.json("data/us.json", function(error, data) {
+		console.log(data);
+		    // selecting the objects from the data
+		var featureCollection = topojson.feature(data, data.objects.counties);
+		
+		var center = d3.geo.centroid(featureCollection)
+		var scale  = 150;
+		var offset = [width/2, height/2];
+		var proj = d3.geo.mercator().scale(scale).center(center)
+		  .translate(offset);
+
+		// create the path
+		var path = d3.geo.path().projection(proj);
+
+		// using the path determine the bounds of the current map and use 
+		// these to determine better values for the scale and translation
+		var bounds  = path.bounds(featureCollection);
+		var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
+		var vscale  = scale*height / (bounds[1][1] - bounds[0][1]);
+		var scale   = (hscale < vscale) ? hscale : vscale;
+		var offset  = [width - (bounds[0][0] + bounds[1][0])/2,
+                height - (bounds[0][1] + bounds[1][1])/2];
+
+        console.log(center, scale, offset)
+
+		// new projection
+		proj = d3.geo.mercator().center(center)
+			.scale(scale).translate(offset);
+		path = path.projection(proj);
+
+		var paths = svg.selectAll("path")
+			.data(featureCollection.features, function(d){
+				return d.properties.zip;
+			});
+
+		paths.enter().append("path")
+			.attr("d", path)
+			.attr("fill", "red");
+	});
+
+</script>

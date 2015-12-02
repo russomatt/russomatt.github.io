@@ -1,0 +1,57 @@
+---
+layout: default
+title: pie chart
+---
+
+<svg height="600px" width="600"></svg>
+<script type="text/javascript">
+	
+	var data = [
+		{"color" : "red", "name" : "Barry", "savings" : 75},
+		{"color" : "yellow", "name" : "Harry", "savings" : 25},
+		{"color" : "green", "name" : "Oliver", "savings" : 1523.63}
+	];
+
+	var pie = d3.layout.pie()
+		.value(function(d){
+			return d.savings;
+		});
+
+	data = pie(data);
+
+	var arc = d3.svg.arc()
+		.innerRadius(0)
+		.outerRadius(300);
+
+	var slices = d3.select("svg").selectAll("path")
+		.data(data);
+
+	slices.enter().append("path")
+		.attr("transform", "translate(300, 300)")
+		.style("fill", function(d){
+			return d.data.color;
+		})
+		.attr("d", arc);
+
+// ------------- Nested dara ----------------
+
+	var airport_data = [
+		{"passenger" : 5676, "country" : "USA", "airport" : 1},
+		{"passenger" : 34, "country" : "USA", "airport" : 2},
+		{"passenger" : 1223, "country" : "FRA", "airport" : 3},
+		{"passenger" : 123, "country" : "GER", "airport" : 7},
+		{"passenger" : 3243, "country" : "GER", "airport" : 8},
+		{"passenger" : 2, "country" : "GER", "airport" : 99}
+	];
+
+	var country_data = d3.nest()
+		.key(function(d) {
+			return d.country;
+		})
+		.rollup(function(leaves){
+			console.log(leaves);
+		})
+		.entries(airport_data);
+
+	console.log(country_data);
+</script>
