@@ -145,3 +145,119 @@ h2{
 	}
 
 }
+	#vizHolder{
+		margin:0 auto;
+		width: 900px;
+		padding-top:30px;
+	}
+	#mapHolder{
+		position: relative;	
+		float: left;
+	}
+    #donutHolder{
+    	position: relative;
+    	float: left;
+	}
+    #donutHolder h2{
+	    color: white;
+	    font-size: 23px;
+	    line-height: 40px;
+	    margin: 18px 0 -5px 0;
+	}
+	#donutHolder #title{
+		width: 390px;
+	}
+	#donutHolder #desc{
+		font-family: Helvetica Neue;
+		width: 390px;
+		color: white;
+    	font-size: 17px;
+    	line-height: 29px;
+    	font-weight: 200;
+	}
+	#donutHolder #total{
+		position: absolute;
+	}
+	.labels{
+		color: white;
+		cursor: pointer;
+		width: 400px;
+	}
+	#mapHolder .labels h2 {
+	    font-size: 17px;
+	    line-height: 24px;
+	    margin: 2px 0;
+    }
+   	#total{
+    	position: absolute;
+    	left: 127px;
+    	top: 164px;
+    }
+    .pill {
+    	position: absolute;
+    	top:20px;
+	    display: inline-block;
+	    height: 30px;
+	    width: 170px;
+	    text-align: center;
+	    border-radius: 16px;
+	    border: 1px solid white;
+	    transition:.3s;
+    }
+    .natural, .natural h2 {
+    	border-color: rgba(102, 230, 172, 1); 
+    	color: rgba(102, 230, 172, 1); 
+    }
+    .nonnatural, .nonnatural h2 {
+    	border-color: rgba(230, 102, 102, 1);  	
+       	color: rgba(230, 102, 102, 1);  	
+    }
+    #nonnatural {
+    	left: 180px;
+    }
+    #natural:hover {
+    	background-color: rgba(102, 230, 172, 1); 
+    }
+    #nonnatural:hover {
+    	background-color: rgba(230, 102, 102, 1);  	
+    }
+    #natural:hover h2, #nonnatural:hover h2 {
+    	color:white;
+     	transition:.3s;
+    }
+    .centerDonut {
+        width: 355px;
+    	margin: 0 auto;
+    }
+    #yearDropdown {
+    	position: absolute;
+    	background-color: transparent;
+    	color: white;
+    	top: 79px;
+	    left: 216px;
+	    width: 129px;
+	    border-color: transparent;
+	    cursor: pointer;
+    }
+    #yearDropdown:focus {
+    	outline: none;
+    }
+    #dropdownUnderline {
+    	position: absolute;
+    	top: 78px;
+    	left: 225px;
+    	width: 113px;
+        border-bottom: 1px solid white;
+    }
+    .clickedNatural {
+    	background-color: rgba(102, 230, 172, 1); 
+    }
+    .clickedNatural h2{
+    	color: white;
+    }
+    .clickedNonnatural {
+    	background-color: rgba(230, 102, 102, 1); 
+    }
+    .clickedNonnatural h2{
+    	color: white;
+    }

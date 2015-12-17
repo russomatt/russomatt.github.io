@@ -3,74 +3,37 @@ layout: default
 title: interact with data
 ---
 <style>
-	.acc { 
-		fill:rgba(230, 102, 102, 1); 
-	}
-	.natur { 
-		fill:rgba(102, 230, 172, 1); 
-	}
-
 	body{
 		background-color: #000A17;
 	}
 	svg {
 		background-color: #000A17;
 	}
-	
-    #donutHolder{
-    	position: absolute;
-    	right:200px;
-    	top:150px;
-    	text-align: center;
-	}
-    #donutHolder h2{
-	    	color:white;
-		    font-size: 28px;
-		    line-height: 40px;
-		    margin: 0 0 15px 0;
-		    width: 500px;
-	 }
-	 .labels{
-		color: white;
-		cursor: pointer;
-		width: 400px;
-	}
-	#donutHolder .labels h2 {
-	    font-size: 18px;
-	    line-height: 24px;
-	    margin: 0 0 0 40px;
-	    text-align: left;
-    }
-    #donutHolder .labels #natural{
-    	color: rgba(102, 230, 172, 1); 
-    }
-    #donutHolder .labels #nonnatural{
-    	color: rgba(230, 102, 102, 1); 
-    }
-    #total{
-    	position: absolute;
-    	text-align: center;
-    	top:185px;
-    	width: 100%;
-    }
 </style>
+<div id="vizHolder">
 <div id="donutHolder">
-<h2>
+<h2 id="title">
 	Death by Zip Code in California
 </h2>
 <h2 id="total"></h2>
+<div class="centerDonut">
 <svg id="donut" width="300px" height="300px"></svg>
+</div>
+<p id="desc">
+This visualization shows the number of natural vs. nonnatural deaths in California per zip code, per year. Nonnatural deaths being defined as suicide, homocide and injuries.
+</p>
+</div>
+<div id="mapHolder">
 <div class="labels">
-	<h2 id="natural">natural</h2>
-	<h2 id="nonnatural">nonnatural</h2>
+ 	<div id="natural" class="pill natural clickedNatural"><h2>natural</h2></div>
+	<div id="nonnatural" class="pill nonnatural"><h2>nonnatural</h2></div>
 </div>
-
+<div id="dropdownUnderline">
 </div>
-<!--h1>
-	this is bad
-</h1-->
-<select id="yearDropdown">
+<select id="yearDropdown" class="pill">
 </select>
+</div>
+</div>
 <script type="text/javascript">
 	var raw_data = [];
 	var raw_data2 = [];
@@ -98,9 +61,10 @@ title: interact with data
 	var drawNatural = true;
 	var counts = 100;
 	var counts2 = 10;
-	var nope = [];
+	var selectedIdx = 0;
+	var totals = 0;
 
-	d3.csv("/data/Leading_Causes_of_Death_by_ZIP_Code__1999-2013.csv", function(error, data){
+	d3.csv("/data/Leading_Causes_of_Death_by_ZIP_Code__1999-2013.csv", function(error, data){		
 		raw_data = data.filter(function(d){
 			return d.ZIP === "94110";
 		});
@@ -124,7 +88,6 @@ title: interact with data
 			}
 		});
 
-		// years.sort();
 		year = years[0];
 
 		d3.select("#yearDropdown").selectAll("option")
@@ -137,18 +100,12 @@ title: interact with data
 		});
 
 		d3.select("#yearDropdown").on("change", function(d){
-			year = years[this.selectedIndex]
-			yearValues = yearData[this.selectedIndex]
-			yearCounts = [];
-			yearValues.values.forEach(function(d){
-				return yearCounts.push(d);
-			}); 
+			selectedIdx = this.selectedIndex;
+			return dataState(d);
+		});
 
-			counts = 0;
-			counts2 = 0;
-
-			currentYear = nestedByYear[this.selectedIndex];
-			console.log(currentYear);
+		function dataState(d){
+			currentYear = nestedByYear[selectedIdx];
 
 			nestedByZip = [];
 			nestedByZip = d3.nest()
@@ -206,6 +163,8 @@ title: interact with data
 			})
 			.entries(currentYear.values);
 
+			// reset count to 0
+			counts = 0
 			// sum of natural deaths
 			nestedNat.forEach(function(d){
 				counts = counts + d.values;
@@ -213,6 +172,8 @@ title: interact with data
 
 			natCount = counts;
 
+			// reset count to 0
+			counts2 = 0
 			// sum of natural deaths
 			nestedNonNat.forEach(function(d){
 				counts2 = counts2 + d.values;
@@ -274,46 +235,67 @@ title: interact with data
 				obj[d.key] = d.values;
 				return obj;
 			}, {});
-			// console.log(colScale(maxCount));
 
 			d3.select("#natural").on("mousedown", function(d){
 				drawNatural = true;
 				draw(nestedNatPercent)
+				document.getElementById("natural").setAttribute("class", "pill natural clickedNatural");
+				document.getElementById("nonnatural").setAttribute("class", "pill nonnatural");
 			});
 
 			d3.select("#nonnatural").on("mousedown", function(d){
 				drawNatural = false;
 				draw(nestedNonNatPercent)
+				document.getElementById("natural").setAttribute("class", "pill natural");
+				document.getElementById("nonnatural").setAttribute("class", "pill nonnatural clickedNonnatural");
 			});
 
-			nope = [
-				{"color" : "rgba(102, 230, 172, 1)", "count" : natCount},
-				{"color" : "rgba(230, 102, 102, 1)", "count" : nonNatCount}
-				];
+			var pieArray = [];
+			pieArray = makePieArray(natCount, nonNatCount);
 
+			function makePieArray(n, nn){
+				nat = new Object;
+				nat.color = "rgba(102, 230, 172, 1)";
+				nat.count = n;
+				pieArray.push(nat);
+
+				nonnat = new Object;
+				nonnat.color = "rgba(230, 102, 102, 1)";
+				nonnat.count = nn;
+				pieArray.push(nonnat);
+
+				return pieArray;
+			}
+
+			totals = 0;	
+			totals = d3.format(",")(nonNatCount + natCount)
+		
 			d3.select("#total")
-				.html(nonNatCount + natCount);
+				.html(totals);
 
-			drawDonut(nope);
-			delegatDraw();
-		});
+			drawDonut(pieArray);
+
+			delegateDraw();
+		}
+		dataState(data);
 
 });
 
-var width = "800";
-var height = "1000";
+var w = "450";
+var h = "700";
 var rawData = [];
 var zipList = [];
 var years2 = [];
 
-var svg = d3.select("body").append("svg")
-.attr("width", width)
-.attr("height", height);
+var svg = d3.select("#mapHolder").append("svg")
+.attr("width", w)
+.attr("height", h);
 
-
+// color scale
 var colScale = d3.scale.linear()
 .domain([0.0, 1.0])
 .range([0.25, 1.0]);
+
 var featureCollection = "";
 
 d3.json("data/ca_zip.json", function(error, data) {
@@ -322,7 +304,7 @@ d3.json("data/ca_zip.json", function(error, data) {
 	featureCollection = topojson.feature(data, data.objects.zip_codes_for_the_usa);
 });
 
-function delegatDraw() {
+function delegateDraw() {
 	if (drawNatural) {
 		draw(nestedNatPercent);
 	}
@@ -331,11 +313,9 @@ function delegatDraw() {
 	}
 }
 function draw(data) {
-
-
 	var center = d3.geo.centroid(featureCollection)
 	var scale  = 150;
-	var offset = [width/2, height/2];
+	var offset = [w/2, h/2];
 	var proj = d3.geo.mercator().scale(scale).center(center)
 	.translate(offset);
 
@@ -345,13 +325,11 @@ function draw(data) {
 		// using the path determine the bounds of the current map and use 
 		// these to determine better values for the scale and translation
 		var bounds  = path.bounds(featureCollection);
-		var hscale  = scale*width  / (bounds[1][0] - bounds[0][0]);
-		var vscale  = scale*height / (bounds[1][1] - bounds[0][1]);
+		var hscale  = scale*w  / (bounds[1][0] - bounds[0][0]);
+		var vscale  = scale*h / (bounds[1][1] - bounds[0][1]);
 		var scale   = (hscale < vscale) ? hscale : vscale;
-		var offset  = [width - (bounds[0][0] + bounds[1][0])/2,
-		height - (bounds[0][1] + bounds[1][1])/2];
-
-        // console.log(center, scale, offset)
+		var offset  = [w - (bounds[0][0] + bounds[1][0])/2,
+		h - (bounds[0][1] + bounds[1][1])/2];
 
 		// new projection
 		proj = d3.geo.mercator().center(center)
@@ -395,30 +373,6 @@ function draw(data) {
 		})
 		.duration(250);
 
-		paths.on("mouseover", function(d){
-			d3.select(this).transition().duration(50)
-			.attr("opacity", function(d){
-				if(d.properties.zip in nestedByZip) {
-					return colScale(nestedByZip[d.properties.zip]) + .4;
-				}
-				else {
-					return 0.1;
-				}
-			})
-		});
-
-		paths.on("mouseout", function(d){
-			d3.select(this).transition().duration(800)
-			.attr("opacity", function(d){
-				if(d.properties.zip in nestedByZip) {
-					return colScale(nestedByZip[d.properties.zip]);
-				}
-				else {
-					return 0.1;
-				}
-			})
-		});
-
 		paths.exit()
 		.attr("opacity", "0")
 		.remove()
@@ -431,8 +385,7 @@ function draw(data) {
 ///////////////
 
 function drawDonut(data){
-
-
+	
 	var pie = d3.layout.pie()
 		.value(function(d){
 			return d.count;
@@ -441,8 +394,8 @@ function drawDonut(data){
 	data = pie(data);
 
 	var arc = d3.svg.arc()
-		.innerRadius(100)
-		.outerRadius(150);
+		.innerRadius(85)
+		.outerRadius(120);
 
 	var slices = d3.select("#donut").selectAll("path")
 		.data(data);
@@ -452,18 +405,12 @@ function drawDonut(data){
 		.style("fill", function(d){
 			return d.data.color;
 		})
-		.attr("d", arc);
 
-	slices.transition().duration(500);
+	slices.transition().duration(400)
+			.attr("d", arc);
+	
 
 	slices.exit().remove();
 
 	}
-
-    // var value = this.value;
-    // clearTimeout(timeout);
-    // pie.value(function(d) { return d[value]; }); // change the value function
-    // path = path.data(pie); // compute the new angles
-    // path.transition().duration(750).attrTween("d", arcTween); // redraw the arcs
-
 </script>
