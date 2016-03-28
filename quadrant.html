@@ -1,0 +1,216 @@
+---
+layout: default
+---
+
+<div id="graphContainer" style=" height:100%;width: 100%; ">
+	<div id="graphControls">
+		<h3>Select a Drink</h3>
+<!-- 		<label for="profitSlider">Profit</label>
+		<input type="range" min="0" max="100" value="0" id="profitSlider">
+		<label for="salesVolSlider">Sales Volume</label>
+		<input type="range" min="0" max="100" value="0" id="salesVolSlider">
+	-->	</div>
+</div>
+<script type="text/javascript">
+	var contHeight = document.getElementById('graphContainer').scrollHeight;
+	var contWidth = document.getElementById('graphContainer').scrollWidth;
+	var h = contHeight/1.5;
+	var w = contWidth/1.5;
+	var yCenter = w/2;
+	var xCenter = h/2;
+	var wut = ""
+
+	var canvas = d3.select('#graphContainer')
+	.append('svg:svg')
+	.attr('height', h)
+	.attr('width', w)
+	.style('background-color', '#f2f2f2');
+
+	var y = d3.scale.linear()
+	.domain([0,100])
+	.range([h,0]);
+
+	var x = d3.scale.linear()
+	.domain([100,0])
+	.range([w,0]);
+
+	var yAxis = d3.svg.axis()
+	.orient("left")
+	.scale(y);
+
+	var xAxis = d3.svg.axis()
+	.orient("bottom")
+	.scale(x);
+
+	canvas.append("g")
+	.attr("class", "Axis")
+	.attr("transform", "translate("+yCenter+",0)")
+	.call(yAxis);
+
+	canvas.append("g")
+	.attr("class", "Axis")
+	.attr("transform", "translate(0, "+xCenter+")")
+	.call(xAxis);
+
+	d3.json("/data/drinks.json", function(error, data){	
+		console.log(data);
+		wut = data;
+		draw(wut);
+	});
+
+	function draw(data) {
+		var circle = canvas.selectAll(".circle")
+		.data(data);
+
+		circle.enter().append("circle")
+		.style("fill", "#666666")
+		.attr("class", "circle")
+		.attr("r", 4.5);
+
+		circle.transition().duration(10)
+		.attr("cx", function(d){
+			return x(d.sales_vol);
+		})
+		.attr("cy", function(d){
+			return y(d.profit);
+		});
+
+		circle.on("mousedown", function(d){
+
+			d3.select("#graphControls h3").html(d.name);
+
+			d3.selectAll("input").remove();
+			d3.selectAll("label").remove();
+
+			d3.select("#graphControls")
+				.append("label")
+				.attr("for", "profitSlider")
+				.html("Profit");
+
+			d3.select("#graphControls")
+				.append("input")
+				.attr("type", "range")
+				.attr("min", 0)
+				.attr("max", 100)
+				.attr("id", "profitSlider")
+				.attr("value", d.profit);
+
+			d3.select("#graphControls")
+				.append("label")
+				.attr("for", "salesVolSlider")
+				.html("Sales Volume");
+
+			d3.select("#graphControls")
+				.append("input")
+				.attr("type", "range")
+				.attr("min", 0)
+				.attr("max", 100)
+				.attr("id", "salesVolSlider")
+				.attr("value", d.sales_vol);
+
+			// what happens when you move the profit slider
+			d3.select("#profitSlider").on("input", function(){
+				d.profit = this.value;
+				draw(data);
+			});
+
+			// what happens when you move the sales vol slider
+			d3.select("#salesVolSlider").on("input", function(){
+				d.sales_vol = this.value;
+				draw(data);
+			});
+
+
+		});
+
+	}
+function testdraw() {
+	    draw(wut);
+}
+// when the window resizes, call redraw
+d3.select(window).on('resize', redraw); 
+
+function redraw() {
+    // update size
+    contHeight = document.getElementById('graphContainer').scrollHeight;
+    contWidth = document.getElementById('graphContainer').scrollWidth;
+    h = contHeight/1.5;
+    w = contWidth/1.5;
+    yCenter = w/2;
+    xCenter = h/2;
+
+    // update axes
+    y = d3.scale.linear()
+    .domain([0,100])
+    .range([h,0]);
+
+    x = d3.scale.linear()
+    .domain([100,0])
+    .range([w,0]);
+
+	// remove current canvas 
+	canvas.remove();
+
+	// place updated canvas
+	canvas = d3.select('#graphContainer')
+	.append('svg:svg')
+	.attr('height', h)
+	.attr('width', w)
+	.style('background-color', '#f2f2f2');
+
+	yAxis = d3.svg.axis()
+	.orient("left")
+	.scale(y);
+
+	xAxis = d3.svg.axis()
+	.orient("bottom")
+	.scale(x);
+
+	canvas.append("g")
+	.attr("class", "Axis")
+	.attr("transform", "translate("+yCenter+",0)")
+	.call(yAxis);
+
+	canvas.append("g")
+	.attr("class", "Axis")
+	.attr("transform", "translate(0, "+xCenter+")")
+	.call(xAxis);
+
+    // redraw points on canvas
+    draw(wut);
+}
+</script>
+<style>
+	#graphContainer {
+		font-family: Helvetica-Neue, Helvetica, Arial;
+		padding: 30px;
+		font-size: 85%;
+	}
+	#graphControls{
+		padding: 20px;
+		height:auto;
+		width: 200px; 
+		background-color: #e4e4e4;
+		display: inline-block;
+	}
+	#graphContainer svg{
+		float: left;
+		margin-right: 10px;
+	}
+	label {
+		display: block;
+	}
+	.Axis path {
+		stroke: #ccc;
+		stroke-width: 1px;
+		fill: transparent;
+	}
+	.Axis line {
+		fill: #ccc;
+	}
+	.Axis text {
+		font-family: Helvetica-Neue, Helvetica, Arial;
+		fill:#333;
+		font-size: 10px;
+	}
+</style>

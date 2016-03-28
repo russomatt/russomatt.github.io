@@ -1,0 +1,7 @@
+[
+	{"name" : "Q1", "profit" : 85, "sales_vol" : 15},
+	{"name" : "Q2", "profit" : 85, "sales_vol" : 85},
+	{"name" : "Q3", "profit" : 15, "sales_vol" : 15},
+	{"name" : "Q4", "profit" : 15, "sales_vol" : 85}
+]
+
