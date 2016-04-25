@@ -1,16 +1,12 @@
 ---
 layout: default
 ---
-
-<div id="graphContainer" style=" height:100%;width: 100%; ">
+<div id="graphContainer" style="height:100%;width: 100%;background-color:#2D2D2E;">
 	<div id="graphControls">
 		<h3>Select a Drink</h3>
-<!-- 		<label for="profitSlider">Profit</label>
-		<input type="range" min="0" max="100" value="0" id="profitSlider">
-		<label for="salesVolSlider">Sales Volume</label>
-		<input type="range" min="0" max="100" value="0" id="salesVolSlider">
-	-->	</div>
+	</div>
 </div>
+
 <script type="text/javascript">
 	var contHeight = document.getElementById('graphContainer').scrollHeight;
 	var contWidth = document.getElementById('graphContainer').scrollWidth;
@@ -18,13 +14,13 @@ layout: default
 	var w = contWidth/1.5;
 	var yCenter = w/2;
 	var xCenter = h/2;
-	var wut = ""
+	var Data = "";
 
 	var canvas = d3.select('#graphContainer')
 	.append('svg:svg')
 	.attr('height', h)
 	.attr('width', w)
-	.style('background-color', '#f2f2f2');
+	.style('background-color', '#fff');
 
 	var y = d3.scale.linear()
 	.domain([0,100])
@@ -39,43 +35,238 @@ layout: default
 	.scale(y);
 
 	var xAxis = d3.svg.axis()
-	.orient("bottom")
+	.orient("bottom") 
 	.scale(x);
 
 	canvas.append("g")
 	.attr("class", "Axis")
 	.attr("transform", "translate("+yCenter+",0)")
+	.attr("id", "yAxis")
 	.call(yAxis);
 
 	canvas.append("g")
 	.attr("class", "Axis")
 	.attr("transform", "translate(0, "+xCenter+")")
+	.attr("id", "xAxis")
 	.call(xAxis);
 
-	d3.json("/data/drinks.json", function(error, data){	
-		console.log(data);
-		wut = data;
-		draw(wut);
+	var xTicks = d3.select("#xAxis").selectAll(".tick");
+	var yTicks = d3.select("#yAxis").selectAll(".tick");
+
+	var formatXTicks = function (ticks) {
+		var len = ticks.length;
+		for (i = 0; i < len; i++) {
+			if (i === 0) {
+				d3.select(ticks[i]).selectAll("text").attr("x", 9);
+			}
+			else if (i === Math.floor(len / 2)) {
+				d3.select(ticks[i]).selectAll("text").attr("x", 18);
+			}
+			else if (i === len - 1) {
+				d3.select(ticks[i]).selectAll("text").attr("x", -18);
+			}
+			else d3.select(ticks[i]).classed("hide", true);
+		}
+	}
+	
+	var formatYTicks = function (ticks) {
+		var len = ticks.length;
+		for (i = 0; i < len; i++) {
+			if (i === 0) {
+				d3.select(ticks[i]).selectAll("text").attr("y", -9);
+			}
+			else if (i === Math.floor(len / 2)) {
+				d3.select(ticks[i]).selectAll("text").attr("y", -18);
+			}
+			else if (i === len - 1) {
+				d3.select(ticks[i]).selectAll("text").attr("y", 9);
+			}
+			else d3.select(ticks[i]).classed("hide", true);
+		}
+	}
+
+	// formatXTicks(xTicks[0]);
+	// formatYTicks(yTicks[0]);
+
+	d3.json("/data/drinks.json", function(data){	
+		Data = data;
+		draw(Data);
 	});
 
 	function draw(data) {
+		var rScale = d3.scale.linear()
+					.domain([0,30])
+					.range([2,15]);
 		var circle = canvas.selectAll(".circle")
 		.data(data);
 
 		circle.enter().append("circle")
-		.style("fill", "#666666")
-		.attr("class", "circle")
-		.attr("r", 4.5);
+			.style("fill", "#666666")
+			.attr("class", "circle")
+			.attr("r", 2);
 
 		circle.transition().duration(10)
-		.attr("cx", function(d){
-			return x(d.sales_vol);
-		})
-		.attr("cy", function(d){
-			return y(d.profit);
+			.attr("cx", function(d){
+				return x(d.sales_vol);
+			})
+			.attr("cy", function(d){
+				return y(d.profit);
+			})
+			.attr("r", function(d){
+				return rScale(d.cost);
+			});
+
+			// pass this an element
+			var getColor = function(d) {
+				var point = d3.select(d);
+				var svg = canvas[0][0];
+				var cx = point.attr("cx");
+				var cy = point.attr("cy");
+				var hw = (canvas.attr("width")/2);
+				var hh = (canvas.attr("height")/2);
+				// console.log("height: " + cy + " vs " + hh);
+				// console.log("width: " + cx + " vs " + hw);
+				if ( cy <= hh && cx <= hw) {
+					// light blue
+					return "rgb(75,177,165)";
+				} else if (cy <= hh && cx >= hw) {
+					// green
+					return "rgb(78,159,112)";
+				} else if (cy >= hh && cx <= hw) {
+					// purple
+					return "rgb(83,78,134)";
+				} else {
+					// dark blue
+					return "rgb(65,96,161)";
+				}
+			}
+
+		var getYPosition = function(coord) {
+			if (h - coord > (h/2)) {
+				return coord;
+			}
+			else {
+				return coord - 180;
+			}
+		};
+
+		// tooltip
+		circle.on("mouseover", function(d){
+			var transformY = getYPosition(y(d.profit));
+			var transformX = x(d.sales_vol);
+			var name = d.name;
+			var hoverScale = d3.scale.linear()
+								.domain([100,0])
+								.range([80,0]);
+
+			var hover = canvas.append("g")
+				.attr("transform", "translate(" + transformX + "," + transformY + ")")
+				.attr("class", "tooltip");
+				
+				hover.append("rect")
+				.attr("width", function(){
+					//need a better way of getting width of long titles
+					var titleWidth = d.name.length * 7 + 20;
+					 return titleWidth > 100 ? titleWidth : 100;
+				})
+				.attr("height", 150)
+				.attr("x", "-50")
+				.attr("y", "15")
+				.style("fill", "rgba(0,0,0,.8)");
+
+				hover.append("text")
+				.html(name)
+				.attr("x", -40)
+				.attr("y", 40)
+				.attr("class", "hover-title");
+
+				// profit bar
+				hover.append("text")
+				.text("Profit")
+				.attr("x", -40)
+				.attr("y", 60);
+
+				hover.append("rect")
+				.attr("x", -40)
+				.attr("y", 65)
+				.style("fill", "#e2e2e2")
+				.attr("height", 4)
+				.attr("width", 80);
+
+				hover.append("rect")
+				.attr("x", -40)
+				.attr("y", 65)
+				.style("fill", "#72B6A9")
+				.attr("height", 4)
+				.attr("width", function(){
+					return hoverScale(d.profit);
+				});
+
+				hover.append("text")
+				.html("Sales Volume")
+				.attr("x", -40)
+				.attr("y", 90);
+
+				hover.append("rect")
+				.attr("x", -40)
+				.attr("y", 95)
+				.style("fill", "#e2e2e2")
+				.attr("height", 4)
+				.attr("width", 80);
+
+				hover.append("rect")
+				.attr("x", -40)
+				.attr("y", 95)
+				.style("fill", "#499CC5")
+				.attr("height", 4)
+				.attr("width", function(){
+					return hoverScale(d.sales_vol);
+				});
 		});
 
+		circle.on("mouseleave", function(d){
+			canvas.selectAll(".tooltip").remove();
+		});
+
+		var clickedRing = function(d) {
+			var point = d3.select(d);
+			var cx = point.attr("cx");
+			var cy = point.attr("cy");
+			var r = point.attr("r");
+			var color = getColor(d);
+
+			var selected = canvas.append("circle")
+			.attr("class", "ring")
+			.style("stroke", color)
+			.style("stroke-width", "2px")
+			.style("fill", "transparent")
+			.attr("r", function(){
+				return (5 + Number(r));
+			});
+
+			selected.transition().duration(500).attr("cx", cx)
+			.attr("cy", cy);
+
+		};
+
+		if ( d3.selectAll(".selected")[0].length > 0 ) {
+			d3.selectAll(".ring").remove();
+
+			var point = d3.selectAll(".selected")[0];
+			var newColor = getColor(point[0]);
+
+			clickedRing(point[0]);
+			d3.select(".selected").style("fill", newColor);
+		}
+
 		circle.on("mousedown", function(d){
+
+			d3.select('.selected').classed('selected', false).style("fill", "rgb(102, 102, 102)");
+			d3.select(this).classed('selected', true).style("fill", getColor(this));
+			
+			d3.selectAll(".ring").remove();
+			// sets the ring around the point
+			clickedRing(this);
 
 			d3.select("#graphControls h3").html(d.name);
 
@@ -83,30 +274,43 @@ layout: default
 			d3.selectAll("label").remove();
 
 			d3.select("#graphControls")
-				.append("label")
-				.attr("for", "profitSlider")
-				.html("Profit");
+			.append("label")
+			.attr("for", "profitSlider")
+			.html("Profit");
 
 			d3.select("#graphControls")
-				.append("input")
-				.attr("type", "range")
-				.attr("min", 0)
-				.attr("max", 100)
-				.attr("id", "profitSlider")
-				.attr("value", d.profit);
+			.append("input")
+			.attr("type", "range")
+			.attr("min", 0)
+			.attr("max", 100)
+			.attr("id", "profitSlider")
+			.attr("value", d.profit);
 
 			d3.select("#graphControls")
-				.append("label")
-				.attr("for", "salesVolSlider")
-				.html("Sales Volume");
+			.append("label")
+			.attr("for", "salesVolSlider")
+			.html("Sales Volume");
 
 			d3.select("#graphControls")
-				.append("input")
-				.attr("type", "range")
-				.attr("min", 0)
-				.attr("max", 100)
-				.attr("id", "salesVolSlider")
-				.attr("value", d.sales_vol);
+			.append("input")
+			.attr("type", "range")
+			.attr("min", 0)
+			.attr("max", 100)
+			.attr("id", "salesVolSlider")
+			.attr("value", d.sales_vol);
+
+			d3.select("#graphControls")
+			.append("label")
+			.attr("for", "costSlider")
+			.html("Cost");
+
+			d3.select("#graphControls")
+			.append("input")
+			.attr("type", "range")
+			.attr("min", 2)
+			.attr("max", 15)
+			.attr("id", "costSlider")
+			.attr("value", d.cost);
 
 			// what happens when you move the profit slider
 			d3.select("#profitSlider").on("input", function(){
@@ -120,13 +324,16 @@ layout: default
 				draw(data);
 			});
 
+			// what happens when you move the sales vol slider
+			d3.select("#costSlider").on("input", function(){
+				d.cost = this.value;
+				draw(data);
+			});
 
 		});
 
 	}
-function testdraw() {
-	    draw(wut);
-}
+
 // when the window resizes, call redraw
 d3.select(window).on('resize', redraw); 
 
@@ -141,76 +348,94 @@ function redraw() {
 
     // update axes
     y = d3.scale.linear()
-    .domain([0,100])
-    .range([h,0]);
+	    .domain([0,100])
+	    .range([h,0]);
 
     x = d3.scale.linear()
-    .domain([100,0])
-    .range([w,0]);
+	    .domain([100,0])
+	    .range([w,0]);
 
 	// remove current canvas 
 	canvas.remove();
 
 	// place updated canvas
 	canvas = d3.select('#graphContainer')
-	.append('svg:svg')
-	.attr('height', h)
-	.attr('width', w)
-	.style('background-color', '#f2f2f2');
+				.append('svg:svg')
+				.attr('height', h)
+				.attr('width', w)
+				.style('background-color', '#fff');
 
 	yAxis = d3.svg.axis()
-	.orient("left")
-	.scale(y);
+		.orient("left")
+		.scale(y);
 
 	xAxis = d3.svg.axis()
-	.orient("bottom")
-	.scale(x);
+		.orient("bottom")
+		.scale(x);
 
 	canvas.append("g")
-	.attr("class", "Axis")
-	.attr("transform", "translate("+yCenter+",0)")
-	.call(yAxis);
+		.attr("class", "Axis")
+		.attr("transform", "translate("+yCenter+",0)")
+		.call(yAxis);
 
 	canvas.append("g")
-	.attr("class", "Axis")
-	.attr("transform", "translate(0, "+xCenter+")")
-	.call(xAxis);
+		.attr("class", "Axis")
+		.attr("transform", "translate(0, "+xCenter+")")
+		.call(xAxis);
+	
+	var xTicksNew = d3.select("#xAxis").selectAll(".tick");
+	var yTicksNew = d3.select("#yAxis").selectAll(".tick");
+
+	// formatXTicks(xTicksNew[0]);
+	// formatYTicks(yTicksNew[0]);
 
     // redraw points on canvas
-    draw(wut);
+    draw(Data);
 }
+
 </script>
 <style>
-	#graphContainer {
-		font-family: Helvetica-Neue, Helvetica, Arial;
-		padding: 30px;
-		font-size: 85%;
-	}
-	#graphControls{
-		padding: 20px;
-		height:auto;
-		width: 200px; 
-		background-color: #e4e4e4;
-		display: inline-block;
-	}
-	#graphContainer svg{
-		float: left;
-		margin-right: 10px;
-	}
-	label {
-		display: block;
-	}
-	.Axis path {
-		stroke: #ccc;
-		stroke-width: 1px;
-		fill: transparent;
-	}
-	.Axis line {
-		fill: #ccc;
-	}
-	.Axis text {
-		font-family: Helvetica-Neue, Helvetica, Arial;
-		fill:#333;
-		font-size: 10px;
-	}
+#graphContainer {
+	font-family: Helvetica-Neue, Helvetica, Arial;
+	padding: 30px;
+	font-size: 85%;
+}
+#graphControls{
+	padding: 20px;
+	height:auto;
+	width: 200px; 
+	background-color: #e4e4e4;
+	display: inline-block;
+}
+#graphContainer svg{
+	float: left;
+	margin-right: 12px;
+}
+label {
+	display: block;
+}
+.Axis path {
+	stroke: #ccc;
+	stroke-width: 1px;
+	fill: transparent;
+}
+.Axis line {
+	fill: #ccc;
+}
+.Axis text {
+	font-family: Helvetica-Neue, Helvetica, Arial;
+	fill:#333;
+	font-size: 10px;
+}
+.tooltip text {
+	fill:#efefef;
+	font-size: 11px;
+	font-family: Helvetica-Neue, Helvetica, Arial;
+}
+.tooltip text.hover-title {
+	font-weight: bold;
+}
+.hide {
+	display: none;
+}
 </style>
