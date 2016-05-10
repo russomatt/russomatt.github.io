@@ -7,6 +7,7 @@ layout: default
 	</div>
 </div>
 
+
 <script type="text/javascript">
 	var contHeight = document.getElementById('graphContainer').scrollHeight;
 	var contWidth = document.getElementById('graphContainer').scrollWidth;
@@ -15,124 +16,626 @@ layout: default
 	var yCenter = w/2;
 	var xCenter = h/2;
 	var Data = "";
+	var maxSalesVol = 270;
+	var minSalesVol = 10;
+	var maxTotalSales = 1650;
+	var minTotalSales = 0;
 
 	var canvas = d3.select('#graphContainer')
-	.append('svg:svg')
-	.attr('height', h)
-	.attr('width', w)
-	.style('background-color', '#fff');
+		.append('svg:svg')
+		.attr('height', h)
+		.attr('width', w)
+		.style('background-color', '#fff');
 
 	var y = d3.scale.linear()
-	.domain([0,100])
-	.range([h,0]);
+		.domain([0,1])
+		.range([h,0]);
 
 	var x = d3.scale.linear()
-	.domain([100,0])
-	.range([w,0]);
+		.domain([maxSalesVol,minSalesVol])
+		.range([w,0]);
+
+	var reverseX = d3.scale.linear()
+		.domain([w,0])
+		.range([maxSalesVol,minSalesVol]);
 
 	var yAxis = d3.svg.axis()
-	.orient("left")
-	.scale(y);
+		.orient("left")
+		.scale(y)
+		.innerTickSize(-.5*w)
+		.tickPadding(10);
 
 	var xAxis = d3.svg.axis()
-	.orient("bottom") 
-	.scale(x);
+		.orient("bottom") 
+		.scale(x)
+		.innerTickSize(-.5*h)
+		.tickPadding(10);
 
 	canvas.append("g")
-	.attr("class", "Axis")
-	.attr("transform", "translate("+yCenter+",0)")
-	.attr("id", "yAxis")
-	.call(yAxis);
+		.attr("class", "Axis")
+		.attr("transform", "translate("+yCenter+",0)")
+		.attr("id", "yAxis")
+		.call(yAxis);
 
 	canvas.append("g")
-	.attr("class", "Axis")
-	.attr("transform", "translate(0, "+xCenter+")")
-	.attr("id", "xAxis")
-	.call(xAxis);
+		.attr("class", "Axis")
+		.attr("transform", "translate(0, "+xCenter+")")
+		.attr("id", "xAxis")
+		.call(xAxis);
 
-	var xTicks = d3.select("#xAxis").selectAll(".tick");
-	var yTicks = d3.select("#yAxis").selectAll(".tick");
+		function formatTicks() {
+			// var axisList = canvas.selectAll(".Axis");
+			// console.log(axisList)
+			// if ( axisList[0].length > 2 ) {
+			// 	 d3.select(axisList[3]).remove();
+			// 	 d3.select(axisList[3]).remove();
+			// }
 
-	var formatXTicks = function (ticks) {
-		var len = ticks.length;
-		for (i = 0; i < len; i++) {
-			if (i === 0) {
-				d3.select(ticks[i]).selectAll("text").attr("x", 9);
+			var xTicks = d3.select("#xAxis").selectAll(".tick");
+			var yTicks = d3.select("#yAxis").selectAll(".tick");
+
+			var lenX = xTicks[0].length;
+			var lenY = yTicks[0].length;
+
+			for (i = 0; i < lenX; i++) {
+				var ticks = xTicks[0];
+				d3.select(ticks[i]).selectAll("line").attr("y1", (.5*h));
+				if (i === 0 || i === lenX - 1) {
+					 d3.select(ticks[i]).selectAll("text").classed("hide", false);
+				}
+				else if (i === Math.floor(lenX / 2)) {
+					d3.select(ticks[i]).selectAll("text").attr("x", 18);
+				}
+				else d3.select(ticks[i]).selectAll("text").classed("hide", true);
 			}
-			else if (i === Math.floor(len / 2)) {
-				d3.select(ticks[i]).selectAll("text").attr("x", 18);
+
+			for (i = 0; i < lenY; i++) {
+				console.log('wtf');
+				var ticks = yTicks[0];
+				d3.select(ticks[i]).selectAll("line").attr("x1", (-.5*w));
+				if (i === 0) {
+					d3.select(ticks[i]).selectAll("text").attr("y", -9);
+				}
+				else if (i === Math.floor(lenY / 2)) {
+					d3.select(ticks[i]).selectAll("text").attr("y", -18);
+				}
+				else if (i === lenY - 1) {
+					d3.select(ticks[i]).selectAll("text").attr("y", 9);
+				}
+				else d3.select(ticks[i]).selectAll("text").classed("hide", true);
 			}
-			else if (i === len - 1) {
-				d3.select(ticks[i]).selectAll("text").attr("x", -18);
-			}
-			else d3.select(ticks[i]).classed("hide", true);
-		}
-	}
+
+		};
+formatTicks();
+	// var xTicks = d3.select("#xAxis").selectAll(".tick");
+	// var yTicks = d3.select("#yAxis").selectAll(".tick");
+
+	// var formatXTicks = function (ticks) {
+	// 	var len = ticks.length;
+	// 	for (i = 0; i < len; i++) {
+	// 		if (i === 0) {
+	// 			d3.select(ticks[i]).selectAll("text").attr("x", 9);
+	// 		}
+	// 		else if (i === Math.floor(len / 2)) {
+	// 			d3.select(ticks[i]).selectAll("text").attr("x", 18);
+	// 		}
+	// 		else if (i === len - 1) {
+	// 			d3.select(ticks[i]).selectAll("text").attr("x", -18);
+	// 		}
+	// 		else d3.select(ticks[i]).classed("hide", true);
+	// 	}
+	// }
 	
-	var formatYTicks = function (ticks) {
-		var len = ticks.length;
-		for (i = 0; i < len; i++) {
-			if (i === 0) {
-				d3.select(ticks[i]).selectAll("text").attr("y", -9);
-			}
-			else if (i === Math.floor(len / 2)) {
-				d3.select(ticks[i]).selectAll("text").attr("y", -18);
-			}
-			else if (i === len - 1) {
-				d3.select(ticks[i]).selectAll("text").attr("y", 9);
-			}
-			else d3.select(ticks[i]).classed("hide", true);
-		}
-	}
+	// var formatYTicks = function (ticks) {
+	// 	var len = ticks.length;
+	// 	for (i = 0; i < len; i++) {
+	// 		if (i === 0) {
+	// 			d3.select(ticks[i]).selectAll("text").attr("y", -9);
+	// 		}
+	// 		else if (i === Math.floor(len / 2)) {
+	// 			d3.select(ticks[i]).selectAll("text").attr("y", -18);
+	// 		}
+	// 		else if (i === len - 1) {
+	// 			d3.select(ticks[i]).selectAll("text").attr("y", 9);
+	// 		}
+	// 		else d3.select(ticks[i]).classed("hide", true);
+	// 	}
+	// }
 
 	// formatXTicks(xTicks[0]);
 	// formatYTicks(yTicks[0]);
 
 	d3.json("/data/drinks.json", function(data){	
 		Data = data;
-		draw(Data);
+		// draw(Data);
 	});
 
-	function draw(data) {
-		var rScale = d3.scale.linear()
-					.domain([0,30])
-					.range([2,15]);
-		var circle = canvas.selectAll(".circle")
-		.data(data);
+	var bloodyMary = [
+	{id: "bloodyMary", name: "Bloody Mary", drinkCost: 1.5, salesPrice: 10, salesVolume: 80, pourCost: 0.15, profit: 0.85, totalSales: 800, totalProfit: 680},
+	{id: "bloodyMary", name: "Bloody Mary", drinkCost: 1.5, salesPrice: 11, salesVolume: 70, pourCost: 0.13636364, profit: 0.8636364, totalSales: 770, totalProfit: 665},
+	{id: "bloodyMary", name: "Bloody Mary", drinkCost: 1.5, salesPrice: 12, salesVolume: 60, pourCost: 0.125, profit: 0.875, totalSales: 720, totalProfit: 672}
+	];
 
-		circle.enter().append("circle")
-			.style("fill", "#666666")
-			.attr("class", "circle")
-			.attr("r", 2);
+	var budLight = [
+	{id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 4, salesVolume: 260, pourCost: 0.1, profit: 0.9, totalSales: 1040, totalProfit: 936},
+	{id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 5, salesVolume: 175, pourCost: 0.08, profit: 0.92, totalSales: 875, totalProfit: 805},
+	{id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 6, salesVolume: 120, pourCost: 0.0667, profit: 0.93333, totalSales: 720, totalProfit: 672}
+	];
 
-		circle.transition().duration(10)
-			.attr("cx", function(d){
-				return x(d.sales_vol);
-			})
-			.attr("cy", function(d){
-				return y(d.profit);
-			})
-			.attr("r", function(d){
-				return rScale(d.cost);
+	var draftCraft = [
+	{id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 4, salesVolume: 200, pourCost: 0.25, profit: 0.75, totalSales: 800, totalProfit: 600},
+	{id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 5, salesVolume: 180, pourCost: 0.2, profit: 0.8, totalSales: 900, totalProfit: 720},
+	{id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 6, salesVolume: 100, pourCost: 0.16667, profit: 0.83333, totalSales: 600, totalProfit: 500}
+	];
+
+	// var rawData = [{bloodyMary: bloodyMary, budLight: budLight}];
+	// var rawData2 = [bloodyMary, budLight, draftCraft];
+	var rawData = [{id: "bloodyMary", data: bloodyMary}, {id: "budLight", data: budLight}, {id: "draftCraft", data: draftCraft}];
+
+	var line = d3.svg.line()
+			.interpolate("cardinal")
+			.x(function(d) { return x(d.salesVolume); })
+			.y(function(d) { return y(d.profit); });
+
+	var rScale = d3.scale.linear()
+				.domain([minTotalSales,maxTotalSales])
+				.range([2,20]);
+
+var drinks = [];
+
+function draw() {
+		canvas.selectAll("circle").remove();
+
+		for(i = 0; i < rawData.length; i ++) {
+			drinks.push(rawData[i].id);
+			var mid = Math.floor(rawData[i].data.length / 2);
+			canvas.append("path")
+				.datum(rawData[i].data)
+				.attr("class", "line " + rawData[i].data[0].id)
+				.attr("d", line);
+
+			var dGroup = canvas.append("g")
+				.datum(rawData[i].data[mid])
+				.attr("class", "group")
+				.attr("transform", function(d) { 
+					var xCoord = x(d.salesVolume);
+					var yCoord = y(d.profit);
+					// console.log(yCoord);
+					var str = "translate( " + xCoord + " , " + yCoord + " )";
+					return str;
+				});
+
+				dGroup.append("circle")
+				.attr("class", "ring")
+				.attr("cx", 0)
+				.attr("cy", 0)
+				.style("stroke", "#4D4E4A")
+				.style("stroke-width", "2px")
+				.style("fill", "transparent")
+				.attr("r", function(d){
+					return rScale(d.totalSales);
+				});
+
+				dGroup.append("circle")
+				.attr("class", "point")
+				.attr("cx", 0)
+				.attr("cy", 0)
+				.style("fill", "#4D4E4A")
+				.style("opacity", ".8")
+				.attr("r", function(d){
+					return rScale(d.totalProfit);
+				});
+		};
+
+		// canvas.selectAll("circle").remove();
+
+		// canvas.append("path")
+		// 	.datum(bloodyMary)
+		// 	.attr("class", "line bloodyMary")
+		// 	.attr("d", line);
+
+		// canvas.append("path")
+		// 	.datum(budLight)
+		// 	.attr("class", "line2 budLight")
+		// 	.attr("d", line);
+
+		// var bL = canvas.append("g")
+		// 	.datum(budLight[1])
+		// 	.attr("class", "group")
+		// 	.attr("transform", function(d) {
+		// 		var xCoord = x(d.salesVolume);
+		// 		var yCoord = y(d.profit);
+		// 		console.log(yCoord);
+		// 		var str = "translate( " + xCoord + " , " + yCoord + " )";
+		// 		return str;
+		// 	});
+
+		// 	bL.append("circle")
+		// 	.attr("class", "ring")
+		// 	.attr("cx", 0)
+		// 	.attr("cy", 0)
+		// 	.style("stroke", "#4D4E4A")
+		// 	.style("stroke-width", "2px")
+		// 	.style("fill", "transparent")
+		// 	.attr("r", function(d){
+		// 		return rScale(d.totalSales);
+		// 	});
+			
+
+		// 	bL.append("circle")
+		// 	.attr("class", "point")
+		// 	.attr("cx", 0)
+		// 	.attr("cy", 0)
+		// 	.style("fill", "#4D4E4A")
+		// 	.attr("r", function(d){
+		// 		return rScale(d.totalProfit);
+		// 	});
+
+
+		// var bM = canvas.append("g")
+		// 	.datum(bloodyMary[1])
+		// 	.attr("class", "group")
+		// 	.attr("transform", function(d) {
+		// 		var xCoord = x(d.salesVolume);
+		// 		var yCoord = y(d.profit);
+		// 		var str = "translate( " + xCoord + " , " + yCoord + " )";
+		// 		return str;
+		// 	});
+
+		// 	bM.append("circle")
+		// 	.attr("class", "ring")
+		// 	.attr("cx", 0)
+		// 	.attr("cy", 0)
+		// 	.style("stroke", "#4D4E4A")
+		// 	.style("stroke-width", "2px")
+		// 	.style("fill", "transparent")
+		// 	.attr("r", function(d){
+		// 		return rScale(d.totalSales);
+		// 	});
+
+		// 	bM.append("circle")
+		// 	.attr("class", "point")
+		// 	.attr("cx", 0)
+		// 	.attr("cy", 0)
+		// 	.style("fill", "#4D4E4A")
+		// 	.attr("r", function(d){
+		// 		return rScale(d.totalProfit);
+		// 	});
+};
+
+draw(); 
+
+var n = "";
+
+	d3.selectAll("circle").on("mousedown", function(d) {
+		var data = d;
+		var group = this.parentNode;
+		if(d.id != n) {
+			var idx = drinks.indexOf(d.id);
+			var obj = rawData[idx].data;
+			n = d.id;
+			var salesVals = getMaxMin(obj, "salesVolume");
+			var profitVals = getMaxMin(obj, "profit");
+			var priceVals = getMaxMin(obj, "salesPrice");
+
+			d3.selectAll("input").remove();
+			d3.selectAll("label").remove();
+
+			d3.selectAll('.ring')
+				.style("stroke", '#4D4E4A');
+
+			d3.selectAll('.point')
+				.style("opacity", ".8")
+				.style("fill", '#4D4E4A');
+
+			d3.select("#graphControls").append("label")
+				.attr("id", "priceLabel")
+				.attr("for", "salesPriceSlider")
+				.html("Sales Price")
+				.append("span")
+				.attr("id","salesPriceVal");
+
+			d3.select("#priceLabel")
+				.append("span")
+				.attr("id","salesVolVal");
+
+			d3.select("#graphControls").append("input")
+				.attr("id", "salesPriceSlider")
+				.attr("type", "range")
+				.attr("min", function() {
+					return priceVals[0];
+				})
+				.attr("max", function() {
+					var max = (priceVals.length - 1)
+					return priceVals[max];
+				})
+				.attr("value", function(){
+					return data.salesPrice;
+				})
+				.attr("step", ".01");
+
+				d3.select(group).select('.ring')
+					.style("stroke", getColor(group));
+
+				d3.select(group).select('.point')
+					.style("opacity", ".8")
+					.style("fill", getColor(group));
+		}
+
+		d3.select("#salesPriceSlider").on("input", function() {
+
+			var path = d3.select("." + n);
+
+			var pNode = path.node();
+			var pLength = pNode.getTotalLength();
+
+			var pScale = d3.scale.linear()
+				.domain([this.min, this.max])
+				.range([pLength,0]);
+
+			var rawVal =  this.value;
+			var val =  pScale(this.value);
+			var newVal = val - pLength;
+			var posn = pNode.getPointAtLength(Math.abs(newVal));
+
+			var newPrice = this.value;
+			var newProfit = ((newPrice - data.drinkCost)/ newPrice);
+			var newSalesVolume = reverseX(posn.x);
+			var newTotalSales = newSalesVolume * newPrice;
+			data.salesPrice = newPrice;
+			data.profit = newProfit;
+			data.totalSales = newTotalSales;
+			data.salesVolume = Math.floor(newSalesVolume);
+			var newTotalProfit = newTotalSales * newProfit;
+
+			d3.select("#salesPriceVal")
+				.html(" " + newPrice + " / " + Math.floor(posn.x) + " / " + (newProfit * 100).toFixed(2) + "%");
+
+			d3.select(group)
+			.attr("transform", function(d) {
+				var str = "translate( " + posn.x + " , " + posn.y + " )";
+				return str;
 			});
 
+			d3.select(group).select('.ring')
+				.style("stroke", getColor(group))
+				.attr("r",function(d) {
+					return rScale(newTotalSales);
+			});
+
+			d3.select(group).select('.point')
+				.style("fill", getColor(group))
+				.attr("r",function(d) {
+					return rScale(newTotalProfit);
+			});
+		});
+	});
+
+	function getMaxMin(obj, key) {
+		var list = [];
+
+		for(i = 0; obj.length > i; i++ ) {
+			list.push(obj[i][key]);
+		}
+
+		var sortedList = list.sort();
+		return sortedList;
+
+	};
+
+	var getColor = function(d) {
+		var point = d3.select(d);
+		var t = point.attr("transform");
+		var tArray = t.split(" ");
+		var tX = parseInt(tArray[1]);
+		var tY = parseInt(tArray[3]);
+		var hw = (canvas.attr("width")/2);
+		var hh = (canvas.attr("height")/2);
+		if ( tY <= hh && tX <= hw) {
+			// light blue
+			return "rgb(75,177,165)";
+		} else if (tY <= hh && tX >= hw) {
+			// green
+			return "rgb(78,159,112)";
+		} else if (tY >= hh && tX <= hw) {
+			// purple
+			return "rgb(83,78,134)";
+		} else {
+			// dark blue
+			return "rgb(65,96,161)";
+		}
+	};
+
+	function getYPosition(coord) {
+		if (h - coord > (h/2)) {
+			return coord;
+		}
+		if (coord > (h/2)) {
+			return coord;
+		}
+		else {
+			return coord - 180;
+		}
+	};
+
+	function getXPosition(coord) {
+		if (coord + 50 > w) {
+			var lol = Math.abs((coord + 50) - w);
+			return coord - lol;
+		} else if (coord < 50) {
+			var lol = Math.abs((coord - 50));
+			return coord + lol;
+		} else {
+			return coord;
+		}
+	};
+
+
+	var g = canvas.selectAll('.point');
+
+	// tooltip
+	g.on("mouseover", function(d){
+		var newY = y(d.profit);
+		var newX = x(d.salesVolume);
+		var transformY = getYPosition(newY);
+		var transformX = getXPosition(newX);
+		var name = d.name;
+		var hoverProfitScale = d3.scale.linear()
+							.domain([100,0])
+							.range([80,0]);
+		var hoverVolScale = d3.scale.linear()
+							.domain([maxSalesVol,minSalesVol])
+							.range([80,0]);
+
+		var parent = d3.select(this.parentNode);
+
+		parent.select(".ring")
+			.style("stroke", getColor(this.parentNode));
+
+		parent.select(".point")
+			.style("opacity", ".8")
+			.style("fill", getColor(this.parentNode));
+
+		var hover = canvas.append("g")
+			.attr("transform", "translate(" + transformX + "," + transformY + ")")
+			.attr("class", "tooltip");
+
+			hover.append("rect")
+			.attr("width", 100)
+			.attr("height", 150)
+			.attr("x", "-50")
+			.attr("y", function(){
+				var adjust = parseInt(g.attr("r"));
+				return adjust + 15;
+			})
+			.style("fill", "rgba(0,0,0,.6)");
+
+			hover.append("text")
+			.html(name)
+			.attr("x", -40)
+			.attr("y", 45)
+			.attr("class", "hover-title");
+
+			// profit bar
+			hover.append("text")
+			.text("Profit")
+			.attr("x", -40)
+			.attr("y", 65);
+
+			hover.append("rect")
+			.attr("x", -40)
+			.attr("y", 70)
+			.style("fill", "#e2e2e2")
+			.attr("height", 3)
+			.attr("width", 80);
+
+			hover.append("rect")
+			.attr("x", -40)
+			.attr("y", 70)
+			.style("fill", "#72B6A9")
+			.attr("height", 3)
+			.attr("width", function(){
+				var prof = (d.profit * 100);
+				return hoverProfitScale(prof);
+			});
+
+			hover.append("text")
+			.html("Sales Volume")
+			.attr("x", -40)
+			.attr("y", 90);
+
+			hover.append("rect")
+			.attr("x", -40)
+			.attr("y", 95)
+			.style("fill", "#e2e2e2")
+			.attr("height", 3)
+			.attr("width", 80);
+
+			hover.append("rect")
+			.attr("x", -40)
+			.attr("y", 95)
+			.style("fill", "#499CC5")
+			.attr("height", 3)
+			.attr("width", function(){
+				return hoverVolScale(d.salesVolume);
+			});
+	});
+
+	g.on("mouseleave", function(d){
+		var parent = d3.select(this.parentNode);
+		canvas.selectAll(".tooltip").remove();
+
+		parent.select(".ring")
+			.style("stroke", "#4D4E4A");
+
+		parent.select(".point")
+			.style("opacity", ".8")
+			.style("fill", "#4D4E4A");
+	});
+
+		/*var g = canvas.selectAll(".group")
+					.data(data);
+
+		g.enter().append("g")
+			.attr("class", "group")
+			.attr("transform", 
+				function(d) {
+					var omg = x(d.sales_vol);
+					var OMG = y(d.profit);
+					var str = "translate( " + omg + " , " + OMG + " )";
+					// console.log(str);
+					return str;
+				})
+			.append("circle")
+			.attr("r", 5);
+
+		g.on("mousedown", function(d){
+			console.log("adsfwedf");
+		});*/
+		/*var g = canvas.selectAll(".group")
+					.data(data);
+		var testG = g[0]
+		console.log(g);
+		
+		g.enter().append("g")
+			.attr("class", "group")
+			.attr("transform", 
+				function(d) {
+					var omg = x(d.sales_vol);
+					var OMG = y(d.profit);
+					var str = "translate( " + omg + " , " + OMG + " )";
+					console.log(str);
+					return str;
+				})
+			.append("circle")
+			.style("fill", "#666666")
+			.attr("class", "circle")
+			.attr("cx", "0")
+			.attr("cy", 0)
+			.attr("r", function(d){
+				console.log('fuuuuuuk')
+				return rScale(d.cost);
+			});
+		*/
+		// console.log(g);
+
+		/* var circle = canvas.selectAll(".circle")
 			// pass this an element
 			var getColor = function(d) {
 				var point = d3.select(d);
-				var svg = canvas[0][0];
-				var cx = point.attr("cx");
-				var cy = point.attr("cy");
+				var t = point.attr("transform");
+				var tArray = t.split(" ");
+				var tX = parseInt(tArray[1]);
+				var tY = parseInt(tArray[3]);
 				var hw = (canvas.attr("width")/2);
 				var hh = (canvas.attr("height")/2);
-				// console.log("height: " + cy + " vs " + hh);
-				// console.log("width: " + cx + " vs " + hw);
-				if ( cy <= hh && cx <= hw) {
+				if ( tY <= hh && tX <= hw) {
 					// light blue
 					return "rgb(75,177,165)";
-				} else if (cy <= hh && cx >= hw) {
+				} else if (tY <= hh && tX >= hw) {
 					// green
 					return "rgb(78,159,112)";
-				} else if (cy >= hh && cx <= hw) {
+				} else if (tY >= hh && tX <= hw) {
 					// purple
 					return "rgb(83,78,134)";
 				} else {
@@ -151,7 +654,7 @@ layout: default
 		};
 
 		// tooltip
-		circle.on("mouseover", function(d){
+		g.on("mouseover", function(d){
 			var transformY = getYPosition(y(d.profit));
 			var transformX = x(d.sales_vol);
 			var name = d.name;
@@ -165,7 +668,6 @@ layout: default
 				
 				hover.append("rect")
 				.attr("width", function(){
-					//need a better way of getting width of long titles
 					var titleWidth = d.name.length * 7 + 20;
 					 return titleWidth > 100 ? titleWidth : 100;
 				})
@@ -224,7 +726,7 @@ layout: default
 				});
 		});
 
-		circle.on("mouseleave", function(d){
+		g.on("mouseleave", function(d){
 			canvas.selectAll(".tooltip").remove();
 		});
 
@@ -232,10 +734,11 @@ layout: default
 			var point = d3.select(d);
 			var cx = point.attr("cx");
 			var cy = point.attr("cy");
-			var r = point.attr("r");
+			var r = point.select("circle").attr("r");
 			var color = getColor(d);
+			console.log(point);
 
-			var selected = canvas.append("circle")
+			var selected = point.append("circle")
 			.attr("class", "ring")
 			.style("stroke", color)
 			.style("stroke-width", "2px")
@@ -251,15 +754,15 @@ layout: default
 
 		if ( d3.selectAll(".selected")[0].length > 0 ) {
 			d3.selectAll(".ring").remove();
-
 			var point = d3.selectAll(".selected")[0];
+			console.log(point[0]);
 			var newColor = getColor(point[0]);
 
 			clickedRing(point[0]);
 			d3.select(".selected").style("fill", newColor);
 		}
 
-		circle.on("mousedown", function(d){
+		g.on("mousedown", function(d){
 
 			d3.select('.selected').classed('selected', false).style("fill", "rgb(102, 102, 102)");
 			d3.select(this).classed('selected', true).style("fill", getColor(this));
@@ -274,30 +777,30 @@ layout: default
 			d3.selectAll("label").remove();
 
 			d3.select("#graphControls")
-			.append("label")
-			.attr("for", "profitSlider")
-			.html("Profit");
+				.append("label")
+				.attr("for", "profitSlider")
+				.html("Profit");
 
 			d3.select("#graphControls")
-			.append("input")
-			.attr("type", "range")
-			.attr("min", 0)
-			.attr("max", 100)
-			.attr("id", "profitSlider")
-			.attr("value", d.profit);
+				.append("input")
+				.attr("type", "range")
+				.attr("min", 0)
+				.attr("max", 100)
+				.attr("id", "profitSlider")
+				.attr("value", d.profit);
 
 			d3.select("#graphControls")
-			.append("label")
-			.attr("for", "salesVolSlider")
-			.html("Sales Volume");
+				.append("label")
+				.attr("for", "salesVolSlider")
+				.html("Sales Volume");
 
 			d3.select("#graphControls")
-			.append("input")
-			.attr("type", "range")
-			.attr("min", 0)
-			.attr("max", 100)
-			.attr("id", "salesVolSlider")
-			.attr("value", d.sales_vol);
+				.append("input")
+				.attr("type", "range")
+				.attr("min", 0)
+				.attr("max", 100)
+				.attr("id", "salesVolSlider")
+				.attr("value", d.sales_vol);
 
 			d3.select("#graphControls")
 			.append("label")
@@ -314,30 +817,30 @@ layout: default
 
 			// what happens when you move the profit slider
 			d3.select("#profitSlider").on("input", function(){
-				d.profit = this.value;
+				d.profit = parseInt(this.value);
 				draw(data);
 			});
 
 			// what happens when you move the sales vol slider
 			d3.select("#salesVolSlider").on("input", function(){
-				d.sales_vol = this.value;
+				d.sales_vol = parseInt(this.value);
 				draw(data);
 			});
 
 			// what happens when you move the sales vol slider
 			d3.select("#costSlider").on("input", function(){
-				d.cost = this.value;
+				d.cost = parseInt(this.value);
 				draw(data);
 			});
-
 		});
-
 	}
-
+*/
 // when the window resizes, call redraw
 d3.select(window).on('resize', redraw); 
 
 function redraw() {
+	// remove current canvas 
+	canvas.remove();
     // update size
     contHeight = document.getElementById('graphContainer').scrollHeight;
     contWidth = document.getElementById('graphContainer').scrollWidth;
@@ -347,16 +850,29 @@ function redraw() {
     xCenter = h/2;
 
     // update axes
-    y = d3.scale.linear()
-	    .domain([0,100])
-	    .range([h,0]);
+	y = d3.scale.linear()
+		.domain([0,1])
+		.range([h,0]);
 
-    x = d3.scale.linear()
-	    .domain([100,0])
-	    .range([w,0]);
+	x = d3.scale.linear()
+		.domain([maxSalesVol,minSalesVol])
+		.range([w,0]);
 
-	// remove current canvas 
-	canvas.remove();
+	reverseX = d3.scale.linear()
+		.domain([w,0])
+		.range([maxSalesVol,minSalesVol]);
+
+	yAxis = d3.svg.axis()
+		.orient("left")
+		.scale(y)
+		.innerTickSize(-.5*w)
+		.tickPadding(10);
+
+	xAxis = d3.svg.axis()
+		.orient("bottom") 
+		.scale(x)
+		.innerTickSize(-.5*h)
+		.tickPadding(10);
 
 	// place updated canvas
 	canvas = d3.select('#graphContainer')
@@ -365,33 +881,26 @@ function redraw() {
 				.attr('width', w)
 				.style('background-color', '#fff');
 
-	yAxis = d3.svg.axis()
-		.orient("left")
-		.scale(y);
-
-	xAxis = d3.svg.axis()
-		.orient("bottom")
-		.scale(x);
+	canvas.selectAll(".Axis").remove();
 
 	canvas.append("g")
 		.attr("class", "Axis")
 		.attr("transform", "translate("+yCenter+",0)")
+		.attr("id", "yAxis")
 		.call(yAxis);
 
 	canvas.append("g")
 		.attr("class", "Axis")
 		.attr("transform", "translate(0, "+xCenter+")")
+		.attr("id", "xAxis")
 		.call(xAxis);
-	
-	var xTicksNew = d3.select("#xAxis").selectAll(".tick");
-	var yTicksNew = d3.select("#yAxis").selectAll(".tick");
 
-	// formatXTicks(xTicksNew[0]);
-	// formatYTicks(yTicksNew[0]);
+	formatTicks();
+	// redraw points on canvas
+    draw();
 
-    // redraw points on canvas
-    draw(Data);
 }
+
 
 </script>
 <style>
@@ -422,6 +931,9 @@ label {
 .Axis line {
 	fill: #ccc;
 }
+.Axis line {
+	stroke: rgba(0, 0, 0, .09);
+}
 .Axis text {
 	font-family: Helvetica-Neue, Helvetica, Arial;
 	fill:#333;
@@ -437,5 +949,10 @@ label {
 }
 .hide {
 	display: none;
+}
+.line {
+  fill: none;
+  stroke: red;
+  stroke-width: 1.5px;
 }
 </style>
