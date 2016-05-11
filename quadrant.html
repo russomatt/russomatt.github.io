@@ -210,9 +210,9 @@ formatTicks();
 
 	var rProfitScale = d3.scale.linear()
 				.domain([minTotalSales,maxTotalSales])
-				.range([1,19]);
+				.range([2,19]);
 
-var drinks = [];
+	var drinks = [];
 
 function draw() {
 		canvas.selectAll("circle").remove();
@@ -231,7 +231,6 @@ function draw() {
 				.attr("transform", function(d) { 
 					var xCoord = x(d.salesVolume);
 					var yCoord = y(d.profit);
-					// console.log(yCoord);
 					var str = "translate( " + xCoord + " , " + yCoord + " )";
 					return str;
 				});
@@ -352,7 +351,7 @@ draw();
 			d3.select(group).select('.point')
 				.style("fill", getColor(group))
 				.attr("r",function(d) {
-					return rScale(newTotalProfit);
+					return rProfitScale(newTotalProfit);
 			});
 		controls.select(".priceVal").html(data.salesPrice);
 		controls.select(".volumeVal").html(data.salesVolume);
@@ -368,7 +367,6 @@ draw();
 		var clickedGroup = this.parentNode;
 		var controls = d3.select("#graphControls");
 
-		console.log(clickedGroup);
 		if(d.id != n) {
 			var idx = drinks.indexOf(d.id);
 			var obj = rawData[idx].data;
@@ -460,7 +458,7 @@ draw();
 			d3.select(clickedGroup).select('.point')
 				.style("fill", getColor(clickedGroup))
 				.attr("r",function(d) {
-					return rScale(newTotalProfit);
+					return rProfitScale(newTotalProfit);
 			});
 			controls.select(".priceVal").html(data.salesPrice);
 			controls.select(".volumeVal").html(data.salesVolume);
@@ -474,16 +472,13 @@ draw();
 
 	function totalWeeklyProfit() {
 		var total = 0;
-		var ugh = d3.selectAll(".group");
-		ugh = ugh[0];
-		for (i = 0; i < ugh.length; i++) {
-			console.log("!")
-			var a = d3.select(ugh[i]);
+		var vals = d3.selectAll(".group");
+		vals = vals[0];
+		for (i = 0; i < vals.length; i++) {
+			var a = d3.select(vals[i]);
 			var d = a.data();
-			console.log(d);
 			total = d[0].totalProfit + total; 
 		}
-		console.log(total);
 		d3.select(".totalWeeklyProfit").html(total);
 	}
 
@@ -678,8 +673,6 @@ draw();
 	});
 };
 
-var ok;
-
 // when the window resizes, call redraw
 d3.select(window).on('resize', redraw); 
 
@@ -753,22 +746,32 @@ function redraw() {
 				.attr("d", line);
 	}
 
-	ok = [];
 	var groups = plots[0];
 	var points = [];
 	var dataPoints = [];
+	var classes = [];
+	var trueIdx = -1;
 	for(i = 0; i < groups.length; i++) {
 		var group = d3.select(groups[i]);
 		points.push(group);
 	}
 	for(i = 0; i < points.length; i++) {
 		dataPoints.push(points[i].data());
+		classes.push(points[i].classed("selected"));
 	}
+
+	trueIdx = classes.indexOf(true);
 
 	for(i = 0; i < dataPoints.length; i++) {
 			var dGroup = canvas.append("g")
 				.data(dataPoints[i])
-				.attr("class", "group")
+				.attr("class", function() {
+					if(i == trueIdx) {
+						return "group selected";
+					} else {
+						return "group";
+					}
+				})
 				.attr("transform", function(d) { 
 					var xCoord = x(d.salesVolume);
 					var yCoord = y(d.profit);
@@ -780,7 +783,14 @@ function redraw() {
 				.attr("class", "ring")
 				.attr("cx", 0)
 				.attr("cy", 0)
-				.style("stroke", "#4D4E4A")
+				.style("stroke", function(){
+					var parent = d3.select(this.parentNode);
+					if (parent.classed("selected")) {
+						return getColor(this.parentNode);
+					} else {
+						return "#4D4E4A";
+					}
+				})
 				.style("stroke-width", "2px")
 				.style("fill", "transparent")
 				.attr("r", function(d){
@@ -791,10 +801,17 @@ function redraw() {
 				.attr("class", "point")
 				.attr("cx", 0)
 				.attr("cy", 0)
-				.style("fill", "#4D4E4A")
+				.style("fill", function(){
+					var parent = d3.select(this.parentNode);
+					if (parent.classed("selected")) {
+						return getColor(this.parentNode);
+					} else {
+						return "#4D4E4A";
+					}
+				})
 				.style("opacity", ".8")
 				.attr("r", function(d){
-					return rScale(d.totalProfit);
+					return rProfitScale(d.totalProfit);
 				});
 	}
 
