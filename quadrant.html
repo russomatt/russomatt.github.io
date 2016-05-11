@@ -3,12 +3,70 @@ layout: default
 ---
 <div id="graphContainer" style="height:100%;width: 100%;background-color:#2D2D2E;">
 	<div id="graphControls">
-		<h3>Select a Drink</h3>
+		<h3 class="drinkTitle">Test</h3>
+		<div class="label">
+			<span class="priceLabel">Sales Price</span>
+			<span class="val">$<span class="priceVal"></span></span>
+		</div>
+		<input class="drinkSlider" type="range"/>
+		<div class="label">
+			<span class="pourCostLabel">% Pour Cost</span>
+			<span class="val pourCostVal"></span>
+		</div>
+		<div class="label">
+			<span class="volumeLabel">Sales Volume</span>
+			<span class="val"><span class="volumeVal"></span></span>
+		</div>
+		<div class="label">
+			<span class="volumeLabel">Weekly Profit</span>
+			<h3><span class="weeklyProfit"></span></h3>
+		</div>
+		<div>
+			<h3>Total Weekly Profit</h3>
+			<h3><span class="totalWeeklyProfit"></span></h3>
+		</div>
 	</div>
 </div>
 
-
 <script type="text/javascript">
+	var bloodyMary = [
+	{id: "bloodyMary", name: "Bloody Mary", drinkCost: 1.5, salesPrice: 10, salesVolume: 80, pourCost: 0.15, profit: 0.85, totalSales: 800, totalProfit: 680},
+	{id: "bloodyMary", name: "Bloody Mary", drinkCost: 1.5, salesPrice: 11, salesVolume: 70, pourCost: 0.13636364, profit: 0.8636364, totalSales: 770, totalProfit: 665},
+	{id: "bloodyMary", name: "Bloody Mary", drinkCost: 1.5, salesPrice: 12, salesVolume: 60, pourCost: 0.125, profit: 0.875, totalSales: 720, totalProfit: 672}
+	];
+
+	var budLight = [
+	{id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 4, salesVolume: 260, pourCost: 0.1, profit: 0.9, totalSales: 1040, totalProfit: 936},
+	{id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 5, salesVolume: 175, pourCost: 0.08, profit: 0.92, totalSales: 875, totalProfit: 805},
+	{id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 6, salesVolume: 120, pourCost: 0.0667, profit: 0.93333, totalSales: 720, totalProfit: 672}
+	];
+
+	var draftCraft = [
+	{id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 4, salesVolume: 200, pourCost: 0.25, profit: 0.75, totalSales: 800, totalProfit: 600},
+	{id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 5, salesVolume: 180, pourCost: 0.2, profit: 0.8, totalSales: 900, totalProfit: 720},
+	{id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 6, salesVolume: 100, pourCost: 0.16667, profit: 0.83333, totalSales: 600, totalProfit: 500}
+	];
+	var bloodyMary2 = [
+	{id: "bloodyMary", name: "Bloody Mary", drinkCost: 1.5, salesPrice: 10, salesVolume: 80, pourCost: 0.15, profit: 0.85, totalSales: 800, totalProfit: 680},
+	{id: "bloodyMary", name: "Bloody Mary", drinkCost: 1.5, salesPrice: 11, salesVolume: 70, pourCost: 0.13636364, profit: 0.8636364, totalSales: 770, totalProfit: 665},
+	{id: "bloodyMary", name: "Bloody Mary", drinkCost: 1.5, salesPrice: 12, salesVolume: 60, pourCost: 0.125, profit: 0.875, totalSales: 720, totalProfit: 672}
+	];
+
+	var budLight2 = [
+	{id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 4, salesVolume: 260, pourCost: 0.1, profit: 0.9, totalSales: 1040, totalProfit: 936},
+	{id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 5, salesVolume: 175, pourCost: 0.08, profit: 0.92, totalSales: 875, totalProfit: 805},
+	{id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 6, salesVolume: 120, pourCost: 0.0667, profit: 0.93333, totalSales: 720, totalProfit: 672}
+	];
+
+	var draftCraft2 = [
+	{id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 4, salesVolume: 200, pourCost: 0.25, profit: 0.75, totalSales: 800, totalProfit: 600},
+	{id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 5, salesVolume: 180, pourCost: 0.2, profit: 0.8, totalSales: 900, totalProfit: 720},
+	{id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 6, salesVolume: 100, pourCost: 0.16667, profit: 0.83333, totalSales: 600, totalProfit: 500}
+	];
+
+	var rawPathData = [{id: "bloodyMary", data: bloodyMary2}, {id: "budLight", data: budLight2}, {id: "draftCraft", data: draftCraft2}];
+	var rawData = [{id: "bloodyMary", data: bloodyMary}, {id: "budLight", data: budLight}, {id: "draftCraft", data: draftCraft}];
+
 	var contHeight = document.getElementById('graphContainer').scrollHeight;
 	var contWidth = document.getElementById('graphContainer').scrollWidth;
 	var h = contHeight/1.5;
@@ -18,6 +76,8 @@ layout: default
 	var Data = "";
 	var maxSalesVol = 270;
 	var minSalesVol = 10;
+	var maxSalesPrice = 16;
+	var minSalesPrice = 0;
 	var maxTotalSales = 1650;
 	var minTotalSales = 0;
 
@@ -64,16 +124,8 @@ layout: default
 		.call(xAxis);
 
 		function formatTicks() {
-			// var axisList = canvas.selectAll(".Axis");
-			// console.log(axisList)
-			// if ( axisList[0].length > 2 ) {
-			// 	 d3.select(axisList[3]).remove();
-			// 	 d3.select(axisList[3]).remove();
-			// }
-
 			var xTicks = d3.select("#xAxis").selectAll(".tick");
 			var yTicks = d3.select("#yAxis").selectAll(".tick");
-
 			var lenX = xTicks[0].length;
 			var lenY = yTicks[0].length;
 
@@ -90,7 +142,6 @@ layout: default
 			}
 
 			for (i = 0; i < lenY; i++) {
-				console.log('wtf');
 				var ticks = yTicks[0];
 				d3.select(ticks[i]).selectAll("line").attr("x1", (-.5*w));
 				if (i === 0) {
@@ -107,47 +158,8 @@ layout: default
 
 		};
 formatTicks();
-	// var xTicks = d3.select("#xAxis").selectAll(".tick");
-	// var yTicks = d3.select("#yAxis").selectAll(".tick");
-
-	// var formatXTicks = function (ticks) {
-	// 	var len = ticks.length;
-	// 	for (i = 0; i < len; i++) {
-	// 		if (i === 0) {
-	// 			d3.select(ticks[i]).selectAll("text").attr("x", 9);
-	// 		}
-	// 		else if (i === Math.floor(len / 2)) {
-	// 			d3.select(ticks[i]).selectAll("text").attr("x", 18);
-	// 		}
-	// 		else if (i === len - 1) {
-	// 			d3.select(ticks[i]).selectAll("text").attr("x", -18);
-	// 		}
-	// 		else d3.select(ticks[i]).classed("hide", true);
-	// 	}
-	// }
-	
-	// var formatYTicks = function (ticks) {
-	// 	var len = ticks.length;
-	// 	for (i = 0; i < len; i++) {
-	// 		if (i === 0) {
-	// 			d3.select(ticks[i]).selectAll("text").attr("y", -9);
-	// 		}
-	// 		else if (i === Math.floor(len / 2)) {
-	// 			d3.select(ticks[i]).selectAll("text").attr("y", -18);
-	// 		}
-	// 		else if (i === len - 1) {
-	// 			d3.select(ticks[i]).selectAll("text").attr("y", 9);
-	// 		}
-	// 		else d3.select(ticks[i]).classed("hide", true);
-	// 	}
-	// }
-
-	// formatXTicks(xTicks[0]);
-	// formatYTicks(yTicks[0]);
-
 	d3.json("/data/drinks.json", function(data){	
 		Data = data;
-		// draw(Data);
 	});
 
 	var bloodyMary = [
@@ -167,11 +179,26 @@ formatTicks();
 	{id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 5, salesVolume: 180, pourCost: 0.2, profit: 0.8, totalSales: 900, totalProfit: 720},
 	{id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 6, salesVolume: 100, pourCost: 0.16667, profit: 0.83333, totalSales: 600, totalProfit: 500}
 	];
+	var bloodyMary2 = [
+	{id: "bloodyMary", name: "Bloody Mary", drinkCost: 1.5, salesPrice: 10, salesVolume: 80, pourCost: 0.15, profit: 0.85, totalSales: 800, totalProfit: 680},
+	{id: "bloodyMary", name: "Bloody Mary", drinkCost: 1.5, salesPrice: 11, salesVolume: 70, pourCost: 0.13636364, profit: 0.8636364, totalSales: 770, totalProfit: 665},
+	{id: "bloodyMary", name: "Bloody Mary", drinkCost: 1.5, salesPrice: 12, salesVolume: 60, pourCost: 0.125, profit: 0.875, totalSales: 720, totalProfit: 672}
+	];
 
-	// var rawData = [{bloodyMary: bloodyMary, budLight: budLight}];
-	// var rawData2 = [bloodyMary, budLight, draftCraft];
+	var budLight2 = [
+	{id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 4, salesVolume: 260, pourCost: 0.1, profit: 0.9, totalSales: 1040, totalProfit: 936},
+	{id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 5, salesVolume: 175, pourCost: 0.08, profit: 0.92, totalSales: 875, totalProfit: 805},
+	{id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 6, salesVolume: 120, pourCost: 0.0667, profit: 0.93333, totalSales: 720, totalProfit: 672}
+	];
+
+	var draftCraft2 = [
+	{id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 4, salesVolume: 200, pourCost: 0.25, profit: 0.75, totalSales: 800, totalProfit: 600},
+	{id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 5, salesVolume: 180, pourCost: 0.2, profit: 0.8, totalSales: 900, totalProfit: 720},
+	{id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 6, salesVolume: 100, pourCost: 0.16667, profit: 0.83333, totalSales: 600, totalProfit: 500}
+	];
+
+	var rawPathData = [{id: "bloodyMary", data: bloodyMary2}, {id: "budLight", data: budLight2}, {id: "draftCraft", data: draftCraft2}];
 	var rawData = [{id: "bloodyMary", data: bloodyMary}, {id: "budLight", data: budLight}, {id: "draftCraft", data: draftCraft}];
-
 	var line = d3.svg.line()
 			.interpolate("cardinal")
 			.x(function(d) { return x(d.salesVolume); })
@@ -180,6 +207,10 @@ formatTicks();
 	var rScale = d3.scale.linear()
 				.domain([minTotalSales,maxTotalSales])
 				.range([2,20]);
+
+	var rProfitScale = d3.scale.linear()
+				.domain([minTotalSales,maxTotalSales])
+				.range([1,19]);
 
 var drinks = [];
 
@@ -190,8 +221,8 @@ function draw() {
 			drinks.push(rawData[i].id);
 			var mid = Math.floor(rawData[i].data.length / 2);
 			canvas.append("path")
-				.datum(rawData[i].data)
-				.attr("class", "line " + rawData[i].data[0].id)
+				.datum(rawPathData[i].data)
+				.attr("class", "line " + rawPathData[i].data[0].id)
 				.attr("d", line);
 
 			var dGroup = canvas.append("g")
@@ -223,125 +254,36 @@ function draw() {
 				.style("fill", "#4D4E4A")
 				.style("opacity", ".8")
 				.attr("r", function(d){
-					return rScale(d.totalProfit);
+					return rProfitScale(d.totalProfit);
 				});
 		};
 
-		// canvas.selectAll("circle").remove();
+		var allPoints =  d3.selectAll(".group");
+		allPoints = allPoints[0];
+		var defaultPoint = d3.select(allPoints[1]);
 
-		// canvas.append("path")
-		// 	.datum(bloodyMary)
-		// 	.attr("class", "line bloodyMary")
-		// 	.attr("d", line);
-
-		// canvas.append("path")
-		// 	.datum(budLight)
-		// 	.attr("class", "line2 budLight")
-		// 	.attr("d", line);
-
-		// var bL = canvas.append("g")
-		// 	.datum(budLight[1])
-		// 	.attr("class", "group")
-		// 	.attr("transform", function(d) {
-		// 		var xCoord = x(d.salesVolume);
-		// 		var yCoord = y(d.profit);
-		// 		console.log(yCoord);
-		// 		var str = "translate( " + xCoord + " , " + yCoord + " )";
-		// 		return str;
-		// 	});
-
-		// 	bL.append("circle")
-		// 	.attr("class", "ring")
-		// 	.attr("cx", 0)
-		// 	.attr("cy", 0)
-		// 	.style("stroke", "#4D4E4A")
-		// 	.style("stroke-width", "2px")
-		// 	.style("fill", "transparent")
-		// 	.attr("r", function(d){
-		// 		return rScale(d.totalSales);
-		// 	});
-			
-
-		// 	bL.append("circle")
-		// 	.attr("class", "point")
-		// 	.attr("cx", 0)
-		// 	.attr("cy", 0)
-		// 	.style("fill", "#4D4E4A")
-		// 	.attr("r", function(d){
-		// 		return rScale(d.totalProfit);
-		// 	});
-
-
-		// var bM = canvas.append("g")
-		// 	.datum(bloodyMary[1])
-		// 	.attr("class", "group")
-		// 	.attr("transform", function(d) {
-		// 		var xCoord = x(d.salesVolume);
-		// 		var yCoord = y(d.profit);
-		// 		var str = "translate( " + xCoord + " , " + yCoord + " )";
-		// 		return str;
-		// 	});
-
-		// 	bM.append("circle")
-		// 	.attr("class", "ring")
-		// 	.attr("cx", 0)
-		// 	.attr("cy", 0)
-		// 	.style("stroke", "#4D4E4A")
-		// 	.style("stroke-width", "2px")
-		// 	.style("fill", "transparent")
-		// 	.attr("r", function(d){
-		// 		return rScale(d.totalSales);
-		// 	});
-
-		// 	bM.append("circle")
-		// 	.attr("class", "point")
-		// 	.attr("cx", 0)
-		// 	.attr("cy", 0)
-		// 	.style("fill", "#4D4E4A")
-		// 	.attr("r", function(d){
-		// 		return rScale(d.totalProfit);
-		// 	});
+		defaultSelected(defaultPoint, defaultPoint.data());
+		hoverStates();
+		clickState();
 };
 
 draw(); 
 
-var n = "";
+	var n = "";
 
-	d3.selectAll("circle").on("mousedown", function(d) {
-		var data = d;
-		var group = this.parentNode;
-		if(d.id != n) {
-			var idx = drinks.indexOf(d.id);
-			var obj = rawData[idx].data;
-			n = d.id;
-			var salesVals = getMaxMin(obj, "salesVolume");
-			var profitVals = getMaxMin(obj, "profit");
-			var priceVals = getMaxMin(obj, "salesPrice");
-
-			d3.selectAll("input").remove();
-			d3.selectAll("label").remove();
-
-			d3.selectAll('.ring')
-				.style("stroke", '#4D4E4A');
-
-			d3.selectAll('.point')
-				.style("opacity", ".8")
-				.style("fill", '#4D4E4A');
-
-			d3.select("#graphControls").append("label")
-				.attr("id", "priceLabel")
-				.attr("for", "salesPriceSlider")
-				.html("Sales Price")
-				.append("span")
-				.attr("id","salesPriceVal");
-
-			d3.select("#priceLabel")
-				.append("span")
-				.attr("id","salesVolVal");
-
-			d3.select("#graphControls").append("input")
-				.attr("id", "salesPriceSlider")
-				.attr("type", "range")
+	function defaultSelected(elem, d) {
+		var group = elem[0];
+		group = group[0];
+		var data = d[0];
+		var idx = drinks.indexOf(data.id);
+		var obj = rawData[idx].data;
+		var salesVals = getMaxMin(obj, "salesVolume");
+		var profitVals = getMaxMin(obj, "profit");
+		var priceVals = getMaxMin(obj, "salesPrice");
+		var controls = d3.select("#graphControls");
+		controls.style("background-color", getColor(group));
+		controls.select(".drinkTitle").html(data.name);
+		controls.select(".drinkSlider")
 				.attr("min", function() {
 					return priceVals[0];
 				})
@@ -354,16 +296,127 @@ var n = "";
 				})
 				.attr("step", ".01");
 
-				d3.select(group).select('.ring')
+				d3.select(group).classed("selected", true);
+
+				d3.select(".selected").select('.ring')
 					.style("stroke", getColor(group));
 
-				d3.select(group).select('.point')
+				d3.select(".selected").select('.point')
 					.style("opacity", ".8")
 					.style("fill", getColor(group));
+
+				controls.select(".priceVal").html(data.salesPrice);
+				controls.select(".volumeVal").html(data.salesVolume);
+				controls.select(".pourCostVal").html(data.pourCost);
+				controls.select(".weeklyProfit").html(data.totalProfit);
+
+				totalWeeklyProfit();
+			d3.select(".drinkSlider").on("input", function() {
+			var path = d3.select("." + data.id);
+
+			var pNode = path.node();
+			var pLength = pNode.getTotalLength();
+
+			var pScale = d3.scale.linear()
+				.domain([this.min, this.max])
+				.range([pLength,0]);
+
+			var rawVal =  this.value;
+			var val =  pScale(this.value);
+			var newVal = val - pLength;
+			var posn = pNode.getPointAtLength(Math.abs(newVal));
+
+			var newPrice = this.value;
+			var newProfit = ((newPrice - data.drinkCost)/ newPrice);
+			var newSalesVolume = reverseX(posn.x);
+			var newTotalSales = newSalesVolume * newPrice;
+			var newTotalProfit = newTotalSales * newProfit;
+			data.salesPrice = newPrice;
+			data.profit = newProfit;
+			data.totalSales = newTotalSales;
+			data.salesVolume = Math.floor(newSalesVolume);
+			data.totalProfit = newTotalProfit;
+
+			d3.select(group)
+			.attr("transform", function(d) {
+				var str = "translate( " + posn.x + " , " + posn.y + " )";
+				return str;
+			});
+
+			d3.select(group).select('.ring')
+				.style("stroke", getColor(group))
+				.attr("r",function(d) {
+					return rScale(newTotalSales);
+			});
+
+			d3.select(group).select('.point')
+				.style("fill", getColor(group))
+				.attr("r",function(d) {
+					return rScale(newTotalProfit);
+			});
+		controls.select(".priceVal").html(data.salesPrice);
+		controls.select(".volumeVal").html(data.salesVolume);
+		controls.select(".pourCostVal").html(data.pourCost);
+		controls.select(".weeklyProfit").html(data.totalProfit);
+		totalWeeklyProfit();
+		});
+	};
+
+	function clickState() {
+	d3.selectAll("circle").on("mousedown", function(d) {
+		var data = d;
+		var clickedGroup = this.parentNode;
+		var controls = d3.select("#graphControls");
+
+		console.log(clickedGroup);
+		if(d.id != n) {
+			var idx = drinks.indexOf(d.id);
+			var obj = rawData[idx].data;
+			n = d.id;
+			var salesVals = getMaxMin(obj, "salesVolume");
+			var profitVals = getMaxMin(obj, "profit");
+			var priceVals = getMaxMin(obj, "salesPrice");
+
+			d3.selectAll(".group").classed("selected", false);
+
+			d3.selectAll('.ring')
+				.style("stroke", '#4D4E4A');
+
+			d3.selectAll('.point')
+				.style("opacity", ".8")
+				.style("fill", '#4D4E4A');
+
+			controls.select(".drinkTitle").html(data.name);
+			controls.select(".drinkSlider")
+			.attr("min", function() {
+				return priceVals[0];
+			})
+			.attr("max", function() {
+				var max = (priceVals.length - 1)
+				return priceVals[max];
+			})
+			.attr("value", function(){
+				return data.salesPrice;
+			})
+			.attr("step", ".01");
+
+			d3.select(clickedGroup).classed("selected", true);
+
+			d3.select(".selected").select('.ring')
+			.style("stroke", getColor(clickedGroup));
+
+			d3.select(".selected").select('.point')
+			.style("opacity", ".8")
+			.style("fill", getColor(clickedGroup));
+			controls.select(".priceVal").html(data.salesPrice);
+			controls.select(".volumeVal").html(data.salesVolume);
+			controls.select(".pourCostVal").html(data.pourCost);
+			controls.select(".weeklyProfit").html(data.totalProfit);
+
+			totalWeeklyProfit();
 		}
 
-		d3.select("#salesPriceSlider").on("input", function() {
-
+		d3.select(".drinkSlider").on("input", function() {
 			var path = d3.select("." + n);
 
 			var pNode = path.node();
@@ -387,43 +440,63 @@ var n = "";
 			data.totalSales = newTotalSales;
 			data.salesVolume = Math.floor(newSalesVolume);
 			var newTotalProfit = newTotalSales * newProfit;
+			data.totalProfit = newTotalProfit;
 
-			d3.select("#salesPriceVal")
+			d3.select(".drinkVals")
 				.html(" " + newPrice + " / " + Math.floor(posn.x) + " / " + (newProfit * 100).toFixed(2) + "%");
 
-			d3.select(group)
+			d3.select(clickedGroup)
 			.attr("transform", function(d) {
 				var str = "translate( " + posn.x + " , " + posn.y + " )";
 				return str;
 			});
 
-			d3.select(group).select('.ring')
-				.style("stroke", getColor(group))
+			d3.select(clickedGroup).select('.ring')
+				.style("stroke", getColor(clickedGroup))
 				.attr("r",function(d) {
 					return rScale(newTotalSales);
 			});
 
-			d3.select(group).select('.point')
-				.style("fill", getColor(group))
+			d3.select(clickedGroup).select('.point')
+				.style("fill", getColor(clickedGroup))
 				.attr("r",function(d) {
 					return rScale(newTotalProfit);
 			});
+			controls.select(".priceVal").html(data.salesPrice);
+			controls.select(".volumeVal").html(data.salesVolume);
+			controls.select(".pourCostVal").html(data.pourCost);
+			controls.select(".weeklyProfit").html(data.totalProfit);
+
+			totalWeeklyProfit();
 		});
 	});
+	};
+
+	function totalWeeklyProfit() {
+		var total = 0;
+		var ugh = d3.selectAll(".group");
+		ugh = ugh[0];
+		for (i = 0; i < ugh.length; i++) {
+			console.log("!")
+			var a = d3.select(ugh[i]);
+			var d = a.data();
+			console.log(d);
+			total = d[0].totalProfit + total; 
+		}
+		console.log(total);
+		d3.select(".totalWeeklyProfit").html(total);
+	}
 
 	function getMaxMin(obj, key) {
 		var list = [];
-
 		for(i = 0; obj.length > i; i++ ) {
 			list.push(obj[i][key]);
 		}
-
 		var sortedList = list.sort();
 		return sortedList;
-
 	};
 
-	var getColor = function(d) {
+	function getColor(d) {
 		var point = d3.select(d);
 		var t = point.attr("transform");
 		var tArray = t.split(" ");
@@ -470,9 +543,8 @@ var n = "";
 		}
 	};
 
-
+	function hoverStates() {
 	var g = canvas.selectAll('.point');
-
 	// tooltip
 	g.on("mouseover", function(d){
 		var newY = y(d.profit);
@@ -480,11 +552,20 @@ var n = "";
 		var transformY = getYPosition(newY);
 		var transformX = getXPosition(newX);
 		var name = d.name;
+		var idx = drinks.indexOf(d.id);
+		var obj = rawData[idx].data;
+		var priceVals = getMaxMin(obj, "salesPrice");
+		var maxIdx = priceVals.length - 1;
+		var minSalesPrice = priceVals[0];
+		var maxSalesPrice = priceVals[maxIdx];
 		var hoverProfitScale = d3.scale.linear()
 							.domain([100,0])
 							.range([80,0]);
 		var hoverVolScale = d3.scale.linear()
 							.domain([maxSalesVol,minSalesVol])
+							.range([80,0]);
+		var hoverPriceScale = d3.scale.linear()
+							.domain([maxSalesPrice,minSalesPrice])
 							.range([80,0]);
 
 		var parent = d3.select(this.parentNode);
@@ -518,7 +599,7 @@ var n = "";
 
 			// profit bar
 			hover.append("text")
-			.text("Profit")
+			.text("% Pour Cost")
 			.attr("x", -40)
 			.attr("y", 65);
 
@@ -532,10 +613,10 @@ var n = "";
 			hover.append("rect")
 			.attr("x", -40)
 			.attr("y", 70)
-			.style("fill", "#72B6A9")
+			.style("fill", getColor(parent[0][0]))
 			.attr("height", 3)
 			.attr("width", function(){
-				var prof = (d.profit * 100);
+				var prof = (d.pourCost * 100);
 				return hoverProfitScale(prof);
 			});
 
@@ -554,10 +635,31 @@ var n = "";
 			hover.append("rect")
 			.attr("x", -40)
 			.attr("y", 95)
-			.style("fill", "#499CC5")
-			.attr("height", 3)
+			.style("fill", getColor(parent[0][0]))
+			.attr("height", 3)	
 			.attr("width", function(){
 				return hoverVolScale(d.salesVolume);
+			});
+
+			hover.append("text")
+			.html("Sales Price")
+			.attr("x", -40)
+			.attr("y", 115);
+
+			hover.append("rect")
+			.attr("x", -40)
+			.attr("y", 120)
+			.style("fill", "#e2e2e2")
+			.attr("height", 3)
+			.attr("width", 80);
+
+			hover.append("rect")
+			.attr("x", -40)
+			.attr("y", 120)
+			.style("fill", getColor(parent[0][0]))
+			.attr("height", 3)
+			.attr("width", function(){
+				return hoverPriceScale(d.salesPrice);
 			});
 	});
 
@@ -565,291 +667,35 @@ var n = "";
 		var parent = d3.select(this.parentNode);
 		canvas.selectAll(".tooltip").remove();
 
-		parent.select(".ring")
-			.style("stroke", "#4D4E4A");
+		if (!parent.classed("selected")) {
+			parent.select(".ring")
+				.style("stroke", "#4D4E4A");
 
-		parent.select(".point")
-			.style("opacity", ".8")
-			.style("fill", "#4D4E4A");
-	});
-
-		/*var g = canvas.selectAll(".group")
-					.data(data);
-
-		g.enter().append("g")
-			.attr("class", "group")
-			.attr("transform", 
-				function(d) {
-					var omg = x(d.sales_vol);
-					var OMG = y(d.profit);
-					var str = "translate( " + omg + " , " + OMG + " )";
-					// console.log(str);
-					return str;
-				})
-			.append("circle")
-			.attr("r", 5);
-
-		g.on("mousedown", function(d){
-			console.log("adsfwedf");
-		});*/
-		/*var g = canvas.selectAll(".group")
-					.data(data);
-		var testG = g[0]
-		console.log(g);
-		
-		g.enter().append("g")
-			.attr("class", "group")
-			.attr("transform", 
-				function(d) {
-					var omg = x(d.sales_vol);
-					var OMG = y(d.profit);
-					var str = "translate( " + omg + " , " + OMG + " )";
-					console.log(str);
-					return str;
-				})
-			.append("circle")
-			.style("fill", "#666666")
-			.attr("class", "circle")
-			.attr("cx", "0")
-			.attr("cy", 0)
-			.attr("r", function(d){
-				console.log('fuuuuuuk')
-				return rScale(d.cost);
-			});
-		*/
-		// console.log(g);
-
-		/* var circle = canvas.selectAll(".circle")
-			// pass this an element
-			var getColor = function(d) {
-				var point = d3.select(d);
-				var t = point.attr("transform");
-				var tArray = t.split(" ");
-				var tX = parseInt(tArray[1]);
-				var tY = parseInt(tArray[3]);
-				var hw = (canvas.attr("width")/2);
-				var hh = (canvas.attr("height")/2);
-				if ( tY <= hh && tX <= hw) {
-					// light blue
-					return "rgb(75,177,165)";
-				} else if (tY <= hh && tX >= hw) {
-					// green
-					return "rgb(78,159,112)";
-				} else if (tY >= hh && tX <= hw) {
-					// purple
-					return "rgb(83,78,134)";
-				} else {
-					// dark blue
-					return "rgb(65,96,161)";
-				}
-			}
-
-		var getYPosition = function(coord) {
-			if (h - coord > (h/2)) {
-				return coord;
-			}
-			else {
-				return coord - 180;
-			}
-		};
-
-		// tooltip
-		g.on("mouseover", function(d){
-			var transformY = getYPosition(y(d.profit));
-			var transformX = x(d.sales_vol);
-			var name = d.name;
-			var hoverScale = d3.scale.linear()
-								.domain([100,0])
-								.range([80,0]);
-
-			var hover = canvas.append("g")
-				.attr("transform", "translate(" + transformX + "," + transformY + ")")
-				.attr("class", "tooltip");
-				
-				hover.append("rect")
-				.attr("width", function(){
-					var titleWidth = d.name.length * 7 + 20;
-					 return titleWidth > 100 ? titleWidth : 100;
-				})
-				.attr("height", 150)
-				.attr("x", "-50")
-				.attr("y", "15")
-				.style("fill", "rgba(0,0,0,.8)");
-
-				hover.append("text")
-				.html(name)
-				.attr("x", -40)
-				.attr("y", 40)
-				.attr("class", "hover-title");
-
-				// profit bar
-				hover.append("text")
-				.text("Profit")
-				.attr("x", -40)
-				.attr("y", 60);
-
-				hover.append("rect")
-				.attr("x", -40)
-				.attr("y", 65)
-				.style("fill", "#e2e2e2")
-				.attr("height", 4)
-				.attr("width", 80);
-
-				hover.append("rect")
-				.attr("x", -40)
-				.attr("y", 65)
-				.style("fill", "#72B6A9")
-				.attr("height", 4)
-				.attr("width", function(){
-					return hoverScale(d.profit);
-				});
-
-				hover.append("text")
-				.html("Sales Volume")
-				.attr("x", -40)
-				.attr("y", 90);
-
-				hover.append("rect")
-				.attr("x", -40)
-				.attr("y", 95)
-				.style("fill", "#e2e2e2")
-				.attr("height", 4)
-				.attr("width", 80);
-
-				hover.append("rect")
-				.attr("x", -40)
-				.attr("y", 95)
-				.style("fill", "#499CC5")
-				.attr("height", 4)
-				.attr("width", function(){
-					return hoverScale(d.sales_vol);
-				});
-		});
-
-		g.on("mouseleave", function(d){
-			canvas.selectAll(".tooltip").remove();
-		});
-
-		var clickedRing = function(d) {
-			var point = d3.select(d);
-			var cx = point.attr("cx");
-			var cy = point.attr("cy");
-			var r = point.select("circle").attr("r");
-			var color = getColor(d);
-			console.log(point);
-
-			var selected = point.append("circle")
-			.attr("class", "ring")
-			.style("stroke", color)
-			.style("stroke-width", "2px")
-			.style("fill", "transparent")
-			.attr("r", function(){
-				return (5 + Number(r));
-			});
-
-			selected.transition().duration(500).attr("cx", cx)
-			.attr("cy", cy);
-
-		};
-
-		if ( d3.selectAll(".selected")[0].length > 0 ) {
-			d3.selectAll(".ring").remove();
-			var point = d3.selectAll(".selected")[0];
-			console.log(point[0]);
-			var newColor = getColor(point[0]);
-
-			clickedRing(point[0]);
-			d3.select(".selected").style("fill", newColor);
+			parent.select(".point")
+				.style("opacity", ".8")
+				.style("fill", "#4D4E4A");
 		}
+	});
+};
 
-		g.on("mousedown", function(d){
+var ok;
 
-			d3.select('.selected').classed('selected', false).style("fill", "rgb(102, 102, 102)");
-			d3.select(this).classed('selected', true).style("fill", getColor(this));
-			
-			d3.selectAll(".ring").remove();
-			// sets the ring around the point
-			clickedRing(this);
-
-			d3.select("#graphControls h3").html(d.name);
-
-			d3.selectAll("input").remove();
-			d3.selectAll("label").remove();
-
-			d3.select("#graphControls")
-				.append("label")
-				.attr("for", "profitSlider")
-				.html("Profit");
-
-			d3.select("#graphControls")
-				.append("input")
-				.attr("type", "range")
-				.attr("min", 0)
-				.attr("max", 100)
-				.attr("id", "profitSlider")
-				.attr("value", d.profit);
-
-			d3.select("#graphControls")
-				.append("label")
-				.attr("for", "salesVolSlider")
-				.html("Sales Volume");
-
-			d3.select("#graphControls")
-				.append("input")
-				.attr("type", "range")
-				.attr("min", 0)
-				.attr("max", 100)
-				.attr("id", "salesVolSlider")
-				.attr("value", d.sales_vol);
-
-			d3.select("#graphControls")
-			.append("label")
-			.attr("for", "costSlider")
-			.html("Cost");
-
-			d3.select("#graphControls")
-			.append("input")
-			.attr("type", "range")
-			.attr("min", 2)
-			.attr("max", 15)
-			.attr("id", "costSlider")
-			.attr("value", d.cost);
-
-			// what happens when you move the profit slider
-			d3.select("#profitSlider").on("input", function(){
-				d.profit = parseInt(this.value);
-				draw(data);
-			});
-
-			// what happens when you move the sales vol slider
-			d3.select("#salesVolSlider").on("input", function(){
-				d.sales_vol = parseInt(this.value);
-				draw(data);
-			});
-
-			// what happens when you move the sales vol slider
-			d3.select("#costSlider").on("input", function(){
-				d.cost = parseInt(this.value);
-				draw(data);
-			});
-		});
-	}
-*/
 // when the window resizes, call redraw
 d3.select(window).on('resize', redraw); 
 
 function redraw() {
+	var plots = d3.selectAll(".group");
 	// remove current canvas 
 	canvas.remove();
-    // update size
-    contHeight = document.getElementById('graphContainer').scrollHeight;
-    contWidth = document.getElementById('graphContainer').scrollWidth;
-    h = contHeight/1.5;
-    w = contWidth/1.5;
-    yCenter = w/2;
-    xCenter = h/2;
+	// update size
+	contHeight = document.getElementById('graphContainer').scrollHeight;
+	contWidth = document.getElementById('graphContainer').scrollWidth;
+	h = contHeight/1.5;
+	w = contWidth/1.5;
+	xCenter = h/2;
+	yCenter = w/2;
 
-    // update axes
+	// update axes
 	y = d3.scale.linear()
 		.domain([0,1])
 		.range([h,0]);
@@ -895,13 +741,67 @@ function redraw() {
 		.attr("id", "xAxis")
 		.call(xAxis);
 
-	formatTicks();
 	// redraw points on canvas
-    draw();
+	// draw();
 
-}
+	for(i = 0; i < rawPathData.length; i ++) {
+			drinks.push(rawPathData[i].id);
+			var mid = Math.floor(rawPathData[i].data.length / 2);
+			canvas.append("path")
+				.datum(rawPathData[i].data)
+				.attr("class", "line " + rawPathData[i].data[0].id)
+				.attr("d", line);
+	}
 
+	ok = [];
+	var groups = plots[0];
+	var points = [];
+	var dataPoints = [];
+	for(i = 0; i < groups.length; i++) {
+		var group = d3.select(groups[i]);
+		points.push(group);
+	}
+	for(i = 0; i < points.length; i++) {
+		dataPoints.push(points[i].data());
+	}
 
+	for(i = 0; i < dataPoints.length; i++) {
+			var dGroup = canvas.append("g")
+				.data(dataPoints[i])
+				.attr("class", "group")
+				.attr("transform", function(d) { 
+					var xCoord = x(d.salesVolume);
+					var yCoord = y(d.profit);
+					var str = "translate( " + xCoord + " , " + yCoord + " )";
+					return str;
+				});
+
+				dGroup.append("circle")
+				.attr("class", "ring")
+				.attr("cx", 0)
+				.attr("cy", 0)
+				.style("stroke", "#4D4E4A")
+				.style("stroke-width", "2px")
+				.style("fill", "transparent")
+				.attr("r", function(d){
+					return rScale(d.totalSales);
+				});
+
+				dGroup.append("circle")
+				.attr("class", "point")
+				.attr("cx", 0)
+				.attr("cy", 0)
+				.style("fill", "#4D4E4A")
+				.style("opacity", ".8")
+				.attr("r", function(d){
+					return rScale(d.totalProfit);
+				});
+	}
+
+	hoverStates();
+	clickState();
+	formatTicks();
+};
 </script>
 <style>
 #graphContainer {
@@ -915,6 +815,9 @@ function redraw() {
 	width: 200px; 
 	background-color: #e4e4e4;
 	display: inline-block;
+}
+#graphControls h3{
+	font-size: 22px;
 }
 #graphContainer svg{
 	float: left;
@@ -954,5 +857,106 @@ label {
   fill: none;
   stroke: red;
   stroke-width: 1.5px;
+}
+.drinkTitle {
+	color: white;
+}
+.label .val{
+	float:right;
+}
+.label {
+	font-weight: bold;
+	color: rgba(0, 0, 0, .6);
+	text-transform: uppercase;
+	margin-top: 10px;
+}
+input[type=range].drinkSlider {
+	-webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+	width: 100%; /* Specific width is required for Firefox. */
+}
+input[type=range].drinkSlider:focus {
+  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+input[type=range].drinkSlider::-ms-track {
+  width: 100%;
+  cursor: pointer;
+  background: transparent; /* Hides the slider so custom styles can be added */
+  border-color: transparent;
+  color: transparent;
+}
+/* Special styling for WebKit/Blink */
+input[type=range].drinkSlider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	height: 16px;
+	width: 16px;
+	border-radius: 50%;
+	background: #ffffff;
+	cursor: pointer;
+	margin-top: -7px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+}
+
+/* All the same stuff for Firefox */
+input[type=range].drinkSlider::-moz-range-thumb {
+	height: 16px;
+	width: 16px;
+	border-radius: 50%;
+	background: #ffffff;
+	cursor: pointer;
+}
+
+/* All the same stuff for IE */
+input[type=range].drinkSlider::-ms-thumb {
+	height: 16px;
+	width: 16px;
+	border-radius: 50%;
+	background: #ffffff;
+	cursor: pointer;
+}
+input[type=range].drinkSlider {
+  -webkit-appearance: none;
+  margin: 18px 0;
+  width: 100%;
+}
+input[type=range].drinkSlider:focus {
+  outline: none;
+}
+input[type=range].drinkSlider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 3px;
+  cursor: pointer;
+  animate: 0.2s;  
+  background: rgba(0, 0, 0, .6);
+  border-radius: 1px;
+}
+input[type=range].drinkSlider:focus::-webkit-slider-runnable-track {
+  background: rgba(0, 0, 0, .6);
+}
+input[type=range].drinkSlider::-moz-range-track {
+  width: 100%;
+  height: 3px;
+  cursor: pointer;
+  animate: 0.2s;  
+  background: rgba(0, 0, 0, .6);
+  border-radius: 1px;
+}
+
+input[type=range].drinkSlider::-ms-track {
+  width: 100%;
+  height: 3px;
+  cursor: pointer;
+  animate: 0.2s;
+  background: transparent;
+  color: transparent;
+}
+input[type=range].drinkSlider::-ms-fill-lower {
+}
+input[type=range].drinkSlider::-ms-fill-upper {
+}
+input[type=range].drinkSlider:focus::-ms-fill-lower {
+  background: rgba(0, 0, 0, .6);
+}
+input[type=range].drinkSlider:focus::-ms-fill-upper {
+  background: rgba(0, 0, 0, .6);
 }
 </style>
