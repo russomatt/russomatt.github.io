@@ -1,24 +1,75 @@
 ---
 layout: default
 ---
-<div>
-	<img id="sky" src="img/sky.png"/>
+<div id="screen" style="width:100%; height: auto;">
+    <img id="sky" src="img/sky_1.png"/>
 </div>
 <script>
+    var time = [];
 
-	d3.select("#sky").on("mousedown", function(e) {
-		if(!this.canvas) {
-            this.canvas = d3.select("body").append("canvas").attr("height", this.height).attr("width", this.width);
-            this.canvas = this.canvas[0][0];
-            this.canvas.getContext('2d').drawImage(this, 0, 0, this.width, this.height);
+    function getTime() {
+        var today =  new Date();
+        var year = today.getFullYear();
+        var month = today.getMonth();
+        var day = today.getDay();
+        var hour = today.getHours();
+        var minute = today.getMinutes();
 
+    // return {'year': year, 'month': month, 'day': day, 'hour': hour, 'minute': minute};
+    return { 'year': year, 'yearData': {'month': month, 'monthData': {'day': day, 'dayData': {'hour': hour, 'hourData': {'minute': minute, 'minuteData': 'this will be color data'}}}}};
+};
+
+function checkTime(y, m, d, h, min, arr, tArr) {
+
+};
+
+function processImage() {
+    var ok = d3.select("#sky");
+    var imgNode = ok.node();
+    if(!imgNode.canvas) {
+        imgNode.canvas = d3.select("body").append("canvas").attr("height", imgNode.height).attr("width", imgNode.width);
+        imgNode.canvas = imgNode.canvas[0][0];
+        imgNode.canvas.getContext('2d').drawImage(imgNode, 0, 0, imgNode.width, imgNode.height);
+
+    }
+    var canvasEl = imgNode.canvas;
+    var imgHeight = parseInt(d3.select("canvas").attr("height"));
+    var imgWidth = parseInt(d3.select("canvas").attr("width"));
+
+    var w = Math.floor(imgWidth/2);
+    var rgbData = [];
+
+    d3.select("canvas").remove();
+    d3.select("img").remove();
+
+
+    function drawGradient() {
+
+     for (i = 1; i < imgHeight; i++) {
+        var test = canvasEl.getContext('2d').getImageData(w, i, 1, 1).data;
+        var rgb = "rgb(" + test[0] + "," + test[1] + "," + test[2] + ")";
+
+        d3.select("#screen").append("div").style("height", function(d){
+            return '1px';
+        }).style("background-color", rgb);
+
+        rgbData.push(rgb);
+
+        // console.log(rgb);
+        // console.log(today.getHours());
+        // var c = {x: j, y: i}
+        // rgbData.push(rgb);
+            // for (j = 1;j == w; j++) {
+            //  var test = canvasEl.getContext('2d').getImageData(j, i, 1, 1).data
+            //  var rgb = "rgb(" + test[0] + "," + test[1] + "," + test[2] + ")"
+            //  // var c = {x: j, y: i}
+            // }
         }
+    }
+    drawGradient();
+    console.log(rgbData);
+};
 
-        // console.log(this.canvas);
-		var pixelData = this.canvas.getContext('2d').getImageData(event.offsetX, event.offsetY, 1, 1).data;
-		var rgbColor = "rgb(" + pixelData[0] + "," + pixelData[1] + "," + pixelData[2] + ")"
-		console.log(rgbColor);
-	})
-
+processImage();
 
 </script>
