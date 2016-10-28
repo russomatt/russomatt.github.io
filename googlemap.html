@@ -1,0 +1,35 @@
+---
+layout: default
+---
+<div id="map" style="background: red; width: 100%; height: 100%;">
+</div>
+<script type="text/javascript">
+
+    var addresses = ['250 Summer St Boston, MA 02112', '18 Taylor Street Hobart, IN 46342', '152 Riverview Dr. Winter Springs, FL 32708','225 Lantern Ave. Mentor, OH 44060','98 Grove Street Olympia, WA 98512'];
+
+    var map;
+      function initMap() {
+        var cen = {lat: 41.850033, lng: -87.6500523};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 4,
+          center: cen
+        });
+        for (var i = 0; i < addresses.length; i++ ) {
+        
+        $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+addresses[i]+'&sensor=false', null, function (data) {
+            var p = data.results[0].geometry.location
+            var latlng = new google.maps.LatLng(p.lat, p.lng);
+            new google.maps.Marker({
+                position: latlng,
+                map: map
+            });
+
+            })
+        }
+
+
+      }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAccsUJiuXcuSp_8vQZ6FLg8EGkxcb1CpI&callback=initMap"
+    async defer></script>
