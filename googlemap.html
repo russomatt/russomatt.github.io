@@ -5,7 +5,13 @@ layout: default
 </div>
 <script type="text/javascript">
 
-    var addresses = ['250 Summer St Boston, MA 02112', '18 Taylor Street Hobart, IN 46342', '152 Riverview Dr. Winter Springs, FL 32708','225 Lantern Ave. Mentor, OH 44060','98 Grove Street Olympia, WA 98512'];
+    var locations = [
+        {name : 'BevSpot 1', address :'250 Summer St Boston, MA 02112'},
+        {name : 'BevSpot 2', address : '18 Taylor Street Hobart, IN 46342'},
+        {name : 'BevSpot 3', address : '152 Riverview Dr. Winter Springs, FL 32708'},
+        {name : 'BevSpot 4', address :'321 Summer St Boston, MA 02112'},
+        {name : 'BevSpot 5', address : '98 Grove Street Olympia, WA 98512'}
+        ];
 
     var map;
       function initMap() {
@@ -14,17 +20,36 @@ layout: default
           zoom: 4,
           center: cen
         });
-        for (var i = 0; i < addresses.length; i++ ) {
-        
-        $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+addresses[i]+'&sensor=false', null, function (data) {
-            var p = data.results[0].geometry.location
-            var latlng = new google.maps.LatLng(p.lat, p.lng);
-            new google.maps.Marker({
-                position: latlng,
-                map: map
-            });
+        for (var i = 0; i < locations.length; i++ ) {
+            var address = locations[i].address;
+            var name = locations[i].name;
+            console.log(name)
 
-            })
+            $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+address+'&sensor=false', null, function (data) {
+                var p = data.results[0].geometry.location
+                console.log(data.results[0].place_id)
+                var latlng = new google.maps.LatLng(p.lat, p.lng);
+                var infowindow = new google.maps.InfoWindow({
+                        content: name,
+                        maxWidth: 200,
+                        id: data.results[0].place_id
+                });
+
+                var marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map,
+                    id: data.results[0].place_id
+
+                });
+
+                marker.addListener('click', function() {
+                    console.log(infowindow.id)
+                    if (infowindow.id == this.id) {
+                            infowindow.open(map, marker);
+                    }
+                });
+                
+                })
         }
 
 
