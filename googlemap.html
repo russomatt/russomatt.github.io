@@ -1,10 +1,26 @@
 ---
 layout: default
 ---
-<div id="map" style="background: red; width: 100%; height: 100%;">
+<style>
+    #map {
+        width: 75%;
+        height: 100%;
+    }
+    .map-frame {
+        background: #2D3538;
+        position: fixed;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 25%;
+        z-index: 10000;
+    }
+</style>
+<div id="map">
+</div>
+<div class="map-frame">
 </div>
 <script type="text/javascript">
-
     var locations = [
         {name : 'BevSpot 1', address :'250 Summer St Boston, MA 02112'},
         {name : 'BevSpot 2', address : '18 Taylor Street Hobart, IN 46342'},
@@ -12,49 +28,90 @@ layout: default
         {name : 'BevSpot 4', address :'321 Summer St Boston, MA 02112'},
         {name : 'BevSpot 5', address : '98 Grove Street Olympia, WA 98512'}
         ];
-
     var map;
+    var icon = '/img/map-marker.png';
+
       function initMap() {
-        var cen = {lat: 41.850033, lng: -87.6500523};
+        var styles = [
+            {
+              featureType: 'water',
+              elementType: 'geometry',
+              stylers: [{color: '#D1D1D1'}]
+            },
+            {
+              featureType: 'landscape',
+              elementType: 'geometry',
+              stylers: [{color: '#E8E8E8'}]
+            },
+            {
+              featureType: 'poi',
+              elementType: 'geometry',
+              stylers: [{color: '#C5C5C5'}]
+            },
+            {
+              featureType: 'administrative',
+              elementType: 'geometry',
+              stylers: [{color: '#C5C5C5'}]
+            },
+            {
+                featureType: 'landscape',
+                elementType: 'labels',
+                stylers: [{ visibility: 'off' }]
+            },
+            {
+              featureType: 'road',
+              elementType: 'geometry',
+              stylers: [{color: '#ffffff'}, {weight: '.1'}]
+            },
+            {
+              featureType: 'road.highway',
+              elementType: 'geometry',
+              stylers: [{color: '#C5C5C5'}, {weight: '.25'}]
+            },
+
+        ];
+
+        var cen = {lat: 38.850033, lng: -90.6500523};
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 4,
-          center: cen
+          center: cen,
+          styles: styles
         });
-        for (var i = 0; i < locations.length; i++ ) {
-            var address = locations[i].address;
-            var name = locations[i].name;
-            console.log(name)
+        var arrLoc = new Array();
+        var markerClusterer = new MarkerClusterer(map, [], {imagePath: '/img/m'});
+        $.each(locations, function(index, value) {
+            var address = value.address;
+            var name = value.name;
 
             $.getJSON('http://maps.googleapis.com/maps/api/geocode/json?address='+address+'&sensor=false', null, function (data) {
                 var p = data.results[0].geometry.location
-                console.log(data.results[0].place_id)
                 var latlng = new google.maps.LatLng(p.lat, p.lng);
+
                 var infowindow = new google.maps.InfoWindow({
                         content: name,
-                        maxWidth: 200,
-                        id: data.results[0].place_id
+                        maxWidth: 200
                 });
 
                 var marker = new google.maps.Marker({
                     position: latlng,
-                    map: map,
-                    id: data.results[0].place_id
-
+                    icon: icon,
+                    map: map
                 });
 
-                marker.addListener('click', function() {
-                    console.log(infowindow.id)
-                    if (infowindow.id == this.id) {
-                            infowindow.open(map, marker);
-                    }
+                marker.addListener( 'click', function() {
+                    infowindow.open(map, this);
                 });
-                
-                })
-        }
 
+                map.addListener( 'click', function() {
+                    infowindow.close(map, this);
+                });
 
+                markerClusterer.addMarker(marker)
+            });
+
+        })
       }
-
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAccsUJiuXcuSp_8vQZ6FLg8EGkxcb1CpI&callback=initMap"
+<script src="/js/markerclusterer.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBwg_Nag85738is9huyf8RyoXXN_mS4_fU&callback=initMap"
     async defer></script>
