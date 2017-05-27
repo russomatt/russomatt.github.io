@@ -1,10 +1,28 @@
 ---
 layout: default
 ---
-<div id="screen" style="width:100%; height: auto;">
-    <img id="sky" src="img/sky_1.png"/>
+<div id='screen' style='width:100%; height: 100%;'>
+    <img id='sky' src='img/sky_2.png'/>
+    <div id='clock'>
+    </div>
 </div>
+<style>
+    #clock {
+        position: fixed;
+        bottom: 100px;
+        right:100px;
+        font-size: 3em;
+        font-weight: 100;
+        background-color: rgba(0,0,0,.5);
+        color: #fff;
+        padding: 15px;
+        font-family: Helvetica Neue;
+    }
+</style>
 <script>
+    d3.select('body').on('load', getTime);
+
+
     var time = [];
 
     function getTime() {
@@ -15,8 +33,17 @@ layout: default
         var hour = today.getHours();
         var minute = today.getMinutes();
 
+        if (minute < 10 ) {
+            minute = '0' + minute;
+        }
+        var clockDisplay = hour + ' : ' + minute;
+
+        d3.select('#clock').html(clockDisplay);
+
+        setTimeout(getTime, 500);
+
     // return {'year': year, 'month': month, 'day': day, 'hour': hour, 'minute': minute};
-    return { 'year': year, 'yearData': {'month': month, 'monthData': {'day': day, 'dayData': {'hour': hour, 'hourData': {'minute': minute, 'minuteData': 'this will be color data'}}}}};
+    // return { 'year': year, 'yearData': {'month': month, 'monthData': {'day': day, 'dayData': {'hour': hour, 'hourData': {'minute': minute, 'minuteData': 'this will be color data'}}}}};
 };
 
 function checkTime(y, m, d, h, min, arr, tArr) {
@@ -24,52 +51,82 @@ function checkTime(y, m, d, h, min, arr, tArr) {
 };
 
 function processImage() {
-    var ok = d3.select("#sky");
+    var ok = d3.select('#sky');
     var imgNode = ok.node();
     if(!imgNode.canvas) {
-        imgNode.canvas = d3.select("body").append("canvas").attr("height", imgNode.height).attr("width", imgNode.width);
+        imgNode.canvas = d3.select('body').append('canvas').attr('height', imgNode.height).attr('width', imgNode.width);
         imgNode.canvas = imgNode.canvas[0][0];
         imgNode.canvas.getContext('2d').drawImage(imgNode, 0, 0, imgNode.width, imgNode.height);
 
     }
     var canvasEl = imgNode.canvas;
-    var imgHeight = parseInt(d3.select("canvas").attr("height"));
-    var imgWidth = parseInt(d3.select("canvas").attr("width"));
+    var imgHeight = parseInt(d3.select('canvas').attr('height'));
+    var imgWidth = parseInt(d3.select('canvas').attr('width'));
 
     var w = Math.floor(imgWidth/2);
     var rgbData = [];
 
-    d3.select("canvas").remove();
-    d3.select("img").remove();
+    d3.select('canvas').remove();
+    d3.select('img').remove();
 
 
     function drawGradient() {
-
+    var gradient = 'linear-gradient(';
      for (i = 1; i < imgHeight; i++) {
         var test = canvasEl.getContext('2d').getImageData(w, i, 1, 1).data;
-        var rgb = "rgb(" + test[0] + "," + test[1] + "," + test[2] + ")";
+        var rgb = 'rgb(' + test[0] + ',' + test[1] + ',' + test[2] + ')';
 
-        d3.select("#screen").append("div").style("height", function(d){
-            return '1px';
-        }).style("background-color", rgb);
+        if( i < imgHeight - 1 && i % 20 == 0) {
+            gradient = gradient + rgb + ', ';
+        }
+        else if ( i < imgHeight - 1 && i % 20 != 0) {
+            gradient = gradient + '';
+        }
+        else {
+            gradient = gradient + rgb + ')';
+        }
+        // d3.select('#screen').append('div').style('height', function(d){
+        //     var windowHeight = d3.select('body').node().scrollHeight;
+        //     var height = (windowHeight / imgHeight);
+        //     // height = Math.floor(height);
+        //     height = (height/windowHeight) * 100;
+        //     height = (Math.ceil(height * 1000) / 1000);
+        //     // console.log(height);
+        //     return height + '%';
+        // }).style('background-color', rgb);
+
+        // d3.select('#screen').append('div').style('height', function(d){
+        //     var windowHeight = d3.select('body').node().scrollHeight;
+        //     var height = (windowHeight / imgHeight);
+        //     // height = Math.floor(height);
+        //     height = (height/windowHeight) * 100;
+        //     height = (Math.ceil(height * 1000) / 1000);
+        //     // console.log(height);
+        //     return height + '%';
+        // }).style('background-color', rgb);
+
 
         rgbData.push(rgb);
-
         // console.log(rgb);
         // console.log(today.getHours());
         // var c = {x: j, y: i}
         // rgbData.push(rgb);
             // for (j = 1;j == w; j++) {
             //  var test = canvasEl.getContext('2d').getImageData(j, i, 1, 1).data
-            //  var rgb = "rgb(" + test[0] + "," + test[1] + "," + test[2] + ")"
+            //  var rgb = 'rgb(' + test[0] + ',' + test[1] + ',' + test[2] + ')'
             //  // var c = {x: j, y: i}
             // }
         }
+        console.log(gradient);
+        d3.select('#screen').append('div').style('height', '100%').style('width', '100%').style('background', gradient);
     }
+    getTime();
     drawGradient();
-    console.log(rgbData);
+    // console.log(rgbData);
 };
 
 processImage();
+
+d3.select(window).on('resize', processImage); 
 
 </script>
