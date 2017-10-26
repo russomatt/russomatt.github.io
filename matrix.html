@@ -1,0 +1,1726 @@
+---
+layout: default
+---
+<div id="matrix-tool" class="section matrix-section-narrow matrix-tool-body pad-tp-lg pad-bt-lg">
+    <div class="container-fluid">
+        <div class="dark">
+            <div id="drinkList" class="col-sm-3">
+                <div class="labelHolder budLightLabel">
+                    <div data-drink="budLight" class="drinkLabel">Bud Light</div>
+                    <div class="drinkText hideContent">
+                        <p>
+                            Try sliding the price for Bud Light. Profit, pour cost, and sales volume will probably react as you’d expect—as you increase price, sales generally decrease.
+                        </p>
+                        <p>
+                            This is an example of a linear demand curve—it responds “normally”.
+                        </p>
+                        <p>
+                            But this isn’t true for every drink. Try clicking on Bloody Mary below, to see what happens there.
+                        </p>
+                    </div>
+                </div>
+                <div class="labelHolder bloodyMaryLabel">
+                    <div data-drink="bloodyMary" class="drinkLabel">Bloody Mary</div>
+                    <div class="drinkText hideContent">
+                        <p>
+                            Lorem ipsum
+                        </p>
+                    </div>
+                </div>
+                <div class="labelHolder draftCraftLabel">
+                    <div data-drink="draftCraft" class="drinkLabel">Draft Craft</div>
+                    <div class="drinkText hideContent">
+                        <p>
+                            Lorem ipsum
+                        </p>
+                    </div>
+                </div>
+                <div class="labelHolder luxChampagneLabel">
+                    <div data-drink="luxChampagne" class="drinkLabel">Lux Champagne</div>
+                    <div class="drinkText hideContent">
+                        <p>
+                            Lorem Ipsum
+                        </p>
+                    </div>
+                </div>
+                <div class="labelHolder">
+                    <div class="drinkLabel">Drink Five</div>
+                </div>
+                <div class="labelHolder">
+                    <div class="drinkLabel">Drink Six</div>
+                </div>
+                <div class="labelHolder">
+                    <div class="drinkLabel">Drink Seven</div>
+                </div>
+                <div class="labelHolder">
+                    <div class="drinkLabel">Drink Eight</div>
+                </div>
+                <div class="labelHolder">
+                    <div class="drinkLabel">Drink Nine</div>
+                </div>
+                <div class="labelHolder">
+                    <div class="drinkLabel">Drink Ten</div>
+                </div>
+                <div class="labelHolder">
+                    <div class="drinkLabel">Drink Eleven</div>
+                </div>
+                <div class="labelHolder">
+                    <div class="drinkLabel">Drink Twelve</div>
+                </div>
+            </div>
+            <div id="graphCol" class="col col-sm-6 dark">
+                <div id="graphContainer">
+                </div>
+            </div>
+            <div id="controlsCol" class="col-sm-3 dark">
+                <div id="graphControls">
+                    <div class="topSection">
+                        <div class="label">
+                            <h3 class="drinkTitle"></h3>
+                            <div class="">
+                                <div class="priceLabel">Sales Price</div>
+                                <span class="val total">$<span class="priceVal"></span></span>
+                            </div>
+                            <span class="drinkSliderHolder"></span>
+                        </div>
+                    </div>
+                    <div class="bottomSection">
+                        <div class="divider rule labelColor uppercase">Per Serving</div>
+                        <div class="label labelColor">
+                            <span class="pourCostLabel">Pour Cost</span>
+                            <span class="val"><span class="pourCostVal"></span>%</span>
+                        </div>
+                        <div class="label profit">
+                            <span class="profitLabel">Profit</span>
+                            <span class="val total">$<span class="profitVal"></span></span>
+                        </div>
+                        <div class="divider rule labelColor uppercase">Weekly Sales</div>
+                        <div class="label labelColor">
+                            <span class="volumeLabel">Sales Volume</span>
+                            <span class="val"><span class="volumeVal"></span></span>
+                        </div>
+                        <div class="label labelColor">
+                            <span class="totalSales">Total Sales</span>
+                            <span class="val">$<span class="salesVal"></span></span>
+                        </div>
+                        <div class="label profit">
+                            <span class="grossProfitLabel">Gross Profit</span>
+                            <span class="val total">$<span class="weeklyProfit"></span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="weeklyProfitHolder">
+                    <div class="divider rule profit uppercase">Demeaux Bar</div>
+                    <div class="label">
+                        <span class="totalSales">Total Sales</span>
+                        <span class="val">$<span class="totalWeeklySales"></span></span>
+                    </div>
+                    <div class="label profit">
+                        <span class="grossProfitLabel">Gross Profit</span>
+                        <span class="val total">$<span class="totalWeeklyProfit"></span></span>
+                    </div>
+                </div>
+                <div class="toggleHolder">
+                    <div class="curveToggle">
+                        <input id="toggleCurve" class="toggle toggle-switch" type="checkbox">
+                        <label for="toggleCurve"></label>
+                    </div>
+                    <div class="toggleText">Show Demand Curve?</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #matrix-tool {
+        -webkit-font-smoothing: antialiased;
+    }
+    .matrix-section-narrow .container {
+        max-width: 940px;
+    }
+    .uppercase {
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+    }
+    .matrix-tool-body {
+        background-color: rgb(64,65,66);
+        min-height: 40em;
+        z-index: 3;
+    }
+    /* matrix tool styles */
+    #matrix-tool div.container {
+        height: 100%;
+    }
+    #matrix-tool div.container div.row {
+        height: 100%;
+    } 
+    #matrix-tool div.container div.row div.col {
+        height: 100%;
+    }
+    #matrix-tool {
+        height: auto;
+    }
+    #graphContainer {
+        font-family: Helvetica-Neue, Helvetica, Arial;
+        padding: 0;
+        font-size: 85%;
+        height: auto;
+        width: auto;
+    }
+    #graphControls{
+        height:auto;
+        width: 100%;
+        /*min-width: 255px; */
+        background-color: #272727;
+        display: inline-block;
+    }
+    #graphControls h3{
+        font-size: 22px;
+        font-family: Helvetica-Neue, Helvetica, Arial;
+        font-weight: bold;
+        margin: 5px 0 20px;
+    }
+    #graphContainer svg{
+        float: left;
+    }
+    #graphCol {
+        padding: 0
+    }
+    label {
+        display: block;
+    }
+    .Axis path {
+        stroke: transparent;
+        stroke-width: 1px;
+        fill: transparent;
+    }
+    .Axis line {
+        fill: #ccc;
+    }
+    .Axis line {
+        stroke: rgba(0, 0, 0, .09);
+    }
+    .Axis text {
+        font-family: Helvetica-Neue, Helvetica, Arial;
+        fill: #ADADAD;
+        font-size: 10px;
+    }
+    .tick line {
+        stroke: rgba(255,255,255,.08);
+    }
+    .tick line.middleTick {
+        stroke: #BBBBBB;
+    }
+    .tooltip text {
+        font-size: 9px;
+        font-family: 'BrandonGrotesque-Bold', Helvetica-Neue, Helvetica, Arial;
+        text-transform: uppercase;
+        font-weight: bold;  
+        letter-spacing: 2px;
+        fill: rgba(255,255,255,.4);
+    }
+    .tooltip text.hover-title {
+        font-size: 12px;
+        font-weight: bold;
+        text-transform: none;
+        letter-spacing: 0;
+        font-family: Helvetica-Neue, Helvetica, Arial;
+        fill: rgba(255,255,255,1);
+    }
+    .hide {
+        display: none;
+    }
+    .line {
+        fill: none;
+        stroke: none;
+        stroke-width: 1.5px;
+    }
+    .drinkTitle {
+        color: white;
+    }
+    .label {
+        color: rgba(0, 0, 0, .6);
+        font-size: .75em;
+        font-size: .85em;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    }
+    .label.profit {
+        margin: 10px 0px 30px;
+        font-weight: bold;
+        color: #8C8C8C;
+    }
+    .label .val{
+        font-weight: bold;
+        float:right;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        letter-spacing: 0;
+        margin-top: -2px;
+    }
+    .divider {
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+        text-transform: uppercase;
+        color:#8C8C8C;
+        font-weight: bold;
+        font-size: 0.65em;
+        margin: 10px 0 20px;
+    }
+    .topSection {
+        padding: 15px 15px 20px;
+    }
+    .bottomSection {
+        padding: 15px 15px 5px;
+    }
+
+    .divider.rule {
+        border-top: 1px solid #8C8C8C;
+        padding-top: 0.25rem;
+    }
+    .label .val.total{
+        color: white;
+        font-size: 22px;
+    }
+    .label.profit .val.total{
+        color: white;
+        font-size: 1.15em;
+    }
+    .priceLabel {
+        display: inline-block;
+        margin-top: 6px;
+        font-weight: bold;
+    }
+    .group {
+        cursor: pointer;
+    }
+    .weeklyProfitHolder {
+        margin-top: 30px;
+        /*min-width: 255px;*/
+    }
+    .weeklyProfitHolder .label {
+        color: #8C8C8C;
+    }
+    .weeklyProfitHolder .profit {
+        margin-top: 4px;
+    }
+    .weeklyProfitHolder .profit .grossProfitLabel {
+        font-weight: normal;
+        color: #B9B9B9;
+        font-size: 1.15em;
+    }
+    .weeklyProfitHolder .label.profit .val.total{
+        color: #B9B9B9;
+    }
+    input[type=range].drinkSlider {
+        -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+        width: 100%; /* Specific width is required for Firefox. */
+    }
+    input[type=range].drinkSlider:focus {
+        outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+    }
+
+    input[type=range].drinkSlider::-ms-track {
+        width: 100%;
+        cursor: pointer;
+        background: transparent; /* Hides the slider so custom styles can be added */
+        border-color: transparent;
+        color: transparent;
+    }
+    /* Special styling for WebKit/Blink */
+    input[type=range].drinkSlider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: #ffffff;
+        cursor: pointer;
+        margin-top: -7px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+    }
+
+    /* All the same stuff for Firefox */
+    input[type=range].drinkSlider::-moz-range-thumb {
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: #ffffff;
+        cursor: pointer;
+    }
+
+    /* All the same stuff for IE */
+    input[type=range].drinkSlider::-ms-thumb {
+        height: 16px;
+        width: 16px;
+        border-radius: 50%;
+        background: #ffffff;
+        cursor: pointer;
+    }
+    input[type=range].drinkSlider {
+        -webkit-appearance: none;
+        margin: 14px 0;
+        width: 100%;
+    }
+    input[type=range].drinkSlider:focus {
+        outline: none;
+    }
+    input[type=range].drinkSlider::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 3px;
+        cursor: pointer;
+        animate: 0.2s;  
+        background: #1B3121;
+        border-radius: 1px;
+    }
+    input[type=range].drinkSlider:focus::-webkit-slider-runnable-track {
+        background: #1B3121;
+    }
+    input[type=range].drinkSlider::-moz-range-track {
+        width: 100%;
+        height: 3px;
+        cursor: pointer;
+        animate: 0.2s;  
+        background: #1B3121;
+        border-radius: 1px;
+    }
+
+    input[type=range].drinkSlider::-ms-track {
+        width: 100%;
+        height: 3px;
+        cursor: pointer;
+        animate: 0.2s;
+        background: transparent;
+        color: transparent;
+    }
+    input[type=range].drinkSlider::-ms-fill-lower {
+    }
+    input[type=range].drinkSlider::-ms-fill-upper {
+    }
+    input[type=range].drinkSlider:focus::-ms-fill-lower {
+        background: #1B3121;
+    }
+    input[type=range].drinkSlider:focus::-ms-fill-upper {
+        background: #1B3121;
+    }
+    .labelHolder {
+        font-family: Helvetica-Neue, Helvetica, Arial;
+        font-size: .8em;
+    }
+    .drinkText {
+        background-color: #333333;
+    }
+    .drinkLabel {
+        padding: 9px 15px 8px;
+        background-color: #272727;
+        color: white;
+        text-transform: uppercase;
+        font-weight: 900;
+        letter-spacing: 0.17em;
+        cursor: pointer;
+    }
+    .drinkText {
+        font-family: Helvetica-Neue, Helvetica, Arial;
+        font-size: .9em;
+        padding: 2px 15px 9px;
+        background-color: #333333;
+        color: #ffffff;
+    }
+    .drinkText p {
+        margin-bottom: 6px;
+        transition: .5s;
+    }
+    .hideContent {
+        display: none;
+    }
+    .showContent {
+        display: block;
+    }
+    .curveToggle{
+        display: inline-block;
+        vertical-align: middle;
+    }
+    .curveToggle .toggle {
+        position: absolute;
+        margin-left: -9999px;
+        visibility: hidden;
+    }
+    .curveToggle .toggle + label {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        outline: none;
+        user-select: none;
+    }
+    .curveToggle input.toggle-switch + label {
+        padding: 2px;
+        width: 28px;
+        height: 13px;
+        border-radius: 10px;
+        transition: 0.4s;
+        background-color: #8C8C8C;
+    }
+    .curveToggle input.toggle-switch + label:before,
+    .curveToggle input.toggle-switch + label:after {
+        display: block;
+        position: absolute;
+        content: "";
+    }
+    .curveToggle input.toggle-switch + label:before {
+        top: 1px;
+        left: 1px;
+        bottom: 1px;
+        right: 1px;
+        background-color: #404142;
+        border-radius: 10px;
+        transition: 0.4s;
+    }
+    .curveToggle input.toggle-switch + label:after {
+        top: 2px;
+        left: 2px;
+        bottom: 2px;
+        width: 13px;
+        background-color: #8C8C8C;
+        border-radius: 8px;
+        transition: 0.4s;
+    }
+    .curveToggle input.toggle-switch:checked + label {
+        background-color: #fff;
+    }
+    .curveToggle input.toggle-switch:checked + label:after {
+        margin-left: 17px;
+        background-color: #fff;
+    }
+    .toggleHolder .toggleText {
+        display: inline-block;
+        font-family: Helvetica-Neue, Helvetica, Arial;
+        color: #8C8C8C;
+        margin: 2px 0 0 5px;
+        font-size: .9em;
+        vertical-align: middle;
+    }
+
+    @media only screen and (max-width: 992px) {
+        .bar-profitability-matrix {
+            overflow: hidden;
+        }
+    }
+
+    @media only screen and (max-width: 768px) {
+        #graphCol {
+            padding-right: 15px;
+            padding-left: 15px;
+            margin: 30px 0;
+        }
+    }
+
+    /*  Grid Styles */
+
+    /* SM and larger */
+    @media (min-width: 768px) {
+        .container {
+            width: 750px;
+        }
+    }
+    /* MD and larger */
+    @media (min-width: 992px) {
+        .container {
+            width: 970px;
+        }
+    }
+    /* LG and larger */
+    @media (min-width: 1200px) {
+        .container {
+            width: 1170px;
+        }
+    }
+
+
+    .row {
+        margin-left: -15px;
+        margin-right: -15px;
+    }
+    .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        *behavior: url(boxsizing.htc);
+    }
+    .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
+        float: left;
+    }
+    .col-xs-12 {
+        width: 100%;
+    }
+    .col-xs-11 {
+        width: 91.66666667%;
+    }
+    .col-xs-10 {
+        width: 83.33333333%;
+    }
+    .col-xs-9 {
+        width: 75%;
+    }
+    .col-xs-8 {
+        width: 66.66666667%;
+    }
+    .col-xs-7 {
+        width: 58.33333333%;
+    }
+    .col-xs-6 {
+        width: 50%;
+    }
+    .col-xs-5 {
+        width: 41.66666667%;
+    }
+    .col-xs-4 {
+        width: 33.33333333%;
+    }
+    .col-xs-3 {
+        width: 25%;
+    }
+    .col-xs-2 {
+        width: 16.66666667%;
+    }
+    .col-xs-1 {
+        width: 8.33333333%;
+    }
+
+    /* Small Grid */
+
+    @media (min-width: 768px) {
+
+        .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+            float: left;
+        }
+        .col-sm-12 {
+            width: 100%;
+        }
+        .col-sm-11 {
+            width: 91.66666667%;
+        }
+        .col-sm-10 {
+            width: 83.33333333%;
+        }
+        .col-sm-9 {
+            width: 75%;
+        }
+        .col-sm-8 {
+            width: 66.66666667%;
+        }
+        .col-sm-7 {
+            width: 58.33333333%;
+        }
+        .col-sm-6 {
+            width: 50%;
+        }
+        .col-sm-5 {
+            width: 41.66666667%;
+        }
+        .col-sm-4 {
+            width: 33.33333333%;
+        }
+        .col-sm-3 {
+            width: 25%;
+        }
+        .col-sm-2 {
+            width: 16.66666667%;
+        }
+        .col-sm-1 {
+            width: 8.33333333%;
+        }
+    }
+
+    /* Medium Grid */
+
+    @media (min-width: 992px) {
+        .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+            float: left;
+        }
+        .col-md-12 {
+            width: 100%;
+        }
+        .col-md-11 {
+            width: 91.66666667%;
+        }
+        .col-md-10 {
+            width: 83.33333333%;
+        }
+        .col-md-9 {
+            width: 75%;
+        }
+        .col-md-8 {
+            width: 66.66666667%;
+        }
+        .col-md-7 {
+            width: 58.33333333%;
+        }
+        .col-md-6 {
+            width: 50%;
+        }
+        .col-md-5 {
+            width: 41.66666667%;
+        }
+        .col-md-4 {
+            width: 33.33333333%;
+        }
+        .col-md-3 {
+            width: 25%;
+        }
+        .col-md-2 {
+            width: 16.66666667%;
+        }
+        .col-md-1 {
+            width: 8.33333333%;
+        }
+    }
+
+    /* Large Grid */
+
+    @media (min-width: 1200px) {
+        .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {
+            float: left;
+        }
+        .col-lg-12 {
+            width: 100%;
+        }
+        .col-lg-11 {
+            width: 91.66666667%;
+        }
+        .col-lg-10 {
+            width: 83.33333333%;
+        }
+        .col-lg-9 {
+            width: 75%;
+        }
+        .col-lg-8 {
+            width: 66.66666667%;
+        }
+        .col-lg-7 {
+            width: 58.33333333%;
+        }
+        .col-lg-6 {
+            width: 50%;
+        }
+        .col-lg-5 {
+            width: 41.66666667%;
+        }
+        .col-lg-4 {
+            width: 33.33333333%;
+        }
+        .col-lg-3 {
+            width: 25%;
+        }
+        .col-lg-2 {
+            width: 16.66666667%;
+        }
+        .col-lg-1 {
+            width: 8.33333333%;
+        }
+    }
+
+    .pad-sm {
+        padding: 2em 0;
+    }
+    .pad-smd {
+        padding: 3em 0;
+    }
+    .pad-md {
+        padding: 4em 0;
+    }
+    .pad-lg {
+        padding: 6em 0;
+    }
+    .pad-tp-xs {
+        padding-top: 1em;
+    }
+    .pad-tp-sm {
+        padding-top: 2em;
+    }
+    .pad-tp-md {
+        padding-top: 4em;
+    }
+    .pad-tp-lg {
+        padding-top: 6em;
+    }
+
+    .pad-lr-md {
+        padding-left: 4em;
+        padding-right: 4em;
+    }
+
+    .pad-bt-xs {
+        padding-bottom: 1em;
+    }
+    .pad-bt-sm {
+        padding-bottom: 2em;
+    }
+    .pad-bt-md {
+        padding-bottom: 4em;
+    }
+    .pad-bt-lg {
+        padding-bottom: 6em;
+    }
+
+    .space-tp-xxs {
+        margin-top: .5em;
+    }
+    .space-tp-xs {
+        margin-top: 1em;
+    }
+    .space-tp-sm {
+        margin-top: 2em;
+    }
+    .space-tp-md {
+        margin-top: 3em;
+    }
+    .space-tp-lg {
+        margin-top: 5em;
+    }
+
+    .space-bt-xxs {
+        margin-bottom: .5em;
+    }
+    .space-bt-xs {
+        margin-bottom: 1em;
+    }
+    .space-bt-sm {
+        margin-bottom: 2em;
+    }
+    .space-bt-md {
+        margin-bottom: 3em;
+    }
+    .space-bt-lg {
+        margin-bottom: 5em;
+    }
+
+
+</style>
+
+<script type="text/javascript">
+
+    drawMatrix();
+    sizeGraphCont();
+
+    function sizeGraphCont() {
+        var graphHeight = d3.select("#graphCol").select("svg").attr("height");
+        d3.select("#graphCol").style("height", graphHeight + "px");
+    }
+
+    function drawMatrix() {
+
+    var bloodyMary = [
+        {id: "bloodyMary", name: "Bloody Mary", drinkCost: 7.5, salesPrice: 10, salesVolume: 180},
+        {id: "bloodyMary", name: "Bloody Mary", drinkCost: 7.5, salesPrice: 11, salesVolume: 120},
+        {id: "bloodyMary", name: "Bloody Mary", drinkCost: 7.5, salesPrice: 12, salesVolume: 50}
+        ];
+
+        var budLight = [
+        {id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 4, salesVolume: 260},
+        {id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 5, salesVolume: 175},
+        {id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 6, salesVolume: 120}
+        ];
+
+        var draftCraft = [
+        {id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 4, salesVolume: 200},
+        {id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 5, salesVolume: 20},
+        {id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 6, salesVolume: 100},
+        {id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 7, salesVolume: 40},
+        {id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 8, salesVolume: 230},
+        {id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 9, salesVolume: 50}
+        ];
+
+        var luxChampagne = [
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 200, salesVolume: 2},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 300, salesVolume: 2},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 400, salesVolume: 2},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 500, salesVolume: 2},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 600, salesVolume: 2},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 700, salesVolume: 1},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 800, salesVolume: 1},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 900, salesVolume: 1},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 999, salesVolume: 0}
+        ];
+
+var bloodyMary2 = [
+    {id: "bloodyMary", name: "Bloody Mary", drinkCost: 7.5, salesPrice: 10, salesVolume: 180},
+    {id: "bloodyMary", name: "Bloody Mary", drinkCost: 7.5, salesPrice: 11, salesVolume: 120},
+    {id: "bloodyMary", name: "Bloody Mary", drinkCost: 7.5, salesPrice: 12, salesVolume: 50}
+    ];
+
+
+        var budLight2 = [
+        {id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 4, salesVolume: 260},
+        {id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 5, salesVolume: 175},
+        {id: "budLight", name: "Bud Light", drinkCost: 0.4, salesPrice: 6, salesVolume: 120}
+        ];
+
+        var draftCraft2 = [
+        {id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 4, salesVolume: 200},
+        {id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 5, salesVolume: 20},
+        {id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 6, salesVolume: 100},
+        {id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 7, salesVolume: 40},
+        {id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 8, salesVolume: 230},
+        {id: "draftCraft", name: "Draught Craft", drinkCost: 1, salesPrice: 9, salesVolume: 50}
+        ];
+
+        var luxChampagne2 = [
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 200, salesVolume: 2},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 300, salesVolume: 2},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 400, salesVolume: 2},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 500, salesVolume: 2},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 600, salesVolume: 2},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 700, salesVolume: 1},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 800, salesVolume: 1},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 900, salesVolume: 1},
+        {id: "luxChampagne", name: "Lux Champagne", drinkCost: 155, salesPrice: 999, salesVolume: 0}
+        ];
+
+        var rawPathData = [{id: "bloodyMary", data: bloodyMary2}, {id: "budLight", data: budLight2}, {id: "draftCraft", data: draftCraft2}, {id: "luxChampagne", data: luxChampagne2}];
+        var rawData = [{id: "bloodyMary", data: bloodyMary}, {id: "budLight", data: budLight}, {id: "draftCraft", data: draftCraft}, {id: "luxChampagne", data: luxChampagne}];
+        console.log(rawPathData);
+        var contHeight = document.getElementById('graphContainer').scrollHeight;
+        var contWidth = document.getElementById('graphContainer').scrollWidth;
+        var h = contWidth;
+        var w = contWidth;
+        var yCenter = w/2;
+        var xCenter = h/2;
+        var Data = "";
+        var maxSalesVol = 400;
+        var minSalesVol = 0;
+        var maxSalesPrice = 160;
+        var minSalesPrice = 0;
+        var maxTotalSales = 2100;
+        var minTotalSales = 0;
+
+        var defaultColor = "#C7C7C7";
+
+        var canvas = d3.select('#graphContainer')
+        .append('svg:svg')
+        .attr('height', h)
+        .attr('width', w)
+        .style('background-color', 'transparent');
+
+        var y = d3.scale.linear()
+        .domain([0,1])
+        .range([h,0]);
+
+        var x = d3.scale.linear()
+        .domain([maxSalesVol,minSalesVol])
+        .range([w,0]);
+
+        var reverseX = d3.scale.linear()
+        .domain([w,0])
+        .range([maxSalesVol,minSalesVol]);
+
+        var yAxis = d3.svg.axis()
+        .orient("left")
+        .scale(y)
+        .ticks(30)
+        .innerTickSize(-.5*w)
+        .tickPadding(10);
+
+        var xAxis = d3.svg.axis()
+        .orient("bottom") 
+        .scale(x)
+        .ticks(30)
+        .innerTickSize(-.5*h)
+        .tickPadding(10);
+
+        canvas.append("g")
+        .attr("class", "Axis")
+        .attr("transform", "translate("+yCenter+",0)")
+        .attr("id", "yAxis")
+        .call(yAxis);
+
+        canvas.append("g")
+        .attr("class", "Axis")
+        .attr("transform", "translate(0, "+xCenter+")")
+        .attr("id", "xAxis")
+        .call(xAxis);
+
+        function formatTicks() {
+            var xTicks = d3.select("#xAxis").selectAll(".tick");
+            var yTicks = d3.select("#yAxis").selectAll(".tick");
+            var lenX = xTicks[0].length;
+            var lenY = yTicks[0].length;
+
+            for (i = 0; i < lenX; i++) {
+                var ticks = xTicks[0];
+                d3.select(ticks[i]).selectAll("line").attr("y1", (.5*h));
+                if (i === 0 ) {
+                    d3.select(ticks[i]).selectAll("text").classed("hide", false).attr("x", 10);
+                    var textDy = d3.select(ticks[i]).select("text").attr("dy");
+                    d3.select(ticks[i]).append("text").attr("dy", textDy).attr("x", 8).attr("y", -15).html("Sales Volume")
+                } else if (i === Math.floor(lenX/2)) {
+                    d3.select(ticks[i]).select("line").classed("middleTick", true);
+                    d3.select(ticks[i]).select("text").classed("hide", true);
+                } else if (i === lenX - 1) {
+                    d3.select(ticks[i]).selectAll("text").classed("hide", false).attr("x", -15);
+                }
+                else {
+                    d3.select(ticks[i]).selectAll("text").classed("hide", true);
+                }
+            }
+
+            for (i = 0; i < lenY; i++) {
+                var ticks = yTicks[0];
+                d3.select(ticks[i]).selectAll("line").attr("x1", (-.5*w));
+                if (i === 0) {
+                    d3.select(ticks[i]).selectAll("text").attr("y", -9).html("0");
+                }
+                else if( i === Math.floor(lenY/2)) {
+                    d3.select(ticks[i]).select("line").classed("middleTick", true);
+                    d3.select(ticks[i]).select("text").classed("hide", true);
+                }
+                else if (i === lenY - 1) {
+                    d3.select(ticks[i]).select("text").attr("y", 12).html("100")
+                    var textDy = d3.select(ticks[i]).select("text").attr("dy");
+                    var textY = d3.select(ticks[i]).select("text").attr("y");
+                    d3.select(ticks[i]).append("text").attr("dy", textDy).attr("x", 9).attr("y", textY).html("% Profit")
+                }
+                else d3.select(ticks[i]).selectAll("text").classed("hide", true);
+            }
+
+        };
+
+        formatTicks();
+
+        var rScale = d3.scale.linear()
+        .domain([minTotalSales,maxTotalSales])
+        .range([2,20]);
+
+        var rProfitScale = d3.scale.linear()
+        .domain([minTotalSales,maxTotalSales])
+        .range([2,19]);
+
+        var drinks = [];
+        var n = "none";
+        var selectedId = "none";
+        var contentId = "none";
+
+        function computeXYVals(points, salesPrice) {
+
+            for (var i = 1; i < points.length; i++) {
+                const point = points[i];
+                if (salesPrice <= point.salesPrice) {
+                    const prevPoint = points[i-1];
+                    const deltaSalesPrice = point.salesPrice - prevPoint.salesPrice;
+                    const deltaSalesVolume = point.salesVolume - prevPoint.salesVolume;
+                    const slope = deltaSalesVolume / deltaSalesPrice;
+
+                    const salesPriceOffset = salesPrice - prevPoint.salesPrice;
+                    const salesVolume = salesPriceOffset * slope + prevPoint.salesVolume;
+                    const profitPercent =  1 - (point.drinkCost/salesPrice);
+                    const vals = {x: salesVolume, y: profitPercent};
+                    return vals;
+                }
+            }
+            throw 'error';
+        }
+
+        function computeDrinkVals(dataObj) {
+
+            var pourCost = dataObj.drinkCost / dataObj.salesPrice;
+            var profitPercent = 1 - pourCost;
+            var totalSales = dataObj.salesPrice * dataObj.salesVolume;
+            var totalProfit = totalSales * profitPercent;
+
+            return { pourCost: pourCost, profitPercent: profitPercent, totalSales: totalSales, totalProfit: totalProfit };
+        }
+
+        var line = d3.svg.line()
+        .interpolate("cardinal")
+        .x(function(d) { return x(d.salesVolume); })
+        .y(function(d) {
+            var dataVals = computeDrinkVals(d);
+            return y(dataVals.profitPercent);
+        });
+
+        function draw() {
+
+            canvas.selectAll("circle").remove();
+
+            for(i = 0; i < rawData.length; i++) {
+                drinks.push(rawData[i].id);
+                var mid = Math.floor(rawData[i].data.length / 2);
+                canvas.append("path")
+                .datum(rawPathData[i].data)
+                .attr("class", "line " + rawPathData[i].data[0].id)
+                .attr("d", line);
+
+                var dGroup = canvas.append("g")
+                .datum(rawData[i].data[mid])
+                .attr("class", "group")
+                .attr("transform", function(d) { 
+                    var dataVals = computeDrinkVals(d);
+                    var xCoord = x(d.salesVolume);
+                    var yCoord = y(dataVals.profitPercent);
+                    var str = "translate( " + xCoord + " , " + yCoord + " )";
+                    return str;
+                });
+
+                dGroup.append("circle")
+                .attr("class", "ring")
+                .attr("cx", 0)
+                .attr("cy", 0)
+                .style("stroke", defaultColor)
+                .style("stroke-width", "2px")
+                .style("fill", "transparent")
+                .attr("r", function(d){
+                    var dataVals = computeDrinkVals(d);
+                    return rScale(dataVals.totalSales);
+                });
+
+                dGroup.append("circle")
+                .attr("class", "point")
+                .attr("cx", 0)
+                .attr("cy", 0)
+                .style("fill", defaultColor)
+                .style("opacity", ".8")
+                .attr("r", function(d){
+                    var dataVals = computeDrinkVals(d);
+                    return rProfitScale(dataVals.totalProfit);
+                });
+            };
+
+            var allPoints =  d3.selectAll(".group");
+            allPoints = allPoints[0];
+            var defaultPoint = allPoints[1];
+            var defaultPointData = d3.select(defaultPoint).data();
+
+            clickedCircle(defaultPoint, defaultPointData);
+            selectLabel(defaultPointData[0].id);
+            var label = d3.select("." + defaultPointData[0].id + "Label")
+            showContent(label.node());
+            toggleSwitched();
+        };
+
+        draw();
+
+        function toggleSwitched(){
+
+            var bool = document.getElementById("toggleCurve").checked;
+            var data = d3.select(".selected").data();
+            var id = data[0].id;
+            toggleCurves(bool, id);
+            d3.select("#toggleCurve").on("change", function(){
+                bool = document.getElementById("toggleCurve").checked;
+                data = d3.select(".selected").data();
+                id = data[0].id;
+                toggleCurves(bool, id);
+            });
+        };
+
+        function toggleCurves(bool,id) {
+
+            d3.selectAll(".line").style("stroke", "transparent").transition().duration(350).style("opacity", "0");
+            if(bool) {
+                d3.select("." + id).style("stroke", "#272727").transition().duration(350).style("opacity", "1");
+            } else {
+                d3.select("." + id).style("stroke", "transparent").transition().duration(350).style("opacity", "0");
+            }
+        };
+
+        function setNewValues(salesPrice, pourCost, dollarsProfit, salesVolume, totalSales, grossProfit) {
+
+            var controls = d3.select("#graphControls");
+            controls.select(".priceVal").html(parseFloat(salesPrice).toFixed(2));
+            controls.select(".pourCostVal").html((parseFloat(pourCost) * 100).toFixed(0));
+            controls.select(".profitVal").html(parseFloat(dollarsProfit).toFixed(2));
+            controls.select(".volumeVal").html(salesVolume);
+            controls.select(".salesVal").html(parseFloat(totalSales).toFixed(2));
+            controls.select(".weeklyProfit").html(parseFloat(grossProfit).toFixed(2));
+        };
+
+        function colorControls(color) {
+
+            var controls = d3.select("#graphControls");
+            controls.select(".topSection").style("background-color", color);
+            controls.selectAll(".labelColor").style("color", color);
+            controls.selectAll(".divider.rule").style("border-color", color);
+        };
+
+        function selectLabel(drinkID) {
+
+            if(selectedId != drinkID) {
+                selectedId = drinkID;
+                d3.select(".selectedLabel").classed("selectedLabel", false).style("background-color", "#272727").style("color", "white");
+                var label = d3.select("." + drinkID + "Label");
+                var g = d3.select(".group.selected").node();
+                testColor = getColor(g);
+                label.select(".drinkLabel").classed("selectedLabel", true).style("background-color", testColor).style("color", "#272727");
+            }
+        };
+
+        function clickedCircle(elem, d) {
+
+            var data = d[0];
+            var controls = d3.select("#graphControls");
+            var idx = drinks.indexOf(data.id);
+            var obj = rawData[idx].data;
+            var obj2 = rawPathData[idx].data;
+            var salesVals = getMaxMin(obj, "salesVolume");
+            var priceVals = getMaxMin(obj, "salesPrice");
+            var dataVals = computeDrinkVals(data);
+            var color = getColor(elem);
+            var dollarsProfit = dataVals.profitPercent * data.salesPrice;
+
+            if ( n != data.name ) {
+                // reset selected state
+                d3.selectAll(".drinkSlider").remove();
+                d3.selectAll(".group").classed("selected", false);
+                d3.selectAll('.ring')
+                .style("stroke", defaultColor);
+                d3.selectAll('.point')
+                .style("fill", defaultColor)
+                .style("opacity", ".8")
+                n = data.name;
+
+                controls.select(".drinkTitle").html(data.name);
+
+                controls.select(".drinkSliderHolder")
+                .append("input")
+                .attr("type", "range")
+                .attr("class", "drinkSlider")
+                .attr("min", function() {
+                    return priceVals[0];
+                })
+                .attr("max", function() {
+                    var max = (priceVals.length - 1)
+                    return priceVals[max];
+                })
+                .attr("value", function(){
+                    return data.salesPrice;
+                })
+                .attr("step", ".00001");
+
+                d3.select(elem).classed("selected", true);
+
+                d3.select(".selected").select('.ring')
+                .style("stroke", color);
+
+                d3.select(".selected").select('.point')
+                    .style("opacity", ".8")
+                    .style("fill", color);
+
+                setNewValues(data.salesPrice, dataVals.pourCost, dollarsProfit, data.salesVolume, dataVals.totalSales, dataVals.totalProfit);
+
+                totalWeeklyProfit();
+                colorControls(color);
+                toggleSwitched();
+            }
+
+            d3.select(".drinkSlider").on("input", function() {
+
+                var path = d3.select("." + data.id);
+
+                var pNode = path.node();
+                var pLength = pNode.getTotalLength();
+                var bLength = pNode.getBBox().width;
+
+                var pMaxIdx = salesVals.length - 1;
+                var pMax = priceVals[pMaxIdx];
+                var pMin = priceVals[0];
+                var pMidIdx = Math.floor(pMaxIdx/2);
+                var pMid = priceVals[pMidIdx];
+
+                var pScale = d3.scale.linear()
+                .domain([pMin, pMax])
+                .range([pLength,0]);
+
+                var points = obj2;
+                var newPrice = this.value;
+                var newValues= computeXYVals(points, newPrice);
+                var newX = x(newValues.x);
+                var newY = y(newValues.y);
+                var newSalesVolume = newValues.x;
+                data.salesPrice = newPrice;
+                data.salesVolume = Math.floor(newSalesVolume);
+                var dataVals = computeDrinkVals(data)
+                dollarsProfit = dataVals.profitPercent * newPrice;
+
+                d3.select(elem)
+                .attr("transform", function(d) {
+                    var str = "translate( " + newX + " , " + newY + " )";
+                    return str;
+                });
+
+                d3.select(elem).select('.ring')
+                .style("stroke", getColor(elem))
+                .attr("r",function(d) {
+                    return rScale(dataVals.totalSales);
+                });
+
+                d3.select(elem).select('.point')
+                .style("fill", getColor(elem))
+                .attr("r",function(d) {
+                    return rProfitScale(dataVals.totalProfit);
+                });
+
+                if( getColor(elem) != d3.select("#graphControls").style("background-color")) {
+                    var color = getColor(elem);
+                    colorControls(color);
+                    d3.select("." + data.id + "Label").select(".drinkLabel").style("background-color",  getColor(elem));
+                }
+
+                setNewValues(data.salesPrice, dataVals.pourCost, dollarsProfit, data.salesVolume, dataVals.totalSales, dataVals.totalProfit);
+
+                totalWeeklyProfit();
+            });
+        };
+
+        d3.selectAll(".group").on("mousedown", function(d){
+
+            var groupData = d3.select(this).data();
+            clickedCircle(this, groupData)
+            selectLabel(groupData[0].id);
+            var label = d3.select("." + groupData[0].id + "Label").select(".drinkLabel").node();
+            showContent(label);
+        });
+
+        function getDrinkGroup(elem) {
+            var drink = elem.dataset.drink;
+            var selectGroup;
+            var groupData;
+            var allGroups = d3.selectAll(".group")[0];
+            for(var i = 0; i < allGroups.length; i++) {
+                var g = allGroups[i]
+                var d = d3.select(g).data();
+                if (d[0].id == drink) {
+                    groupData = d
+                    selectGroup = allGroups[i];
+                }
+            }
+            return {elem: selectGroup, data: groupData};
+        };
+
+        function showContent(elem) {
+
+            var drinkID = elem.dataset.drink;
+            if(contentId != drinkID) {
+                contentId = drinkID;
+                d3.select(".showContent").classed("hideContent", true).classed("showContent", false);
+                var node = d3.select(elem).node();
+                var parent = d3.select(node.parentNode);
+                var content = parent.select(".drinkText");
+                content.classed("hideContent", false).classed("showContent", true);
+            }
+        };
+
+        d3.selectAll(".drinkLabel").on("mousedown", function(d){
+
+            var drink = this.dataset.drink;
+            var drinkGroup = getDrinkGroup(this);
+            clickedCircle(drinkGroup.elem, drinkGroup.data)
+            selectLabel(drink);
+            showContent(this);
+        });
+
+        function totalWeeklyProfit() {
+
+            var total = 0;
+            var totalSales = 0;
+            var vals = d3.selectAll(".group");
+            vals = vals[0];
+            for (i = 0; i < vals.length; i++) {
+                var a = d3.select(vals[i]);
+                var d = a.data();
+                var dataVals = computeDrinkVals(d[0]);
+                total = dataVals.totalProfit + total; 
+                totalSales = dataVals.totalSales + totalSales; 
+            }
+            var display = parseInt(total).toFixed(2);
+            var displaySales = parseInt(totalSales).toFixed(2);
+            d3.select(".totalWeeklyProfit").html(display);
+            d3.select(".totalWeeklySales").html(displaySales);
+        };
+
+        function getMaxMin(obj, key) {
+
+            var list = [];
+            for(i = 0; obj.length > i; i++ ) {
+                list.push(obj[i][key]);
+            }
+            var sortedList = list.sort();
+            return sortedList;
+        };
+
+        function getColor(group) {
+
+            var point = d3.select(group);
+            var t = point.attr("transform");
+            var tArray = t.split(" ");
+            var tX = parseInt(tArray[1]);
+            var tY = parseInt(tArray[3]);
+            var hw = (canvas.attr("width")/2);
+            var hh = (canvas.attr("height")/2);
+            if ( tY <= hh && tX <= hw) {
+                // light blue
+                return "rgb(75, 177, 165)";
+            } else if (tY <= hh && tX >= hw) {
+                // green
+                return "rgb(78, 159, 112)";
+            } else if (tY >= hh && tX <= hw) {
+                // purple
+                return "rgb(97, 78, 146)";
+            } else {
+                // dark blue
+                return "rgb(65, 96, 161)";
+            }
+        };
+
+        function getYPosition(coord) {
+
+            if (h - coord > (h/2)) {
+                return coord;
+            }
+            if (coord > (h/2)) {
+                return coord - 200;
+            }
+            else {
+                return coord - 180;
+            }
+        };
+
+        function getXPosition(coord) {
+
+            if (coord + 70 > w) {
+                var n = Math.abs((coord + 70) - w);
+                return (coord - n);
+            } else if (coord < 70) {
+                var n = Math.abs((coord - 70));
+            return coord + n;
+            } else {
+                return coord;
+            }
+        };
+
+        d3.selectAll(".group").on("mouseover", function(d){
+            hoverState(this, d);
+        });
+        d3.selectAll(".group").on("mouseleave", function(d){
+            removeHoverState(this, d);
+        });
+
+        function removeHoverState(elem, d){
+
+            d3.selectAll(".tooltip").remove();
+
+            var el = d3.select(elem);
+            if (!el.classed("selected")) {
+                el.select(".ring")
+                .style("stroke", defaultColor);
+
+                el.select(".point")
+                .style("opacity", ".8")
+                .style("fill", defaultColor);
+            }
+        };
+
+        d3.selectAll(".drinkLabel").on("mouseover", function(d){
+            var drinkGroup = getDrinkGroup(this);
+            hoverState(drinkGroup.elem, drinkGroup.data[0])
+            d3.select(this).style("background-color", getColor(drinkGroup.elem));
+        });
+
+        d3.selectAll(".drinkLabel").on("mouseleave", function(d){
+            var drinkGroup = getDrinkGroup(this);
+            removeHoverState(drinkGroup.elem, drinkGroup.data[0])
+            if (!d3.select(this).classed("selectedLabel")) {
+                d3.select(this).style("background-color", "#272727");
+            }
+        });
+
+        function hoverState(elem, d) {
+
+            var point = d3.select(elem).select(".point");
+            var ring = d3.select(elem).select(".ring");
+            var dataVals = computeDrinkVals(d);
+            var newY = y(dataVals.profitPercent);
+            var newX = x(d.salesVolume);
+            var transformY = getYPosition(newY);
+            var transformX = getXPosition(newX);
+            var name = d.name;
+            var idx = drinks.indexOf(d.id);
+            var obj = rawData[idx].data;
+            var priceVals = getMaxMin(obj, "salesPrice");
+            var maxIdx = priceVals.length - 1;
+            var minSalesPrice = priceVals[0];
+            var maxSalesPrice = priceVals[maxIdx];
+            var hoverProfitScale = d3.scale.linear()
+                .domain([100,0])
+                .range([120,0]);
+            var hoverVolScale = d3.scale.linear()
+                .domain([maxSalesVol,minSalesVol])
+                .range([120,0]);
+            var hoverPriceScale = d3.scale.linear()
+                .domain([maxSalesPrice,minSalesPrice])
+                .range([120,0]);
+
+            ring.style("stroke", getColor(elem));
+
+            point.style("opacity", ".8")
+            .style("fill", getColor(elem));
+
+            var hover = canvas.append("g")
+            .attr("transform", "translate(" + transformX + "," + transformY + ")")
+            .attr("class", "tooltip");
+
+            hover.append("rect")
+            .attr("width", 140)
+            .attr("height", 160)
+            .attr("x", "-70")
+            .attr("y", function(){
+                var adjust = parseInt(ring.attr("r"));
+                return adjust + 15;
+            })
+            .style("fill", "rgba(0,0,0,.7)");
+
+            hover.append("text")
+            .html(name)
+            .attr("x", -60)
+            .attr("y", 55)
+            .attr("class", "hover-title");
+
+            // profit bar
+            hover.append("text")
+            .text("% Pour Cost")
+            .attr("x", -60)
+            .attr("y", 80);
+
+            hover.append("rect")
+            .attr("x", -60)
+            .attr("y", 90)
+            .style("fill", "rgba(255,255,255,.35)")
+            .attr("height", 3)
+            .attr("width", 120);
+
+            hover.append("rect")
+            .attr("x", -60)
+            .attr("y", 90)
+            .style("fill", getColor(elem))
+            .attr("height", 3)
+            .attr("width", function(){
+                var prof = (dataVals.pourCost * 100);
+                return hoverProfitScale(prof);
+            });
+
+            hover.append("text")
+            .html("Sales Volume")
+            .attr("x", -60)
+            .attr("y", 115);
+
+            hover.append("rect")
+            .attr("x", -60)
+            .attr("y", 125)
+            .style("fill", "rgba(255,255,255,.35)")
+            .attr("height", 3)
+            .attr("width", 120);
+
+            hover.append("rect")
+            .attr("x", -60)
+            .attr("y", 125)
+            .style("fill", getColor(elem))
+            .attr("height", 3)
+            .attr("width", function(){
+                return hoverVolScale(d.salesVolume);
+            });
+
+            hover.append("text")
+            .html("Sales Price")
+            .attr("x", -60)
+            .attr("y", 150);
+
+            hover.append("rect")
+            .attr("x", -60)
+            .attr("y", 160)
+            .style("fill", "rgba(255,255,255,.35)")
+            .attr("height", 3)
+            .attr("width", 120);
+
+            hover.append("rect")
+            .attr("x", -60)
+            .attr("y", 160)
+            .style("fill", getColor(elem))
+            .attr("height", 3)
+            .attr("width", function(){
+                return hoverPriceScale(d.salesPrice);
+            });
+        };
+
+        // when the window resizes, call redraw
+        d3.select(window).on('resize', redraw); 
+
+        function redraw() {
+            var plots = d3.selectAll(".group");
+
+            // remove current canvas 
+            canvas.remove();
+
+            // update size
+            contHeight = document.getElementById('graphContainer').scrollHeight;
+            contWidth = document.getElementById('graphContainer').scrollWidth;
+            h = contWidth;
+            w = contWidth;
+            xCenter = h/2;
+            yCenter = w/2;
+
+            // update axes
+            y = d3.scale.linear()
+            .domain([0,1])
+            .range([h,0]);
+
+            x = d3.scale.linear()
+            .domain([maxSalesVol,minSalesVol])
+            .range([w,0]);
+
+            reverseX = d3.scale.linear()
+            .domain([w,0])
+            .range([maxSalesVol,minSalesVol]);
+
+            yAxis = d3.svg.axis()
+            .orient("left")
+            .scale(y)
+            .ticks(25)
+            .innerTickSize(-.5*w)
+            .tickPadding(10);
+
+            xAxis = d3.svg.axis()
+            .orient("bottom") 
+            .scale(x)
+            .ticks(25)
+            .innerTickSize(-.5*h)
+            .tickPadding(10);
+
+            // place updated canvas
+            canvas = d3.select('#graphContainer')
+            .append('svg:svg')
+            .attr('height', h)
+            .attr('width', w);
+
+            canvas.selectAll(".Axis").remove();
+
+            canvas.append("g")
+            .attr("class", "Axis")
+            .attr("transform", "translate("+yCenter+",0)")
+            .attr("id", "yAxis")
+            .call(yAxis);
+
+            canvas.append("g")
+            .attr("class", "Axis")
+            .attr("transform", "translate(0, "+xCenter+")")
+            .attr("id", "xAxis")
+            .call(xAxis);
+
+            for(i = 0; i < rawPathData.length; i ++) {
+
+                drinks.push(rawPathData[i].id);
+                var mid = Math.floor(rawPathData[i].data.length / 2);
+
+                canvas.append("path")
+                .datum(rawPathData[i].data)
+                .attr("class", "line " + rawPathData[i].data[0].id)
+                .attr("d", line);
+            }
+
+            var groups = plots[0];
+            var points = [];
+            var dataPoints = [];
+            var classes = [];
+            var trueIdx = -1;
+
+            for(i = 0; i < groups.length; i++) {
+                var group = d3.select(groups[i]);
+                points.push(group);
+            }
+
+            for(i = 0; i < points.length; i++) {
+                dataPoints.push(points[i].data());
+                classes.push(points[i].classed("selected"));
+            }
+
+            trueIdx = classes.indexOf(true);
+
+            for(i = 0; i < dataPoints.length; i++) {
+
+                var dGroup = canvas.append("g")
+                .data(dataPoints[i])
+                .attr("class", function() {
+                    if(i == trueIdx) {
+                        return "group selected"; 
+                    } else {
+                        return "group";
+                    }
+                })
+                .attr("transform", function(d) {
+                    var dataVals = computeDrinkVals(d);
+                    var xCoord = x(d.salesVolume);
+                    var yCoord = y(dataVals.profitPercent);
+                    var str = "translate( " + xCoord + " , " + yCoord + " )";
+                    return str;
+                });
+
+                dGroup.append("circle")
+                .attr("class", "ring")
+                .attr("cx", 0)
+                .attr("cy", 0)
+                .style("stroke", function(){
+                    var parent = d3.select(this.parentNode);
+                    if (parent.classed("selected")) {
+                        return getColor(this.parentNode);
+                    } else {
+                        return defaultColor;
+                    }
+                })
+                .style("stroke-width", "2px")
+                .style("fill", "transparent")
+                .attr("r", function(d){
+                    var dataVals = computeDrinkVals(d);
+                    return rScale(dataVals.totalSales);
+                });
+
+                dGroup.append("circle")
+                .attr("class", "point")
+                .attr("cx", 0)
+                .attr("cy", 0)
+                .style("fill", function(){
+                    var parent = d3.select(this.parentNode);
+                    if (parent.classed("selected")) {
+                        return getColor(this.parentNode);
+                    } else {
+                        return defaultColor;
+                    }
+                })
+                .style("opacity", ".8")
+                .attr("r", function(d){
+                    var dataVals = computeDrinkVals(d);
+                    return rProfitScale(dataVals.totalProfit);
+                });
+            }
+
+            d3.selectAll(".group").on("mouseover", function(d){
+                hoverState(this, d);
+            });
+
+            d3.selectAll(".group").on("mouseleave", function(d){
+                removeHoverState(this, d);
+            });
+
+            d3.selectAll(".group").on("mousedown", function(d){
+                var groupData = d3.select(this).data();
+                clickedCircle(this, groupData)
+                selectLabel(groupData[0].id);
+                var label = d3.select("." + groupData[0].id + "Label").select(".drinkLabel").node();
+                showContent(label);
+            });
+
+            toggleSwitched();
+            formatTicks();
+            sizeGraphCont();
+
+        };
+    };
+
+
+</script>
