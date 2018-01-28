@@ -19149,7 +19149,7 @@ var ControlBox = function (_React$Component) {
                         _react2.default.createElement(
                             'span',
                             null,
-                            '2017'
+                            '2018'
                         ),
                         _react2.default.createElement('br', null),
                         _react2.default.createElement(
