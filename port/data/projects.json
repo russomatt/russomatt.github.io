@@ -7,10 +7,10 @@
             "subTitle" : "Gentrification Visualization",
             "role" : "Design/Development",
             "description" : "A data visualization built to display tree coverage alongside data related to gentrification in an easily digestible way. The map has an interactive key to control the year of the data points. Below the map there is a breakdown of graphs per neighborhood over an adjustable time range, to allow the viewer to view trends across neighborhoods at a glance. This project was built with D3.js, Node Package Manager, and Webpack. All data that is displayed is open, public data provided by the City of San Francisco.~Visit the live visualization |http://mattrusso.github.io/*here|",
-            "bg" : "../img/bg-0.jpg",
-            "img" : [ "../img/sfdv-001.jpg",
-                "../img/sfdv-002.jpg",
-                "../img/sfdv-003.jpg"]
+            "bg" : "../port/img/bg-0.jpg",
+            "img" : [ "../port/img/sfdv-001.jpg",
+                "../port/img/sfdv-002.jpg",
+                "../port/img/sfdv-003.jpg"]
         }
     },
     {
@@ -21,14 +21,14 @@
             "subTitle" : "",
             "role" : "Design/Development",
             "description" : "A free interactive tool to help users to create and price drink recipes. They are able to create a recipe entirely from scratch or use BevSpot's pre-populated ingredients from the ingredient dropdowns. The tool is developed to be responsive and works on a wide array of screen sizes. My role in the project was heavily in user experience design and front-end development, as well as some visual design.~Visit the tool |https://app.bevspot.com/drink_price_tool/ *here| (disclaimer: if you enter your personal information to create an account you may be contacted by sales representatives)",
-            "bg" : "../img/bg-03.jpg",
-            "img" : [ "../img/dpt-001.jpg",
-                "../img/dpt-0001.jpg",
-                "../img/dpt-002.jpg",
-                "../img/dpt-003.jpg",
-                "../img/dpt-004.jpg",
-                "../img/dpt-005.jpg",
-                "../img/dpt-006.jpg"]
+            "bg" : "../port/img/bg-03.jpg",
+            "img" : [ "../port/img/dpt-001.jpg",
+                "../port/img/dpt-0001.jpg",
+                "../port/img/dpt-002.jpg",
+                "../port/img/dpt-003.jpg",
+                "../port/img/dpt-004.jpg",
+                "../port/img/dpt-005.jpg",
+                "../port/img/dpt-006.jpg"]
         }
     },
     {
@@ -39,12 +39,12 @@
             "subTitle" : "Interactive Timeline",
             "role" : "Design/Development",
             "description" : "A graph displaying data and key events relating to the Greek economic crisis from 2008–2014. When a year is clicked, the graph opens up to show a timeline of events that took place within the selected year, so the viewer can infer possible driving factors behind the observed trends. ~Visit the live timeline |http://russomatt.com/greece*here|",
-            "bg" : "../img/bg-3.jpg",
-            "img" : [ "../img/greece-001.jpg",
-                "../img/greece-002.jpg",
-                "../img/greece-003.jpg",
-                "../img/greece-004.jpg",
-                "../img/greece-005.jpg"]
+            "bg" : "../port/img/bg-3.jpg",
+            "img" : [ "../port/img/greece-001.jpg",
+                "../port/img/greece-002.jpg",
+                "../port/img/greece-003.jpg",
+                "../port/img/greece-004.jpg",
+                "../port/img/greece-005.jpg"]
         }
     },
     {
@@ -55,15 +55,15 @@
             "subTitle" : "Profitability Tool",
             "role" : "Design/Development",
             "description" : "A free interactive tool to help Bar Managers and Owners find out where their beverage program ranks in the United States. The user inputs three key pieces of data to receive a grade and a report containing a comprehensive analysis of their bar profitability. It provides them with BevSpot’s free resources to find ways to improve or draw them to purchase consultative services.~visit the tool |https://app.bevspot.com/bar-profit-tool/ *here| (disclaimer: do not enter your personal information in the form to avoid being contacted by sales representatives)",
-            "bg" : "../img/bg-2.gif",
-            "img" : [ "../img/bpat-001.jpg",
-                "../img/bpat-002.jpg",
-                "../img/bpat-003.jpg",
-                "../img/bpat-004.jpg",
-                "../img/bpat-005.jpg",
-                "../img/bpat-006.jpg",
-                "../img/bpat-007.jpg",
-                "../img/bpat-008.jpg"]
+            "bg" : "../port/img/bg-2.gif",
+            "img" : [ "../port/img/bpat-001.jpg",
+                "../port/img/bpat-002.jpg",
+                "../port/img/bpat-003.jpg",
+                "../port/img/bpat-004.jpg",
+                "../port/img/bpat-005.jpg",
+                "../port/img/bpat-006.jpg",
+                "../port/img/bpat-007.jpg",
+                "../port/img/bpat-008.jpg"]
 
         }
     },
@@ -75,12 +75,12 @@
             "subTitle" : "A Social Travel App",
             "role" : "Design/Development",
             "description" : "PostCard is an app which lets one send virtual postcards to their friends and family from anywhere in the world with a tap of the finger. This app is written in Swift for iOS, and utilizes CoreLocation, MapKit, user location data and the user camera. The virtual post card provides an element of personalization that a traditional postcard cannot by  allowing the user to zoom in on the map to view and visit the exact locations that their contacts have found photo worthy.",
-            "bg" : "../img/bg-2.jpg",
-            "img" : [ "../img/pc-000.jpg",
-                "../img/pc-001.jpg",
-                "../img/pc-gif.gif",
-                "../img/pc-002.jpg",
-                "../img/pc-003.jpg"]
+            "bg" : "../port/img/bg-2.jpg",
+            "img" : [ "../port/img/pc-000.jpg",
+                "../port/img/pc-001.jpg",
+                "../port/img/pc-gif.gif",
+                "../port/img/pc-002.jpg",
+                "../port/img/pc-003.jpg"]
         }
     },
     {
@@ -91,11 +91,11 @@
             "subTitle" : "Profitability Matrix",
             "role" : "Design/Development",
             "description" : "An interactive matrix, allowing users to see the effects on profit and sales volume by changing the sales price of a drink. This tool was built for an unreleased project and is missing content and real data. Each quadrant is color coded to represent which category the drink falls in. The top right representing the best case scenario is assigned green while the bottom left is the worst case scenario and is assigned a dark purple color. The remaining two quadrants are a sort of middle ground for drinks and are assigned two different shades of blue. The plotted point is made up of two components: the outer ring, which represents the total sales in dollars, whereas the inner circle represents the percentage of the total sales that are profit.~Visit the live site |http://russomatt.github.io/matrix.html*here|",
-            "bg" : "../img/bg-0000.jpg",
-            "img" : [ "../img/matrix-001.jpg",
-                "../img/matrix-002.jpg",
-                "../img/matrix-003.jpg",
-                "../img/matrix-004.jpg"]
+            "bg" : "../port/img/bg-0000.jpg",
+            "img" : [ "../port/img/matrix-001.jpg",
+                "../port/img/matrix-002.jpg",
+                "../port/img/matrix-003.jpg",
+                "../port/img/matrix-004.jpg"]
         }
     },
     {
@@ -106,12 +106,12 @@
             "subTitle" : "Hamburger Exhibition",
             "role" : "Design/Development",
             "description" : "A virtual exhibition on the many different identities the hamburger assumes across the globe. I was responsible for the illustrations, the concept as well as the implementation.~Visit the live site (unfortunately it's only working in Safari and Firefox at the moment) |http://russomatt.com/yum/*here|",
-            "bg" : "../img/bg-4.jpg",
-            "img" : [ "../img/burger-001.jpg",
-                "../img/burger-002.jpg",
-                "../img/burger-003.jpg",
-                "../img/burger-004.jpg",
-                "../img/burger-005.jpg"]
+            "bg" : "../port/img/bg-4.jpg",
+            "img" : [ "../port/img/burger-001.jpg",
+                "../port/img/burger-002.jpg",
+                "../port/img/burger-003.jpg",
+                "../port/img/burger-004.jpg",
+                "../port/img/burger-005.jpg"]
         }
     },
     {
@@ -122,9 +122,9 @@
             "subTitle" : "Interactive Visualization",
             "role" : "Design/Development",
             "description" : "A data visualization that illustrates the number of natural vs. nonnatural deaths in California, organized by zip code and year. It acts as a heat map where one can see the correlation of urban and rural areas with recorded death rates. It was built using d3.js, using topojson and a dataset from data.gov.~Visit the live visualization |http://russomatt.github.io/death.html*here|",
-            "bg" : "../img/bg-1.jpg",
-            "img" : [ "../img/death-001.jpg",
-                "../img/death-002.jpg"]
+            "bg" : "../port/img/bg-1.jpg",
+            "img" : [ "../port/img/death-001.jpg",
+                "../port/img/death-002.jpg"]
         }
     },
     {
@@ -135,11 +135,11 @@
             "subTitle": "Communication App",
             "role" : "Design/Development",
             "description" : "An intuitive communication tool that caters to users with communication impairments. The tool consists of an Arduino-powered wearable RGB LED light allowing the user to choose a color to broadcast their emotional state to their community. The LED can be set to blink fast or slow to express more complex emotions. For person-to-person communication, the user can utilize audio output dictated by gestural swipes on the iOS application. For example, if the user swipes upwards, it makes an inflated positive sound. This project is still in process, if you would like to know more feel free to contact me.",
-            "bg" : "../img/bg-5.jpg",
-            "img" : [ "../img/wave-001.gif",
-                "../img/wave-002.jpg",
-                "../img/wave-003.jpg",
-                "../img/wave-004.gif"]
+            "bg" : "../port/img/bg-5.jpg",
+            "img" : [ "../port/img/wave-001.gif",
+                "../port/img/wave-002.jpg",
+                "../port/img/wave-003.jpg",
+                "../port/img/wave-004.gif"]
         }
     },
     {
@@ -150,13 +150,13 @@
             "subTitle" : "College of Business",
             "role" : "Design",
             "description" : "Rebranding of San Francisco State College of Business. We created a new wordmark and logotype, refreshed their color palette, and designed a new informational brochure. Also, we created guidelines for advertisements, web design, and mobile design.",
-            "bg" : "../img/bg-6.jpg",
-            "img" : [ "../img/sfsu-001.jpg",
-                "../img/sfsu-002.jpg",
-                "../img/sfsu-003.jpg",
-                "../img/sfsu-004.jpg",
-                "../img/sfsu-005.jpg",
-                "../img/sfsu-006.jpg"]
+            "bg" : "../port/img/bg-6.jpg",
+            "img" : [ "../port/img/sfsu-001.jpg",
+                "../port/img/sfsu-002.jpg",
+                "../port/img/sfsu-003.jpg",
+                "../port/img/sfsu-004.jpg",
+                "../port/img/sfsu-005.jpg",
+                "../port/img/sfsu-006.jpg"]
         }
     },
     {
@@ -167,12 +167,12 @@
             "subTitle" : "Loyalty App",
             "role" : "Design",
             "description" : "I worked on various design aspects of a loyalty app targeted at users in Germany and Russia, ranging from photorealistic embroidered badges to screens for the mobile application and how they translated into a desktop setting.",
-            "bg" : "../img/bg-7.jpg",
-            "img" : [ "../img/adidas-001.jpg",
-                "../img/adidas-002.jpg",
-                "../img/adidas-003.jpg",
-                "../img/adidas-004.gif",
-                "../img/adidas-005.png"]
+            "bg" : "../port/img/bg-7.jpg",
+            "img" : [ "../port/img/adidas-001.jpg",
+                "../port/img/adidas-002.jpg",
+                "../port/img/adidas-003.jpg",
+                "../port/img/adidas-004.gif",
+                "../port/img/adidas-005.png"]
         }
     },
     {
@@ -183,7 +183,7 @@
             "subTitle" : "SaaS Dashboard",
             "role" : "Design/Development",
             "description" : "This project started as redesigning a pre-existing proof of concept. I reworked the dashboard to be more use-friendly. As the project grew in scope, I moved into a front-end development role, taking the project from concept to usable product.",
-            "bg" : "../img/bg-8.jpg",
+            "bg" : "../port/img/bg-8.jpg",
             "vid" : [ "https://www.youtube.com/embed/agxC4SqH2t0" ]
         }
     },
@@ -194,14 +194,14 @@
             "title" : "Infographics",
             "subTitle" : "",
             "role" : "Design",
-            "description" : "Two examples of my student work, one showing a timeline of parallel events in the film Rashomon. I created a visual map of the four parallel story lines and a key that persists on top of the timeline to show where the stories overlap and diverge. View the |../img/rashomon.pdf*pdf|.~The second depicts sexual assaults on large New England college campuses. The map and key try to draw correlation between rural and urban campuses to rates of sexual assaults, with the greater Boston area magnified in the center. There is an axis from which one can follow to quickly see which colleges fall into which ranges. View the |../img/assault.pdf*pdf|",
-            "bg" : "../img/bg-9.jpg",
-            "img" : [ "../img/infographic-001.jpg",
-                "../img/infographic-002.jpg",
-                "../img/infographic-003.jpg",
-                "../img/infographic-004.jpg",
-                "../img/infographic-005.jpg",
-                "../img/infographic-006.jpg"]
+            "description" : "Two examples of my student work, one showing a timeline of parallel events in the film Rashomon. I created a visual map of the four parallel story lines and a key that persists on top of the timeline to show where the stories overlap and diverge. View the |../port/img/rashomon.pdf*pdf|.~The second depicts sexual assaults on large New England college campuses. The map and key try to draw correlation between rural and urban campuses to rates of sexual assaults, with the greater Boston area magnified in the center. There is an axis from which one can follow to quickly see which colleges fall into which ranges. View the |../port/img/assault.pdf*pdf|",
+            "bg" : "../port/img/bg-9.jpg",
+            "img" : [ "../port/img/infographic-001.jpg",
+                "../port/img/infographic-002.jpg",
+                "../port/img/infographic-003.jpg",
+                "../port/img/infographic-004.jpg",
+                "../port/img/infographic-005.jpg",
+                "../port/img/infographic-006.jpg"]
         }
     },
     {
@@ -212,11 +212,11 @@
             "subTitle" : "",
             "role" : "Design",
             "description" : "Production art for a branching narrative about a chicken out for revenge.",
-            "bg" : "../img/bg-10.jpg",
-            "img" : [ "../img/illustration-001.jpg",
-                "../img/illustration-002.jpg",
-                "../img/illustration-003.jpg",
-                "../img/illustration-004.jpg"]
+            "bg" : "../port/img/bg-10.jpg",
+            "img" : [ "../port/img/illustration-001.jpg",
+                "../port/img/illustration-002.jpg",
+                "../port/img/illustration-003.jpg",
+                "../port/img/illustration-004.jpg"]
         }
     },
     {
@@ -227,10 +227,10 @@
             "subTitle" : "",
             "role" : "Design",
             "description" : "Various fine arts projects.",
-            "bg" : "../img/bg-11.jpg",
-            "img" : [ "../img/fineart-001.jpg",
-                "../img/fineart-002.jpg",
-                "../img/fineart-003.jpeg"]
+            "bg" : "../port/img/bg-11.jpg",
+            "img" : [ "../port/img/fineart-001.jpg",
+                "../port/img/fineart-002.jpg",
+                "../port/img/fineart-003.jpeg"]
         }
     }
 ]}
