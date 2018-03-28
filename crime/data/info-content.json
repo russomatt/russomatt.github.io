@@ -1,0 +1,23 @@
+{"data": [
+
+	{"info" : "wifi",
+		"title" : "Public Wi-Fi",
+		"content" : "writing about public wifi"},
+
+	{"info" : "police",
+		"title" : "Police Stations",
+		"content" : "writing about police stations"},
+
+	{"info" : "hospital",
+		"title" : "Hospitals",
+		"content" : "writing about hospitals"},
+
+	{"info" : "openspace",
+		"title" : "Open Space",
+		"content" : "writing about open space"},
+
+	{"info" : "mbta",
+		"title" : "MBTA Subway Lines",
+		"content" : "The goal of this instructable is to make a rain gauge that is efficient in its power consumption so it could be adapted to be used as part of a system of distributed rain gauges to monitor rainfall of a specific area. We will create a Finite State Machine (FSM) and utilize low power mode to ensure the device will be able to stay active in the field for extended periods of time. For future advancements to make the device usable across distances would be to leverage a Long Range Wide Area Network (LoRaWAN) shield and The Things Network. We will build the FSM and low power mode software for three different boards: Arduino M0 Pro, Adafruit Feather M0 RFM69, and the Arduino Uno. First it will be built for the M0 Pro and then adapted to the subsequent boards."}
+
+]}
