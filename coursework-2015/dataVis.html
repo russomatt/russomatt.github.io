@@ -1,0 +1,88 @@
+---
+layout: default
+---
+<svg width="100%" height=200>
+
+</svg>
+<button>No gurlz allowed</button>
+
+<script>
+	var names = [];
+
+	d3.csv("http://celluccim.github.io/data/1993.csv", function(error, data) {
+		console.log(data[0]);
+		console.log(data.length);
+		data.forEach(function(d){
+			d.total = parseFloat(d.total);
+		});
+
+		// var men = data.filter(function(d){
+		// 	return d.gender == "M" && d.name.indexOf("Ea") == 0;
+		// });
+
+	names = data.sort(function(a, b){ 
+		return b.total - a.total;
+	});
+
+		// console.log(names.length);
+		// console.log(names);
+
+		draw(names.slice(0, 10));
+	});
+
+	function draw(name_data) {
+		console.log(name_data);
+
+		var circles = d3.select("svg").selectAll("circle")
+		.data(name_data, function(d){
+			return d.name;
+		});
+
+		circles.enter().append("circle")
+		.attr("cy", 50)
+		.attr("cx", function(d, i){
+			return 50 * (i + 1);
+		})
+		.attr("r", 0)
+		.attr("fill", function(d){
+			return d.gender == "M" ? "dodgerblue" : "pink";
+		 		// if (d.gender == "M") {
+		 		// 	return "dodgerblue";
+		 		// } else {
+		 		// 	return "pink";
+		 		// }
+		 	});
+
+		var extent = d3.extent(name_data, function(d){
+			return d.total;
+		});
+		
+		var scale = d3.scale.linear()
+		.domain(extent)
+		.range([2, 25]);
+
+		circles.transition().duration(500)
+		.attr("r", function(d){
+			return scale(d.total);
+		})
+		.attr("cx", function(d, i){
+			return 50 * (i + 1);
+		});
+
+		circles.on("click", function(d){
+			console.log(d.name);
+		});
+
+		circles.exit().transition().duration(500)
+		.attr("r", 0).remove();
+
+		d3.select("button").on("click", function(d){
+			var boys_data = names.filter(function(d){
+				return d.gender == "M";
+			}).slice(0, 10);
+			console.log(boys_data)
+			draw(boys_data);
+		});
+
+	}
+</script>

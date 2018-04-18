@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>
+			{{ page.title }} | russo, matt
+		</title>
+		<link rel="stylesheet" type="text/css" href="/css/blogstyles.css">
+	</head>
+	<body>
+		<header>
+			<div class="blog-header blog-content-header">
+				<div>
+					<h2 class="title">
+						matt's blog
+					</h2>
+					<a class="back-button" href="/index.html#post-{{ page.nav }}">
+						<- back
+					</a>
+				</div>
+				<div class="links">
+					<a href="http://russomatt.com/">
+						portfolio
+					</a>
+					<br/>
+					<a href="https://github.com/russomatt">
+						github
+					</a>
+				</div>
+			</div>
+		</header>
+		<div class="content">
+			<span>
+				{{ page.date | date_to_long_string}}
+			</span>
+			<h1>
+				{{ page.title }}
+			</h1>
+			{{ content }}
+		</div>
+	</body>
+</html>
+

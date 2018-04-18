@@ -1,0 +1,45 @@
+---
+layout: default
+title: js
+---
+<svg width="720" height="120">
+</svg>
+
+<script>
+
+	var dataArray = [
+	{"x" : 40, "radius" : 10, "color" : "red"},
+	{"x" : 80, "radius" : 20, "color" : "green"},
+	{"x" : 120, "radius" : 30, "color" : "blue"},
+	{"x" : 200, "radius" : 40, "color" : "yellow"}
+	];
+
+	var dataArray2 = [
+	{"x" : 40, "radius" : 10, "color" : "red"},
+	{"x" : 120, "radius" : 30, "color" : "blue"}
+	];
+
+	function draw(data) {
+	var circle = d3.select("svg").selectAll("circle")
+	.data(data, function(d){
+		return d.color;
+	});
+
+	circle.enter().append("circle")
+	.attr("cy", 60);
+
+	circle.transition().duration(1000)
+	.attr("r", function(d) {
+		return d.radius;
+	})
+	.style("fill", function(d) {
+		return d.color;
+	})
+	.attr("cx", function(d) {
+		return d.x;
+	});
+
+	circle.exit().remove();
+
+	}
+</script>

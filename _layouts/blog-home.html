@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>
+			{% if page.title %}
+				{{ page.title }}
+			{% else %}
+				russo, matt
+			{% endif %}
+		</title>
+		<link rel="stylesheet" type="text/css" href="../css/blogstyles.css">
+	</head>
+	<body>
+	{{ content }}
+
+		<div class="post-container">
+			{% for post in site.posts %}
+				<a class="blog-link" href="{{ post.url}}">
+					<div id="post-{{ post.nav }}" class="blog-post">
+						<span>
+							{{ post.date | date_to_long_string }}
+						</span>
+						<h1>
+							{{ post.title }}
+						</h1>
+						<p>
+							{% if post.desc %}
+								{{ post.desc }}
+							{% endif %}
+						</p>
+						<span class="arrow-button" href="{{ post.url}}">
+							->
+						</span>
+					</div>
+				</a>
+			{% endfor %}
+		</div>
+		<div class="coming-soon">
+			coming soon
+		</div>
+	</body>
+</html>

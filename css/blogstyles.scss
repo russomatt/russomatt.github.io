@@ -1,0 +1,248 @@
+---
+---
+/*-- Fonts --*/
+
+/* -- Roboto -- */
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto/Roboto-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto/Roboto-Light.ttf') format('truetype');
+    font-weight: 200;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto/Roboto-Regular.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto/Roboto-Medium.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto/Roboto-bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: bold;
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto/Roboto-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: bolder;
+}
+
+/* -- Roboto Mono -- */
+@font-face {
+    font-family: 'RobotoMono';
+    src: url('../fonts/Roboto_Mono/RobotoMono-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: lighter;
+}
+@font-face {
+    font-family: 'RobotoMono';
+    src: url('../fonts/Roboto_Mono/RobotoMono-Light.ttf') format('truetype');
+    font-weight: 200;
+    font-style: light;
+}
+@font-face {
+    font-family: 'RobotoMono';
+    src: url('../fonts/Roboto_Mono/RobotoMono-Regular.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'RobotoMono';
+    src: url('../fonts/Roboto_Mono/RobotoMono-Medium.ttf') format('truetype');
+    font-weight: 400;
+    font-style: medium;
+}
+@font-face {
+    font-family: 'RobotoMono';
+    src: url('../fonts/Roboto_Mono/RobotoMono-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: bold;
+}
+
+/*-- End Fonts --*/
+
+$color : rgba(22, 44, 255, 1);
+$border-style : 4px solid rgba(22, 44, 255, 0.15);
+$tablet-size : 795px;
+$mobile-size : 520px;
+
+body {
+	font-family: 'RobotoMono', 'Helvetica Neue', sans-serif;
+	color: $color;
+	font-weight: 300;
+}
+a {
+    color: $color;
+}
+header {
+    padding: 0 2em;
+}
+.blog-header {
+	width: 100%;
+	display: table;
+	border-bottom: $border-style;
+	padding: 1.5em 0 1em;
+	background: #fff;
+
+	.title {
+		float: left;
+		margin: 0;
+		font-size: 2.5em;
+        font-weight: 400;
+	}
+	.links {
+		float: right;
+		font-size: 1.2em;
+
+		a {
+			color: $color;
+			display: inline-block;
+			float: right;
+			text-align: right;
+
+		}
+	}
+    &.blog-content-header {
+        position: relative;
+        margin-bottom: 3.5em;
+        padding-bottom: 1.5em;
+
+        .title {
+            font-size: 1.9em;
+        }
+        .back-button {
+            position: absolute;
+            left: 0;
+            bottom: 0.5em;
+        }
+    }
+}
+.intro {
+	padding: 1em 0;
+
+	p {
+		font-size: 1.2em;
+		max-width: 600px;
+	}
+}
+.post-container {
+    position: absolute;
+    padding: 0 2.5em;
+    top: 13em;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: scroll;
+
+}
+.blog-link {
+    text-decoration: none;
+}
+.blog-post {
+	border-top: $border-style;
+    padding: 0.5em 0 4em;
+    position: relative;
+
+    h1, p {
+        max-width: 600px;
+    }
+
+    &:hover {
+        background: rgba(22, 44, 255, .05);
+        cursor: pointer;
+
+    }
+
+    h1 {
+        font-weight: 400;
+    }
+    .arrow-button {
+        position: absolute;
+        right: 0;
+        top: 0.25em;
+        font-size: 6em;
+        text-decoration: none;
+    }
+}
+.content {
+    padding: 0 2em;
+    max-width: 650px;
+
+    p {
+        margin-bottom: 2em;
+    }
+    img {
+        width: 100%;
+        height: auto;
+    }
+}
+.coming-soon {
+    text-align: center;
+    font-size: 10em;
+    font-weight: 100;
+    opacity: 0.15;
+}
+@media (max-width: $tablet-size) {
+
+    .blog-post {
+        padding-right: 5em;
+
+        .arrow-button {
+            font-size: 4em;
+            top: 0.75em;
+        }
+    }
+
+}
+@media (max-width: $mobile-size) {
+
+    header {
+        padding: 0;
+    }
+    .post-container {
+        padding: 0 0.5em;
+    }
+    .blog-header {
+        font-size: 0.85em;
+
+         &.blog-content-header {
+            margin-bottom: 1em;
+            padding-top: 0;
+            padding-bottom: 2em;
+         }
+    }
+    .blog-post {
+        padding-right: 2.25em;
+
+        h1 {
+            font-size: 1.5em;
+        }
+        .arrow-button {
+            top: 1.95em;
+            font-size: 1.8em;
+        }
+    }
+    p, .intro p {
+        font-size: 0.95em;
+    }
+    .content {
+        padding: 0;
+    }
+    .coming-soon {
+        font-size: 5em;
+    }
+}
+
