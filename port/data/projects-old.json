@@ -3,17 +3,14 @@
         "id": 1,
         "project": {
             "type": "interactive",
-            "title" : "Boston Crime",
-            "subTitle" : "Map",
+            "title" : "San Francisco ",
+            "subTitle" : "Visualization",
             "role" : "Design/Development",
-            "description" : "The description of the Boston crime project.~Visit the live visualization |http://russomatt.com/boston-crime/*here|",
-            "bg" : "../img/bg-crime.jpg",
-            "img" : [ "../img/crime-001.jpg",
-                "../img/crime-002.jpg",
-                "../img/crime-003.jpg",
-                "../img/crime-004.jpg",
-                "../img/crime-005.jpg",
-                "../img/crime-006.jpg"]
+            "description" : "A data visualization built to display tree coverage alongside data related to gentrification in an easily digestible way. The map has an interactive key to control the year of the data points. Below the map there is a breakdown of graphs per neighborhood over an adjustable time range, to allow the viewer to view trends across neighborhoods at a glance. This project was built with D3.js, Node Package Manager, and Webpack. All data that is displayed is open, public data provided by the City of San Francisco.~Visit the live visualization |http://mattrusso.github.io/*here|",
+            "bg" : "../img/bg-0.jpg",
+            "img" : [ "../img/sfdv-001.jpg",
+                "../img/sfdv-002.jpg",
+                "../img/sfdv-003.jpg"]
         }
     },
     {
@@ -34,22 +31,23 @@
                 "../img/dpt-006.jpg"]
         }
     },
-
     {
         "id": 3,
-        "project": {
+        "project": { 
             "type": "interactive",
-            "title" : "San Francisco ",
-            "subTitle" : "Visualization",
+            "title" : "Greece Economic",
+            "subTitle" : "Timeline",
             "role" : "Design/Development",
-            "description" : "A data visualization built to display tree coverage alongside data related to gentrification in an easily digestible way. The map has an interactive key to control the year of the data points. Below the map there is a breakdown of graphs per neighborhood over an adjustable time range, to allow the viewer to view trends across neighborhoods at a glance. This project was built with D3.js, Node Package Manager, and Webpack. All data that is displayed is open, public data provided by the City of San Francisco.~Visit the live visualization |http://mattrusso.github.io/*here|",
-            "bg" : "../img/bg-0.jpg",
-            "img" : [ "../img/sfdv-001.jpg",
-                "../img/sfdv-002.jpg",
-                "../img/sfdv-003.jpg"]
+            "description" : "A graph displaying data and key events relating to the Greek economic crisis from 2008–2014. When a year is clicked, the graph opens up to show a timeline of events that took place within the selected year, so the viewer can infer possible driving factors behind the observed trends. ~Visit the live timeline |http://russomatt.com/greece*here|",
+            "bg" : "../img/bg-3.jpg",
+            "img" : [ "../img/greece-001.jpg",
+                "../img/greece-002.jpg",
+                "../img/greece-003.jpg",
+                "../img/greece-004.jpg",
+                "../img/greece-005.jpg"]
         }
     },
- {
+    {
         "id": 4,
         "project": {
             "type": "interactive",
@@ -71,20 +69,6 @@
     },
     {
         "id": 5,
-        "project": { 
-            "type": "interactive",
-            "title" : "Time As",
-            "subTitle" : "Color",
-            "role" : "Design/Development",
-            "description" : "A graph displaying data and key events relating to the Greek economic crisis from 2008–2014. When a year is clicked, the graph opens up to show a timeline of events that took place within the selected year, so the viewer can infer possible driving factors behind the observed trends. ~Visit the live timeline |http://russomatt.com/greece*here|",
-            "bg" : "../img/bg-arpb.jpg",
-            "img" : [ "../img/arpb-001.jpg",
-                "../img/arpb-002.jpg",
-                "../img/arpb-003.jpg"]
-        }
-    },   
-    {
-        "id": 6,
         "project": {
             "type": "interactive",
             "title" : "PostCard:",
@@ -100,23 +84,7 @@
         }
     },
     {
-        "id": 7,
-        "project": { 
-            "type": "interactive",
-            "title" : "Greece Economic",
-            "subTitle" : "Timeline",
-            "role" : "Design/Development",
-            "description" : "A graph displaying data and key events relating to the Greek economic crisis from 2008–2014. When a year is clicked, the graph opens up to show a timeline of events that took place within the selected year, so the viewer can infer possible driving factors behind the observed trends. ~Visit the live timeline |http://russomatt.com/greece*here|",
-            "bg" : "../img/bg-3.jpg",
-            "img" : [ "../img/greece-001.jpg",
-                "../img/greece-002.jpg",
-                "../img/greece-003.jpg",
-                "../img/greece-004.jpg",
-                "../img/greece-005.jpg"]
-        }
-    },   
-    {
-        "id": 8,
+        "id": 6,
         "project": {
             "type": "interactive",
             "title" : "Profitability",
@@ -131,11 +99,11 @@
         }
     },
     {
-        "id": 9,
+        "id": 7,
         "project": {
             "type": "interactive",
-            "title" : "Virtual Burger",
-            "subTitle" : "Exhibition",
+            "title" : "Virtual",
+            "subTitle" : "Hamburger Exhibition",
             "role" : "Design/Development",
             "description" : "A virtual exhibition on the many different identities the hamburger assumes across the globe. I was responsible for the illustrations, the concept as well as the implementation.~Visit the live site (unfortunately it's only working in Safari and Firefox at the moment) |http://russomatt.com/yum/*here|",
             "bg" : "../img/bg-4.jpg",
@@ -147,22 +115,7 @@
         }
     },
     {
-        "id": 10,
-        "project": { 
-            "type": "interactive",
-            "title" : "Wave: Intuitive",
-            "subTitle": "Communication",
-            "role" : "Design/Development",
-            "description" : "An intuitive communication tool that caters to users with communication impairments. The tool consists of an Arduino-powered wearable RGB LED light allowing the user to choose a color to broadcast their emotional state to their community. The LED can be set to blink fast or slow to express more complex emotions. For person-to-person communication, the user can utilize audio output dictated by gestural swipes on the iOS application. For example, if the user swipes upwards, it makes an inflated positive sound. This project is still in process, if you would like to know more feel free to contact me.",
-            "bg" : "../img/bg-5.jpg",
-            "img" : [ "../img/wave-001.gif",
-                "../img/wave-002.jpg",
-                "../img/wave-003.jpg",
-                "../img/wave-004.gif"]
-        }
-    },
-    {
-        "id": 11,
+        "id": 8,
         "project": {
             "type": "interactive",
             "title" : "Death Rate",
@@ -175,7 +128,22 @@
         }
     },
     {
-        "id": 12,
+        "id": 9,
+        "project": { 
+            "type": "interactive",
+            "title" : "Wave: Intuitive",
+            "subTitle": "Communication App",
+            "role" : "Design/Development",
+            "description" : "An intuitive communication tool that caters to users with communication impairments. The tool consists of an Arduino-powered wearable RGB LED light allowing the user to choose a color to broadcast their emotional state to their community. The LED can be set to blink fast or slow to express more complex emotions. For person-to-person communication, the user can utilize audio output dictated by gestural swipes on the iOS application. For example, if the user swipes upwards, it makes an inflated positive sound. This project is still in process, if you would like to know more feel free to contact me.",
+            "bg" : "../img/bg-5.jpg",
+            "img" : [ "../img/wave-001.gif",
+                "../img/wave-002.jpg",
+                "../img/wave-003.jpg",
+                "../img/wave-004.gif"]
+        }
+    },
+    {
+        "id": 10,
         "project": { 
             "type": "print",
             "title" : "SF State",
@@ -192,7 +160,7 @@
         }
     },
     {
-        "id": 13,
+        "id": 11,
         "project": { 
             "type": "interactive",
             "title" : "Adidas",
@@ -209,7 +177,7 @@
     },
 
     {
-        "id": 14,
+        "id": 12,
         "project": { 
             "type": "print",
             "title" : "Infographics",
