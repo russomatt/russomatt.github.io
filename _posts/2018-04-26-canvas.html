@@ -1,0 +1,271 @@
+---
+layout: "blog-content"
+title: "Sun Canvas Animation 🏝"
+desc: "Trying to get those <i>~summer vibes~</i> while learning about canvas elements."
+date: "2018-04-27"
+---
+<style>
+	@font-face {
+	    font-family: 'Roboto';
+	    src: url('fonts/Roboto/Roboto-Black.ttf') format('truetype');
+	    font-weight: 900;
+	}
+	@font-face {
+	    font-family: 'Roboto';
+	    src: url('fonts/Roboto/Roboto-Black-Italic.ttf') format('truetype');
+	    font-weight: 900;
+	    font-style: italic;
+	}
+	.sun-container {
+		display: table;
+		width: 100%;
+		position: relative;
+	}
+	.sun {
+		position: absolute;
+		top: 0;
+		left: 800px;
+		text-align: right;
+
+		width: 1px;
+		font-size: 6em;
+		font-family: "Roboto", "serif" ,"helvetica", sans-serif;
+		font-weight: 900;
+		color: #fff;
+		transition: .2s;
+		font-style: italic;
+	}
+	.sun span {
+		float: right;
+		padding: 0 0.25em;
+	}
+	.sun1 {
+		z-index: 2;
+		color: #475295;
+	}
+	.sun1:hover ~ .sun6 {
+		top: .225em;
+		transition: .2s;
+		opacity: .8;
+	}
+	.sun1:hover ~ .sun5 {
+		top: .45em;
+		transition: .2s;
+		opacity: .6;
+	}
+	.sun1:hover ~ .sun4 {
+		top: .675em;
+		transition: .2s;
+		opacity: .4;
+	}
+	.sun1:hover ~ .sun3 {
+		top: .9em;
+		transition: .2s;
+		opacity: .2;
+	}
+	.sun1:hover ~ .sun2 {
+		top: 1.15em;
+		transition: .2s;
+		opacity: .05;
+	}
+</style>
+<p>
+	Can you tell I'm ready for summer??? I want to learn more about the canvas element and using it to make fun animations so I started off with this very aesthetic sun.
+</p>
+</br>
+<div class="sun-container">
+	<canvas height="500px" width="800px" id="canvas">
+	</canvas>
+	<div class="sun sun1">
+		<span>
+			sun
+		</span>
+	</div>
+	<div class="sun sun2">
+		<span>
+			sun
+		</span>
+	</div>
+	<div class="sun sun3">
+		<span>
+			sun
+		</span>
+	</div>
+	<div class="sun sun4">
+		<span>
+			sun
+		</span>
+	</div>
+	<div class="sun sun5">
+		<span>
+			sun
+		</span>
+	</div>
+	<div class="sun sun6">
+		<span>
+			sun
+		</span>
+	</div>
+</div>
+</br>
+<p>
+	It was a bit of slow start but I think I'm getting the hang of it. I'll give canvas another go in the future, I've seen some really cool examples of what people do with it so I'd love to make something more hefty eventually.
+</p>
+<script>
+	var canvas = document.getElementById('canvas');
+	var context = canvas.getContext('2d');
+	canvas.style.background = 'linear-gradient(90deg, #FFD48B, #FFB8A2)';
+	var h = 500;
+	var w = 800;
+	var windowPadding = 4;
+
+    window.requestAnimFrame = (function(){
+      return  window.requestAnimationFrame       || 
+              window.webkitRequestAnimationFrame || 
+              window.mozRequestAnimationFrame    || 
+              window.oRequestAnimationFrame      || 
+              window.msRequestAnimationFrame     || 
+              function(/* function */ callback, /* DOMElement */ element){
+                window.setTimeout(callback, 1000 / 60);
+              };
+    })();
+
+	var squig = new Squiggle(6, 40, w/7, h/1.2, 70, 'rgba(255,255,255,.5)', 1.2);
+	var squig2 = new Squiggle(10, 18, w/-3, h/1.95, 37, 'rgba(255, 255, 255, .25)', .6);
+	var squig3 = new Squiggle(8, 20, w/2, h/3, 30, 'rgba(255, 255, 255, .15)', .5);
+	var squig4 = new Squiggle(7, 8, w/2, h/14, 13, 'rgba(255, 255, 255, .1)', .2);
+	var squig5 = new Squiggle(7, 8, w/6, h/6.5, 13, 'rgba(255, 255, 255, .1)', .4);
+
+    function Squiggle(n, radius, xCoord, yCoord, lineWidth, color, rate) {
+    	this.x = xCoord;
+    	this.y = yCoord;
+    	this.radius = radius;
+    	this.n = n;
+    	this.color = color;
+    	this.lineWidth = lineWidth;
+    	this.rate = rate;
+
+    	this.draw = function() {
+
+			context.strokeStyle = this.color;
+			context.lineWidth = this.lineWidth;
+			context.lineCap = 'round';
+			context.beginPath();
+
+    		var diameter = this.radius * 2;
+
+    		for (var i = 0; i < this.n; i++) {
+
+				var xCoord1 = this.x + (i * diameter);
+				var xCoord2 = (this.x + ((i+1) * diameter) + this.radius); 
+				var direction = i % 2 == 0 ? true : false; 
+
+				if ( i < n - 1) {
+					context.arc(xCoord1, this.y, this.radius, 0, Math.PI, direction);
+					context.moveTo(xCoord2, this.y);
+				} else {
+					context.arc(xCoord1, this.y, this.radius, 0, Math.PI, direction);
+					context.moveTo(xCoord1 + this.radius, this.y);
+				}
+
+
+			}
+
+			context.closePath();
+			context.stroke();
+    	}
+
+    	this.update = function() {
+
+    		var squiggleLen = (this.radius + this.lineWidth) *  this.n;
+    		var squiggleH = (this.radius  + this.lineWidth ) * 2;
+		   	var deleteX = this.x - this.radius - this.lineWidth;
+		   	var deleteY = (this.y - this.radius - this.lineWidth);
+
+		   	if(this.x <= 0 ) {
+	    		context.clearRect(deleteX, deleteY, squiggleLen, squiggleH);
+
+		   	} else {
+		   		context.clearRect(deleteX, deleteY, squiggleLen, squiggleH);
+
+		   	}
+
+		   	this.x = this.x + this.rate;
+		   	this.draw();
+
+    	}
+
+    	this.update();
+    }
+
+	function animate() {
+		squiggleUpdate(squig);
+		squiggleUpdate(squig2);
+		squiggleUpdate(squig3);
+		squiggleUpdate(squig4);
+		squiggleUpdate(squig5);
+
+		requestAnimFrame(animate);
+	}
+
+	function squiggleUpdate(squiggle) {
+    	var squiggleLen = (squiggle.radius + squiggle.lineWidth) *  squiggle.n;
+
+		if (squiggle.x <= w + windowPadding + squiggle.lineWidth) {
+			squiggle.update();
+		} else {
+			squiggle.x = -(squiggleLen);
+			squiggle.update();
+		}
+	}
+
+    var angle = 0;
+    var hover = {'x': w/2 + 160, 'y': h/2};
+
+    function mouseHover(e) {
+    	var x = e.clientX - 8;
+    	var y = e.clientY - 8;
+    	hover = {'x': x, 'y': y};
+    }
+
+    canvas.addEventListener('mousemove', mouseHover);
+
+	function drawCircle() {
+     
+		var y = h/2,
+			x = w/2;
+
+		var gradientX0 = Math.abs(hover.x - w);
+		var gradientX1 = hover.x;
+		var gradientY0 = Math.abs(hover.y - h);
+		var gradientY1 = hover.y;
+		var gradient;
+
+		if( Math.abs(gradientX0 - gradientX1) < 80 && Math.abs(gradientY0 - gradientY1) < 80) {
+			gradient = context.createLinearGradient(gradientX0 - 80, gradientY0 - 80, gradientX1 + 80, gradientY1 + 80);
+		} else {
+			gradient = context.createLinearGradient(gradientX0, gradientY0, gradientX1, gradientY1);
+		}
+
+		gradient.addColorStop(0, '#FFB8A2');
+		gradient.addColorStop(1, '#FFD48B');
+		context.fillStyle = gradient;
+		context.beginPath();
+		context.arc(x, y, 160,0,Math.PI*2,true);
+		context.closePath();
+		context.fill();
+
+		requestAnimFrame(drawCircle);
+
+	}
+
+	function getRandomInt(min, max) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min)) + min;
+	}
+
+	animate();
+	drawCircle();
+
+</script>
