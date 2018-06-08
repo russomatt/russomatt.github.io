@@ -1,0 +1,262 @@
+---
+layout: "blog-content"
+title: "A Cube!"
+desc: "Drawing a cube."
+date: "2018-05-15"
+---
+<style>
+
+	.cube {
+		position: relative;
+		width: 50%;
+		height: 50%;
+		transform-style: preserve-3d;
+		margin: 0 auto;
+	}
+
+	.cube div {
+		position: absolute;
+		width: 50%;
+		height: 50%;
+		left: 25%;
+		top: 25%;
+		text-align: center;
+		color: #fff;
+	}
+
+	.back {
+		transform: rotateY(-90deg) translateX(-50%) rotateY(90deg);
+	}
+	.right {
+		transform: rotateY(-270deg) translateX(50%);
+		transform-origin: top right;
+	}
+	.left {
+		transform: rotateY(270deg) translateX(-50%);
+		transform-origin: center left;
+	}
+	.top {
+		transform: rotateX(-90deg) translateY(-50%);
+		transform-origin: top center;
+	}
+	.bottom {
+		transform: rotateX(90deg) translateY(50%);
+		transform-origin: bottom center;
+	}
+	.front {
+		transform: rotateY(-90deg) translateX(50%) rotateY(90deg);
+	}
+</style>
+<div>
+	This is a cube using CSS perspective, each face is a canvas which has a simple animation.
+	<br/>
+	<br/>
+	I plan to look into WebGL at some point, but before that I wanted to look at other ways to create a 3D cube, which resulted in me making this cube.
+</div>
+<br/>
+<br/>
+<div id="container">
+ 	<div id="cube" class="cube">
+	</div>
+</div>
+
+<script>
+
+
+	var cube = document.getElementById('cube');
+	var w = document.getElementById('container').scrollWidth;
+	var classArr = ['front', 'back', 'top', 'bottom', 'left', 'right'];
+	var colors = ['#FFB1B1', '#FFEB9C', '#FCD1AD', '#ABE8FF', '#E9FF8F', '#E5D4FF'];
+
+	window.addEventListener('mousemove', rotateCube);
+	window.addEventListener('resize', updateSize);
+
+	function initCube() {
+
+		document.getElementById('container').style.perspective = w + 'px';
+		document.getElementById('container').style.height = w + 'px';
+		document.getElementById('container').style.perspectiveOrigin = '50% 50%';
+
+
+		for(var i = 0; i < 6; i++) {
+			var id = 'face' + (i + 1);
+			var idCanvas = 'canvas' + (i + 1);
+			var face = document.createElement('div');
+			var text = document.createElement('p');
+
+			face.setAttribute('id', id);
+			face.setAttribute('class', classArr[i]);
+
+			cube.appendChild(face);
+
+			text.innerHTML = 'omg '+i;
+
+			var faceH = face.scrollHeight;
+			var faceW = face.scrollWidth;
+
+			var canvas = document.createElement('canvas');
+			canvas.setAttribute('id', idCanvas);
+
+
+
+			face.appendChild(canvas);
+
+			var context = document.getElementById(idCanvas).getContext("2d");
+
+
+			context.canvas.width = faceW;
+			context.canvas.height = faceH;
+			canvas.style.background = colors[i];
+
+			drawCanvas(i, context);
+
+		}
+
+		setInterval(updateFaces,200);
+		setInterval(updateFaces1,10);
+		setInterval(updateFaces2,500);
+
+	}
+
+	initCube();
+
+	function rotateCube(e) {
+		var windowW = window.innerWidth;
+		var windowH = window.innerHeight;
+		var x = e.clientX;
+		var y = e.clientY;
+		var percentW = x/windowW;
+		var percentH = y/windowH;
+		var degY = (720 * percentW) - 360;
+		var degX = (720 * percentH) - 360;
+
+		cube.style.transform = 'rotateY(' + degY + 'deg) rotateX(' + degX + 'deg)';
+	}
+
+	function updateSize(e) {
+		var newW = document.getElementById('container').scrollWidth;
+		if (w != newW) {
+			w = newW;
+			document.getElementById('container').style.perspective = w + 'px';
+			document.getElementById('container').style.height = w + 'px';
+		}
+	}
+
+	function drawCanvas(idx, context) {
+		context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+		if (idx == 0) {
+			drawCircles(context, 10, '#FF7171');
+		} else if (idx == 1) {
+			drawCircles(context, 5, '#C7FFBA');
+		} else if (idx == 2) {
+			drawDots(context, 'rgba(10,40,255,1)');
+		} else if (idx == 3) {
+			drawArcs(context, 15, 'rgba(100,0,125,.75)');
+		} else if (idx == 4) {
+			drawArcs(context, 25, 'rgba(255,208,208,1)');
+		} else if (idx == 5) {
+			drawDots(context, '#B271B6');
+		}
+	}
+
+	function drawCircles(context, n, color) {
+
+		for (var i = 0; i < n; i++) {
+
+			var x = getRandomInt(0, context.canvas.width);
+			var y = getRandomInt(0, context.canvas.height);
+			var r = getRandomInt(8, 12);
+
+			context.strokeStyle = color;
+			context.lineWidth = 4;
+			context.beginPath();
+
+			context.arc(x, y, r, 0, 2*Math.PI)
+			context.closePath();
+			context.stroke();
+
+		}
+	}
+
+	function drawArcs(context, n, color) {
+
+		for (var i = 0; i < n; i++) {
+
+			var x = getRandomInt(0, context.canvas.width);
+			var y = getRandomInt(0, context.canvas.height);
+			var start = getRandomInt(0, 2*Math.PI);
+			var end = getRandomInt(0, 2*Math.PI);
+
+			context.strokeStyle = color;
+			context.lineWidth = 2.5;
+			context.beginPath();
+
+			context.arc(x, y, 15, start, end, 0);
+
+			context.stroke();
+
+		}
+	}
+	function drawDots(context, color) {
+
+		for (var i = 0; i < 500; i++) {
+			var r = getRandom(0, 1);
+
+			var x = getRandomInt(0, context.canvas.width);
+			var y = getRandomInt(0, context.canvas.height);
+
+			context.fillStyle = color;
+			context.beginPath();
+
+			context.arc(x, y, r, 0, 2*Math.PI)
+			context.closePath();
+			context.fill();
+
+		}
+	}
+
+	function updateFaces() {
+		for (var i = 0; i < 6; i++) {
+			var id = 'canvas'+(i+1);
+			context = document.getElementById(id).getContext('2d');
+			if(i < 2) {
+				drawCanvas(i, context);
+			} 
+		}
+
+	}
+
+	function updateFaces1() {
+		for (var i = 0; i < 6; i++) {
+			var id = 'canvas'+(i+1);
+			context = document.getElementById(id).getContext('2d');
+			if(i == 2 || i == 5) {
+				drawCanvas(i, context);
+			} 
+		}
+
+	}
+
+	function updateFaces2() {
+		for (var i = 0; i < 6; i++) {
+			var id = 'canvas'+(i+1);
+			context = document.getElementById(id).getContext('2d');
+			if(i == 3 || i == 4) {
+				drawCanvas(i, context);
+			} 
+		}
+
+	}
+
+	/* -- utils -- */
+	function getRandomInt(min, max) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min)) + min;
+	}
+
+	function getRandom(min, max) {
+
+		return Math.random() * (max - min) + min;
+	}
+</script>
