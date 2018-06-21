@@ -3,6 +3,7 @@ layout: "blog-content"
 title: "Sun Canvas Animation 🏝"
 desc: "Trying to get those <i>~summer vibes~</i> while learning about canvas elements."
 date: "2018-04-27"
+nav: "canvas"
 ---
 <style>
 	@font-face {
@@ -74,6 +75,7 @@ date: "2018-04-27"
 </p>
 </br>
 <div class="sun-container">
+	<!-- <canvas height="500px" width="800px" id="canvas"> -->
 	<canvas height="500px" width="800px" id="canvas">
 	</canvas>
 	<div class="sun sun1">
@@ -117,6 +119,10 @@ date: "2018-04-27"
 	canvas.style.background = 'linear-gradient(90deg, #FFD48B, #FFB8A2)';
 	var h = 500;
 	var w = 800;
+	context.canvas.width = w;
+	context.canvas.height = h;
+
+
 	var windowPadding = 4;
 
     window.requestAnimFrame = (function(){
