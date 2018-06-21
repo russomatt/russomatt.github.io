@@ -178,7 +178,7 @@ header {
     }
 }
 .content {
-    padding: 0 2em;
+    padding: 0 2em 6em;
     max-width: 650px;
 
     p {
@@ -195,6 +195,11 @@ header {
     font-weight: 100;
     opacity: 0.15;
 }
+hr {
+    border: none;
+    border-top: 1px solid $color;
+}
+
 @media (max-width: $tablet-size) {
 
     .blog-post {

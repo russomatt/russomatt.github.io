@@ -1,0 +1,247 @@
+---
+layout: "blog-content"
+title: "CMYK Gradient"
+desc: "CMYK gradients to create a festive/spherical effect."
+date: "2018-06-21"
+---
+<style>
+	.container2 {
+		width: 500px;
+		height: 500px;
+		transition: 1s;
+		text-align: center;
+	}
+	.circle {
+		width: 500px;
+		height: 500px;
+		border-radius: 50%;
+		transition: 1s;
+		text-align: center;
+	}
+	.circle1 {
+		position: absolute;
+		top: 5%;
+		left: 5%;
+	}
+	.circle2 {
+		width: 80%;
+		height: 80%;
+		position: absolute;
+		top: 10%;
+		left: 10%;
+	}
+	.circle3 {
+		width: 70%;
+		height: 70%;
+		position: absolute;
+		top: 15%;
+		left: 15%;
+	}
+	.circle4 {
+		width: 60%;
+		height: 60%;
+		position: absolute;
+		top: 20%;
+		left: 20%;
+	}
+	.circle5 {
+		width: 50%;
+		height: 50%;
+		position: absolute;
+		top: 25%;
+		left: 25%;
+	}
+
+	.container {
+		/*background:  rgba(240, 240, 240, 1);*/
+		padding: 25px;
+		display: inline-block;
+		position: relative;
+	}
+	.dot {
+		border-radius: 50%;
+		height: 20px;
+		width: 20px;
+		position: absolute;
+	}
+</style>
+<p>
+	This is just another fun experiment with gradients and shapes to make an interesting effect, and sort of achieving a 3D-esque feeling without using WebGL. 
+</p>
+<div id="container" class="container">
+	<div id="sphere" class="circle"
+		style="background: 
+					linear-gradient(360deg, rgba(0,255,255,1), rgba(255,255,255,0) 80%),
+					linear-gradient(240deg, rgba(255,255,0,1), rgba(255,255,255,0) 80%),
+					linear-gradient(120deg, rgba(255,0,255,1), rgba(255,255,255,0) 80%);">
+	</div>
+</div>
+<br/>
+<br/>
+<br/>
+<br/>
+<hr></hr>
+<h2>
+	Bonus 🎉
+</h2>
+<p>
+	Multiple circles and it moves! This gets a little crazy with the colors, but could be a cool effect using a more subtle pallete.
+</p>
+<div id="container2" class="container container2">
+	<div class="circle circle1"
+		style="background: 
+					linear-gradient(360deg, rgba(0,255,255,1), rgba(255,255,255,0) 80%),
+					linear-gradient(240deg, rgba(255,255,0,1), rgba(255,255,255,0) 80%),
+					linear-gradient(120deg, rgba(255,0,255,1), rgba(255,255,255,0) 80%);">
+	</div>
+	<div class="circle circle2"
+		style="background: 
+					linear-gradient(360deg, rgba(255,255,0,1), rgba(255,255,255,0) 80%),
+					linear-gradient(240deg, rgba(255,0,255,1), rgba(255,255,255,0) 80%),
+					linear-gradient(120deg, rgba(0,255,255,1), rgba(255,255,255,0) 80%);">
+	</div>
+	<div class="circle circle3"
+		style="background: 
+					linear-gradient(360deg, rgba(0,255,255,1), rgba(255,255,255,0) 80%),
+					linear-gradient(240deg, rgba(255,255,0,1), rgba(255,255,255,0) 80%),
+					linear-gradient(120deg, rgba(255,0,255,1), rgba(255,255,255,0) 80%);">
+	</div>
+	<div class="circle circle4"
+		style="background: 
+					linear-gradient(360deg, rgba(255,255,0,1), rgba(255,255,255,0) 80%),
+					linear-gradient(240deg, rgba(255,0,255,1), rgba(255,255,255,0) 80%),
+					linear-gradient(120deg, rgba(0,255,255,1), rgba(255,255,255,0) 80%);">
+	</div>
+	<div class="circle circle5"
+		style="background: 
+					linear-gradient(360deg, rgba(0,255,255,1), rgba(255,255,255,0) 80%),
+					linear-gradient(240deg, rgba(255,255,0,1), rgba(255,255,255,0) 80%),
+					linear-gradient(120deg, rgba(255,0,255,1), rgba(255,255,255,0) 80%);">
+	</div>
+</div>
+<script type="text/javascript">
+	var sphere = document.getElementById('sphere');
+	var container = document.getElementById('container');
+	var container2 = document.getElementById('container2');
+	var h = container.scrollHeight;
+	var w = container.scrollWidth;
+	var bool = true;
+	var nodeList = [];
+
+	container.addEventListener('mousemove', rotateGradients);
+	container.addEventListener('mouseenter', setNodeList);
+	container.addEventListener('mouseleave', clearNodeList);
+
+	container2.addEventListener('mousemove', rotateGradients);
+	container2.addEventListener('mousemove', moveCircles);
+	container2.addEventListener('mouseenter', setNodeList);
+	container2.addEventListener('mouseleave', clearNodeList);
+
+	function rotateGradients(e) {
+		var x = e.clientX - container.offsetLeft;
+		var y = e.clientY - container.getBoundingClientRect().y;
+
+		for(var i = 0; i < nodeList.length; i++) {
+
+			if(nodeList[i].className != undefined 
+				&& nodeList[i].className.indexOf('circle') > -1) {
+
+				var gradientArr = getGradientArray(nodeList[i].style.background);
+
+				if(gradientArr.length > 0) {
+					var style = '';
+
+					for(var j = 0; j < gradientArr.length; j++) {
+						var deg = (360/gradientArr.length * (j+1));
+						var degree = gradientArr[j].deg * (getDegrees(250,250,250-x,250-y)/90) + deg;
+
+						style = style + 'linear-gradient(' + degree + 'deg, ' + gradientArr[j].styles;
+					}
+
+					var bg = style;
+
+					nodeList[i].style.background = bg;
+
+				}
+			}
+		}
+	}
+
+	function getDegrees (x0, y0, x1, y1) {
+		var distY = Math.abs(y1-y0);
+		var distX = Math.abs(x1-x0);
+		var dist = Math.sqrt(Math.pow(distY, 2) + Math.pow(distX, 2));
+		var diff = distY/dist;
+		var arcSine = Math.asin(diff); 
+		var degrees = arcSine * (180/Math.PI);
+
+		return degrees;
+	}
+
+	function getGradientArray(bg) {
+		var arr = bg.split(' ');
+		var gradArr = []
+		var arr2 = bg.split('linear-gradient');
+		var arrStyles = [];
+
+		for(var i = 0; i < arr.length; i++) {
+
+			if(arr[i].indexOf('deg') > -1) {
+				var arr3 = arr[i].split('(');
+				arr3 = arr3[1].split('deg');
+				gradArr.push({'deg' : arr3[0]});
+			}
+		}
+
+		for(var i = 0; i < arr2.length; i++) {
+			if(arr2[i].indexOf('deg') > -1) {
+				var gradientStyles = arr2[i].split('deg, ');
+				arrStyles.push(gradientStyles[1]);
+			}
+		}
+
+		for(var i = 0; i < gradArr.length; i++) {
+			gradArr[i].styles = arrStyles[i];
+		}
+
+
+		return gradArr;
+	}
+
+	function setNodeList(e) {
+		nodeList = e.target.childNodes;
+	}
+	function clearNodeList(e) {
+		nodeList = [];
+	}
+
+	function moveCircles(e) {
+		var x = e.pageX - container2.offsetLeft;
+		var y = e.pageY - container2.offsetTop;
+
+		console.log(y)
+
+		for(var i = 0; i < nodeList.length; i++) {
+
+			if(nodeList[i].className != undefined 
+				&& nodeList[i].className.indexOf('circle') > -1) {
+				var nodeW = nodeList[i].scrollWidth;
+				var percW = nodeW / w * 100;
+				var perX = x / w * 100;
+				var perY = y / w * 100;
+
+				if(perX < (100 - percW)) {
+					nodeList[i].style.left = perX + '%';
+				} else {
+					nodeList[i].style.left = (100 - percW) + '%';
+				}
+
+				if(perY < (100 - percW)) {
+					nodeList[i].style.top = perY + '%';
+				} else {
+					nodeList[i].style.top = (100 - percW) + '%';
+				}
+			}
+		}
+	}
+</script>
