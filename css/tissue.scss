@@ -1,0 +1,95 @@
+---
+---
+html, body{
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	font-family: 'Helvetica';
+
+}
+
+h1 {
+	font-size: 3em;
+}
+$color1: #A77395;
+$color2: black;
+$color3: white;
+$color4: #A77395;
+$color5: orange;
+$color6: black;
+
+.container {
+	background: #000;
+	height: 100%;
+	width: 100%;
+	position: relative;
+	// background: linear-gradient(340deg, $color1, rgba(255,255,255,0) 70%),
+	// 	linear-gradient(300deg, $color2, rgba(255,255,255,0) 70%),
+	// 	linear-gradient(240deg, $color3, rgba(255,255,255,0) 70%),
+	// 	linear-gradient(130deg, $color4, rgba(255,255,255,0) 70%),
+	// 	linear-gradient(120deg, $color5, rgba(255,255,255,0) 70%),
+	// 	linear-gradient(20deg, $color6, rgba(255,255,255,0) 70%);
+}
+.container-bg {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	// overflow: scroll;
+}
+.content {
+	float: right;
+	width: 40%;
+
+	.text {
+		width: 95%;
+		background: #fff;
+		display: inline-block;
+		margin: 2.5em 0;
+
+		p {
+			font-weight: 900;
+			font-size: 1.5em;
+			padding: .2em 1em;
+		}
+	}
+}
+.imgs {
+	float: left;
+	width: 60%;
+	text-align: center;
+
+	.test {
+		// opacity: 1!important;
+		opacity: 0;
+		margin-top: 3em;
+		display: block;
+
+		&.test2 {
+			margin: 0;
+			transition: 1s;
+			// transition-delay: 2s;
+			opacity: 1;
+		}
+		&.test2:hover {
+			transform: rotate(0deg) scale(1)!important;
+		}
+	}
+}
+.title {
+	padding-top: 0.35em;
+	font-size: 6.25em;
+	display: block;
+	padding-right: 2em;
+	margin: 0;
+	color: #000;
+	letter-spacing: .05em;
+
+	&.title-2 {
+		padding: 0;
+		margin-top: -.5em;
+		margin-right: -.25em;
+		float: right;
+	}
+}
