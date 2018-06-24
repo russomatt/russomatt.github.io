@@ -126,10 +126,18 @@ function getImages(e) {
 
 	var that = imageContainer;
 	var arr = ['tissue1.png', 'tissue2.png', 'tissue3.png', 'tissue4.png']
+	var idx = 4;
 
 	for(var i = 0; i < 4; i++) {
+		console.log(arr);
+		console.log(idx);
+
+		var random = getRandomInt(0,idx);
+
 		var img = document.createElement('img');
-		var url = '../img/' + arr[i];
+		var url = '../img/' + arr[random];
+
+
 		var deg = getRandomInt(0,180);
 		var margin = getRandomInt(0,50);
 
@@ -139,6 +147,8 @@ function getImages(e) {
 		that.appendChild(img);
 
 
+		arr.splice(random, 1);
+		idx = idx - 1;
 
 	}
 		setTimeout(ok, 500)
