@@ -1,0 +1,467 @@
+---
+layout: "blog-content"
+title: "Wiggle"
+desc: "Wiggle some shapes with a nice gradient."
+date: "2018-06-26"
+nav: "wiggle"
+---
+<style type="text/css">
+	.box {
+		height: 100px;
+		width: 100px;
+		position: absolute;
+		transition: .8s ease, background .05s;
+	}
+	.circle {
+		height: 100px;
+		width: 100px;
+		position: absolute;
+		border-radius: 50%;
+		transition: .8s ease, background .05s;
+	}
+	.triangle {
+		border-right: 50px solid transparent;
+		border-left: 50px solid transparent;
+		border-bottom: 100px solid transparent;
+		color: transparent;
+		height: 0;
+		width: 0;
+		position: absolute;
+		background-color: transparent!important;
+		transition: .8s ease, background 0s, border-bottom-color .05s;
+	}
+	.container {
+		width: 100%;
+		height: 600px;
+		background: #eee;
+		position: relative;
+		color: transparent;
+	}
+	.shapes {
+		width: 100%;
+		padding: 1em 0;
+	}
+	.shape-holder {
+		width: 40px;
+		height: 30px;
+		display: inline-block;
+		border: 1px solid;
+		text-align: center;
+		padding-top: 10px;
+	}
+	.shape-button {
+		background: #162cff;
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+		cursor: pointer;
+		transition:.2s;
+	}
+	.shape-button:hover {
+		background: #162cff;
+		transform: scale(1.3);
+	}
+	.triangle-button {
+		background: transparent;
+		border-right: 10px solid transparent;
+		border-left: 10px solid transparent;
+		border-bottom: 20px solid #162cff;
+		width: 0;
+		height: 0;
+	}
+	.triangle-button:hover {
+		background: transparent;
+		border-bottom-color: #162cff;
+	}
+	.circle-button {
+		border-radius: 50%;
+	}
+	.color-holder {
+		position: relative;
+		width: 40px;
+		height: 30px;
+		margin-bottom: -10px;
+	}
+	.color-button {
+		width: 15px;
+		height: 15px;
+		border-radius: 50%;
+		position: absolute;
+		border: 1px solid rgba(0, 0, 0, 0.2);
+		cursor: pointer;
+	}
+	.color-button-1 {
+		left: 5px;
+		top: 8px;
+		background: rgba(0, 255, 255, 0.5);
+	}
+	.color-button-2 {
+		left: 16px;
+		top: 8px;
+		background: rgba(255, 0, 255, .5);
+	}
+	.color-button-3 {
+		bottom: 5px;
+		left: 11px;
+		background: rgba(255, 255, 0, .5);
+	}
+	.sliders {
+		margin: 1em 0;
+		display: inline-block;
+	}
+	.color-sliders button {
+		min-width: 150px;
+		max-width: 400px;
+		width: 80%;
+		border: none;
+		border-radius: 5px;
+		font-size: 1.2em;
+		font-family: 'RobotoMono';
+		font-weight: 300;
+		color: #fff;
+		padding: 0.4em;
+		outline: none;
+		cursor: pointer;
+		margin: 1em 0 2em;
+
+	}
+	.color-sliders button span {
+		padding: 2px 3px;
+		background: rgba(0, 0, 0, 0.4);
+	}
+	.hidden {
+		display: none;
+	}
+</style>
+<p>
+	Another long train ride, another shapes and color doodle!
+</p>
+<div class="shapes">
+	<div class="shape-holder">
+		<span class="shape-button square-button" data-type="square"></span>
+	</div>
+	<div class="shape-holder">
+		<span class="shape-button triangle-button" data-type="triangle"></span>
+	</div>
+	<div class="shape-holder">
+		<span class="shape-button circle-button" data-type="circle"></span>
+	</div>
+	<div class="shape-holder color-holder hidden">
+		<span class="color-button color-button-1"></span>
+		<span class="color-button color-button-2"></span>
+		<span class="color-button color-button-3"></span>
+	</div>
+</div>
+<div id="sliders" class="color-sliders">
+	<div id="start-slider" class="sliders">
+		<div class="slider-holder">
+			R
+			<span class="slider-value">
+				031
+			</span>
+			<input class="slider" data-color="r" type="range" value="31" step="1" max="255"></input>
+		</div>
+		<div class="slider-holder">
+			G
+			<span class="slider-value">
+				044
+			</span>
+			<input class="slider" data-color="g" type="range" value="44" step="1" max="255"></input>
+		</div>
+		<div class="slider-holder">
+			B
+			<span class="slider-value">
+				030
+			</span>
+			<input class="slider" data-color="b" type="range" value="30" step="1" max="255"></input>
+		</div>
+	</div>
+	<div id="end-slider" class="sliders">
+		<div class="slider-holder">
+			R
+			<span class="slider-value">
+				236
+			</span>
+			<input class="slider" data-color="r" type="range" value="236" step="1" max="255"></input>
+		</div>
+		<div class="slider-holder">
+			G
+			<span class="slider-value">
+				173
+			</span>
+			<input class="slider" data-color="g" type="range" value="173" step="1" max="255"></input>
+		</div>
+		<div class="slider-holder">
+			B
+			<span class="slider-value">
+				139
+			</span>
+			<input class="slider" data-color="b" type="range" value="139" step="1" max="255"></input>
+		</div>
+<!-- 		<button id="start-button" style="background: rgb(236, 173, 139);">
+			update
+		</button>
+ -->	</div>
+		<button id="start-button" style="background: linear-gradient(90deg, rgb(31, 44, 30), rgb(236, 173, 139));">
+			<span>
+				update
+			</span>
+		</button>
+</div>
+<div id="container" class="container">
+</div>
+
+<script type="text/javascript">
+	var container = document.getElementById('container');
+	container.addEventListener('mousemove', test);
+	document.getElementById('start-button').addEventListener('mousedown', updateColors);
+
+	var boxW = 100;
+	var boxH = 100;
+	var numBox = 12;
+	var selectedType = 'square';
+	var rgbObj1 = {'r' : 31, 'g' : 44, 'b' : 30};
+	var rgbObj2 = {'r' : 236, 'g' : 173, 'b' : 139};
+	activateButtons();
+	activateSliders();
+
+	function test(e) {
+		var x = e.clientX - container.offsetLeft - boxW/2;
+		var y = e.clientY - container.getBoundingClientRect().y - boxH/2;
+		var containerH = container.scrollHeight;
+		var containerW = container.scrollWidth;
+
+		x = getCoord(x, containerW, boxW/2);
+		y = getCoord(y, containerH, boxH/2);
+
+		var shapeClass = getClassName(selectedType);
+		var shapeArr = document.getElementsByClassName(shapeClass);
+		var shapeArrLen = shapeArr.length;
+		var lastX = shapeArrLen == 0 ? -100 : getXY(shapeArr[shapeArrLen-1]).x;
+		var lastY = shapeArrLen == 0 ? -100 : getXY(shapeArr[shapeArrLen-1]).y;
+
+		if (shapeArr.length == numBox) {
+			container.removeChild(shapeArr[0])
+		}
+		if (shapeArr.length < 100 && Math.abs(x - lastX) > 10 ||  Math.abs(y - lastY) > 10) {
+			var shape = document.createElement('div');
+			shape.setAttribute('class', shapeClass);
+			container.appendChild(shape)
+			shape.style.left = x + 'px';
+			shape.style.top = y + 'px';
+		}
+
+		colorShapes(shapeArr, rgbObj1, rgbObj2);
+		moveShapes(shapeArr, numBox);
+	}
+	function getXY(node) {
+		var x = parseFloat(node.style.left.split('px')[0]);
+		var y = parseFloat(node.style.top.split('px')[0]);
+
+		return {'x' : x, 'y' : y};
+	}
+
+	function colorShapes(arr, rgbStart, rgbEnd) {
+		var diffR =  rgbEnd.r - rgbStart.r;
+		var diffG =  rgbEnd.g - rgbStart.g;
+		var diffB =  rgbEnd.b - rgbStart.b;
+
+		for(var i = 0; i < arr.length; i++) {
+			var percent = i / (arr.length - 1)
+			var newR = Math.abs(rgbStart.r + (diffR * percent));
+			var newG = Math.abs(rgbStart.g + (diffG * percent));
+			var newB = Math.abs(rgbStart.b + (diffB * percent));
+
+			var color = 'rgb(' + newR + ',' + newG + ',' + newB + ')';
+
+			if(arr[i].className == 'triangle') {
+				arr[i].style.borderBottomColor = color; 
+			} else {
+				arr[i].style.borderBottomColor = color; 
+				arr[i].style.background = color; 
+			}
+		}
+	}
+
+	function updateColors(e) {
+
+		var typeClass = getClassName(selectedType);
+		var arrShapes = document.getElementsByClassName(typeClass)
+
+		var arr = document.getElementsByClassName('sliders');
+		var rgbObjArr = [];
+
+		for(var i = 0; i < arr.length; i++) {
+			var arr2 = arr[i].getElementsByClassName('slider');
+			var rgbObj = {'r' : -1, 'g' : -1, 'b' : -1 };
+
+			for(var j = 0; j < arr2.length; j++) {
+
+				var key = arr2[j].dataset.color;
+				var val = parseFloat(arr2[j].value);
+
+				if(key == 'r') {
+					rgbObj.r = val;
+
+				} else if (key == 'g') {
+					rgbObj.g = val;
+				} else {
+					rgbObj.b = val;
+				}
+
+			}
+			rgbObjArr.push(rgbObj);
+		}
+
+		rgbObj1 = rgbObjArr[0];
+		rgbObj2 = rgbObjArr[1];
+
+		colorShapes(arrShapes, rgbObj1, rgbObj2)
+
+	}
+
+	function moveShapes(arr, num) {
+
+		for(var j = 0; j < num; j++ ) {
+			for(var i = 0; i < arr.length; i++) {
+				if( i < arr.length - 1) {
+					var currentXY = getXY(arr[i]);
+					var nextXY = getXY(arr[i+1]);
+					var diffX = currentXY.x - nextXY.x;
+					var diffY = currentXY.y - nextXY.y;
+					var x = currentXY.x - diffX;
+					var y = currentXY.y - diffY;
+
+					arr[i].style.left = x + 'px';
+					arr[i].style.top = y + 'px';
+				}
+			}
+		}
+	}
+
+	function getCoord(coord, max, buffer) {
+		var newCoord = -999;
+		var newMax = max - buffer*2;
+		if (coord > newMax) {
+			newCoord = newMax;
+		} else if (coord < 0) {
+			newCoord = 0;
+		} else {
+			newCoord = coord;
+		}
+
+		return newCoord;
+	}
+
+	function getClassName(type) {
+		if (type == 'square') {
+			return 'box'
+		} else if (type == 'triangle') {
+			return 'triangle'
+		} else {
+			return 'circle'
+		}
+	}
+
+	function activateButtons() {
+		var arr = document.getElementsByClassName('shape-button');
+
+		for(var i = 0; i < arr.length; i++) {
+			arr[i].addEventListener('mousedown', changeType);
+		}
+	}
+
+
+	function changeType(e) {
+
+		var newType = e.target.dataset.type;
+		var typeClass = getClassName(selectedType);
+
+		if(selectedType != newType) {
+			var arr = document.getElementsByClassName(typeClass);
+			var newClassName = getClassName(newType);
+			var newArr = updateClassNames(arr, newClassName);
+
+			selectedType = newType;
+
+		}
+
+	}
+
+	function updateClassNames(arr, newClass) {
+		var len = arr.length;
+		for(var i = 0; i < len; i++) {
+			arr[0].setAttribute('class', newClass);
+		}
+
+		return arr;
+	}
+
+	function cleanUp(oldClass) {
+		var arr = document.getElementsByClassName(oldClass);
+		var len = arr.length;
+
+		for(var i = 0; i < len; i++) {
+
+			if(arr[0] != undefined) {
+				arr[0].remove()
+			}
+		}
+
+	}
+
+	function activateSliders() {
+		var arr = document.getElementsByClassName('slider');
+
+		for(var i = 0; i < arr.length; i++) {
+			arr[i].addEventListener('input', updateSlider);
+		}
+	}
+
+	function updateSlider(e) {
+		var val = e.target.value;
+		var parent = e.target.parentElement;
+		var sliderContainer = parent.parentElement
+		var label = parent.getElementsByTagName('span')[0];
+		var colorType = e.target.dataset.color
+		var startOrEnd = parent.parentElement.id.indexOf('start') > -1;
+
+		updateButton(colorType, val, startOrEnd);
+
+		if (val.length < 3) {
+			val = val.length > 1 ? '0' + val : '00' + val;
+		}
+
+		label.innerHTML = val;
+	}
+
+	function updateButton(type, val, bool) {
+		var button = document.getElementById('start-button');
+		var bg = button.style.background;
+		var idx = bool ? 1 : 2;
+		var rgb = bg.split('rgb')[idx];
+		var rgbArr = rgb.split('(')[1];
+		rgbArr = rgbArr.split(')')[0];
+		rgbArr = rgbArr.split(', ');
+		var color = '';
+		if (type == 'r') {
+			rgbArr.splice(0, 1, val);
+		} else if (type == 'g') {
+			rgbArr.splice(1, 1, val);
+		} else {
+			rgbArr.splice(2, 1, val);
+		}
+
+		var idx2 = !bool ? 1 : 2;
+
+		if (bool) {
+			color = 'linear-gradient(90deg, rgb(' + rgbArr[0] + ', ' + rgbArr[1] + ', ' + rgbArr[2] + '), rgb' + bg.split('rgb')[idx2];
+		} else {
+			color = 'linear-gradient(90deg, rgb' + bg.split('rgb')[idx2] + 'rgb(' + + rgbArr[0] + ', ' + rgbArr[1] + ', ' + rgbArr[2] + '))'
+		}
+
+		button.style.background = color;
+
+	}
+
+</script>
