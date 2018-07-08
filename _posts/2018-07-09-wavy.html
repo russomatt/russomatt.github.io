@@ -1,0 +1,159 @@
+---
+layout: "blog-content"
+title: "Trying three.js"
+desc: "Wavy text and random spinning cubes."
+date: "2018-07-09"
+nav: "wavy"
+---
+<p>
+	I finally took the plunge into 3D for the browser! This is just a text geometry that has a sine wave animation on its vertices. But then instead of leaving it there i added a bunch of spinning cubes, though I know three.js has a particle system so maybe I'll look into that next time.
+</p>
+<div id="canvas-container">
+</div>
+
+<script src="/js/three.js"></script>
+<script>
+	var scene = new THREE.Scene();
+	var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+	var bg = new THREE.Color("rgb(210, 240, 255)");
+	var aml = new THREE.Color("rgb(255, 225, 194)");
+	scene.background = bg;
+	var h = 500;
+	var light = new THREE.AmbientLight( aml ); 
+	scene.add( light );
+	var cont = document.getElementById('canvas-container');
+
+	var spotLight = new THREE.SpotLight("rgb(255, 255, 255)");
+	spotLight.position.set(-cont.scrollWidth/1.5, 100, 40);
+	spotLight.castShadow = true;
+	scene.add(spotLight);
+
+
+	var renderer = new THREE.WebGLRenderer();
+	renderer.setSize( cont.scrollWidth, h );
+	cont.appendChild( renderer.domElement );
+
+	function drawCubes(n) {
+		for (var i = 0; i < n; i++) {
+
+			var x = getRandomInt(-cont.scrollWidth/2, cont.scrollWidth/2);
+			var y = getRandomInt(-h/2, h/2);
+			var z = getRandomInt(-150, 150);
+
+			var size = getRandomInt(5, 14);
+			var r = getRandomInt(245, 255);
+			var g = getRandomInt(150, 240);
+			var b = getRandomInt(90, 140);
+			var col = 'rgb(' + r + ', ' + g + ', ' + b + ')';
+			var g = new THREE.BoxGeometry( size, size, size );
+			var m = new THREE.MeshPhongMaterial( { color: col } );
+			var c = new THREE.Mesh( g, m );
+
+			m.transparent = true;
+			m.opacity = Math.random();
+
+			c.name = 'cube';
+			c.position.x = x;
+			c.position.y = y;
+			c.position.z = z;
+
+			scene.add( c );
+
+			renderer.render(scene, camera);
+
+		}
+
+	}
+
+	var loader = new THREE.FontLoader();
+
+	loader.load( '/blog-assets/three-fonts/Vollkorn_Black_Regular.json', function ( font ) {
+
+		var g = new THREE.TextGeometry( 'hello world', {
+			font: font,
+			size: 90,
+			height: 5,
+			curveSegments: 25,
+			bevelEnabled: true,
+			bevelThickness: 20,
+			bevelSize: 1.25,
+			bevelSegments: 5
+
+		} );
+
+		var m = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+		var m2 = new THREE.MeshPhongMaterial( { color: 'rgb(255, 207, 172)' } );
+		var t = new THREE.Mesh( g, m2 );
+
+		t.position.x = 0;
+		t.position.y = 0;
+		t.position.z = 0;
+		t.name = "text-1";
+
+		t.vertexColors = THREE.FaceColors;
+
+		var tBox = new THREE.Box3().setFromObject( t );
+
+		scene.add(t)
+
+		g.translate( -1 *tBox.getSize().x / 2, 0, 0 );
+
+		camera.position.set(0,0,400);
+		camera.lookAt(t.position);
+
+		renderer.render( scene, camera );
+
+	} );
+
+	var animateText = function () {
+		requestAnimationFrame( animateText );
+
+		var arrChildren = scene.children;
+
+		for (var i = 0; i < arrChildren.length; i++) {
+			if (arrChildren[i].name == "cube") {
+				arrChildren[i].rotation.x += 0.05;
+				arrChildren[i].rotation.y += 0.05;
+			}
+		}
+
+		renderer.render( scene, camera );
+	};
+
+	animateText();
+
+	function wave(ts) {
+		var arrChildren = scene.children;
+		var vec = new THREE.Vector2( -1*window.innerWidth/5,0);
+
+		window.requestAnimationFrame(wave);
+		for (var i = 0; i < arrChildren.length; i++) {
+			if (arrChildren[i].name == "text-1") {
+				var t = arrChildren[i];
+				var vLength = t.geometry.vertices.length;
+
+				for (var j = 0; j < vLength; j++) {
+					var v = t.geometry.vertices[j];
+					var dist = new THREE.Vector2(v.x, v.y).sub(vec)
+					var size = 30.0;
+					var magnitude = 20.0;
+					v.z = Math.sin(dist.length()/size + (ts/350)) * magnitude;
+				}
+
+				t.geometry.verticesNeedUpdate = true;
+				renderer.render(scene, camera);
+			}
+		}
+	}
+
+	wave();
+
+	drawCubes(80);
+
+	function getRandomInt(min, max) {
+		min = Math.ceil(min);
+		max = Math.floor(max);
+		return Math.floor(Math.random() * (max - min)) + min;
+	}
+
+</script>
