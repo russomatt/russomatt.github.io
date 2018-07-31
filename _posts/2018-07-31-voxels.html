@@ -1,0 +1,325 @@
+---
+layout: "blog-content"
+title: "Voxel Models"
+desc: "Made a couple of voxel models 🐕🐦🐱"
+date: "2018-07-31"
+nav: "voxels"
+---
+<style>
+	canvas {
+		width:100%;
+		cursor: grab;
+	}
+	.canvas-container {
+		margin-bottom: 2em;
+	}
+</style>
+<p>
+	I made three voxel models for fun using VoxelMagica. I think this may be a fun/quick way to make models for a web project my friend and I are thinking of making in the near future. Each one has orbit controls on so feel free to zoom in/out and poke around. 
+</p>
+<div id="canvas-container" class="canvas-container">
+</div>
+<div id="canvas-container2" class="canvas-container">
+</div>
+<div id="canvas-container3" class="canvas-container">
+</div>
+<script src="/js/three.js"></script>
+<script src="/blog-assets/OrbitControls.js"></script>
+<script src="/blog-assets/MTLLoader.js"></script>
+<script src="/blog-assets/OBJLoader.js"></script>
+<script>		
+	var w = document.getElementById('canvas-container').scrollWidth;
+	var h = w - w * .25;
+	var scene,
+		renderer,
+		camera,
+		scene2,
+		renderer2,
+		camera2;
+
+	function initShibe() {
+
+		var container = document.getElementById('canvas-container');
+		scene = new THREE.Scene(); 
+		var bg = new THREE.Color("#FFE172");
+		var aml = new THREE.Color("rgb(165, 165, 165)");
+		var light = new THREE.AmbientLight( aml ); 
+		var mat = new THREE.MeshLambertMaterial( { color: aml } );
+		var dirLight = new THREE.Color("rgb(185, 185, 185)");
+
+		scene.background = bg;
+		scene.add( light );
+
+		camera = new THREE.PerspectiveCamera( 25, w / h, 1, 20000 );
+		
+		renderer = new THREE.WebGLRenderer({ alpha: false });
+		renderer.setClearColor( 0xC5C5C3 );
+		renderer.setPixelRatio( window.devicePixelRatio );
+		renderer.setSize(w, h);
+
+		container.appendChild(renderer.domElement);
+
+		var directionalLight = new THREE.DirectionalLight(  { color: dirLight } );
+		directionalLight.position.set( 100, 100.5, 100.5 ).normalize();
+		directionalLight.intensity = .5;
+		scene.add( directionalLight );
+
+		var directionalLight2 = new THREE.DirectionalLight(  { color: dirLight } );
+		directionalLight2.position.set( -100, -100.5, -100.5 ).normalize();
+		directionalLight2.intensity = .5;
+		scene.add( directionalLight2 );
+
+		var mtlloader = new THREE.MTLLoader();
+		mtlloader
+			.setPath( '/blog-assets/shibe/' )
+			.load( 'shibe.mtl', function ( mtl ) {
+
+			mtl.preload();
+
+			var loader = new THREE.OBJLoader();
+			loader.setMaterials(mtl);
+			loader.load( '/blog-assets/shibe/shibe.obj', function ( obj ) {
+				scene.add(obj);
+
+				obj.scale.x = 0.75
+				obj.scale.y = 0.75
+				obj.scale.z = 0.75
+				obj.rotation.y = 1.25 * Math.PI;
+				obj.rotation.x = -.05 * Math.PI;
+
+				positionCamera(camera, scene);
+			});
+
+
+		});
+
+		window.addEventListener('resize', function() {
+			w = container.clientWidth;
+			h = w;
+			renderer.setSize(w, h);
+			camera.aspect = w / h;
+			camera.updateProjectionMatrix();
+		});
+
+		controls = new THREE.OrbitControls( camera, renderer.domElement );
+		controls.update();
+
+		render(renderer, scene, camera);
+		animate();
+	};
+
+	function initBirb() {
+
+		var container = document.getElementById('canvas-container2');
+		scene2 = new THREE.Scene(); 
+		var bg = new THREE.Color("#9FA4DD");
+		var aml = new THREE.Color("rgb(165, 165, 165)");
+		var light = new THREE.AmbientLight( aml ); 
+		var mat = new THREE.MeshLambertMaterial( { color: aml } );
+		var dirLight = new THREE.Color("rgb(125, 125, 125)");
+
+		scene2.background = bg;
+		scene2.add( light );
+
+		camera2 = new THREE.PerspectiveCamera( 25, w / h, 1, 20000 );
+		
+		renderer2 = new THREE.WebGLRenderer({ alpha: false });
+		renderer2.setClearColor( 0xC5C5C3 );
+		renderer2.setPixelRatio( window.devicePixelRatio );
+		renderer2.setSize(w, h);
+
+		container.appendChild(renderer2.domElement);
+
+		var directionalLight = new THREE.DirectionalLight(  { color: dirLight } );
+		directionalLight.position.set( 100, 100.5, 100.5 ).normalize();
+		directionalLight.intensity = .5;
+		scene2.add( directionalLight );
+
+		var directionalLight2 = new THREE.DirectionalLight(  { color: dirLight } );
+		directionalLight2.position.set( -100, -100.5, -100.5 ).normalize();
+		directionalLight2.intensity = .5;
+		scene2.add( directionalLight2 );
+
+		var mtlloader = new THREE.MTLLoader();
+		mtlloader
+			.setPath( '/blog-assets/birb/' )
+			.load( 'birb.mtl', function ( mtl ) {
+
+			mtl.preload();
+
+			var loader = new THREE.OBJLoader();
+			loader.setMaterials(mtl);
+			loader.load( '/blog-assets/birb/birb.obj', function ( obj ) {
+				scene2.add(obj);
+
+				obj.scale.x = 0.75
+				obj.scale.y = 0.75
+				obj.scale.z = 0.75
+				obj.rotation.y = .25 * Math.PI;
+				obj.rotation.x = -.05 * Math.PI;
+
+				positionCamera(camera2, scene2);
+			});
+
+
+		});
+
+		window.addEventListener('resize', function() {
+			w = container.clientWidth;
+			h = w;
+			renderer2.setSize(w, h);
+			camera2.aspect = w / h;
+			camera2.updateProjectionMatrix();
+		});
+
+		controls = new THREE.OrbitControls( camera2, renderer2.domElement );
+		controls.update();
+
+		render(renderer2, scene2, camera2);
+		animate2();
+	};
+
+	function initCat() {
+
+		var container = document.getElementById('canvas-container3');
+		scene3 = new THREE.Scene(); 
+		var bg = new THREE.Color("#FFC39D");
+		var aml = new THREE.Color("rgb(155, 155, 155)");
+		var light = new THREE.AmbientLight( aml ); 
+		var mat = new THREE.MeshLambertMaterial( { color: aml } );
+		var dirLight = new THREE.Color("rgb(125, 125, 125)");
+
+		scene3.background = bg;
+		scene3.add( light );
+
+		camera3 = new THREE.PerspectiveCamera( 25, w / h, 1, 20000 );
+		
+		renderer3 = new THREE.WebGLRenderer({ alpha: false });
+		renderer3.setClearColor( 0xC5C5C3 );
+		renderer3.setPixelRatio( window.devicePixelRatio );
+		renderer3.setSize(w, h);
+
+		container.appendChild(renderer3.domElement);
+
+		var directionalLight = new THREE.DirectionalLight(  { color: dirLight } );
+		directionalLight.position.set( 100, 100.5, 100.5 ).normalize();
+		directionalLight.intensity = .5;
+		scene3.add( directionalLight );
+
+		var directionalLight2 = new THREE.DirectionalLight(  { color: dirLight } );
+		directionalLight2.position.set( -100, -100.5, -100.5 ).normalize();
+		directionalLight2.intensity = .5;
+		scene3.add( directionalLight2 );
+
+		var mtlloader = new THREE.MTLLoader();
+		mtlloader
+			.setPath( '/blog-assets/cat/' )
+			.load( 'fatcat.mtl', function ( mtl ) {
+
+			mtl.preload();
+
+			var loader = new THREE.OBJLoader();
+			loader.setMaterials(mtl);
+			loader.load( '/blog-assets/cat/fatcat.obj', function ( obj ) {
+				scene3.add(obj);
+
+				obj.scale.x = 0.75
+				obj.scale.y = 0.75
+				obj.scale.z = 0.75
+				obj.rotation.y = .25 * Math.PI;
+				obj.rotation.x = -.05 * Math.PI;
+
+				directionalLight.target = obj;
+				directionalLight2.target = obj;
+				positionCamera(camera3, scene3);
+			});
+
+		});
+
+		window.addEventListener('resize', function() {
+			w = container.clientWidth;
+			h = w;
+			renderer3.setSize(w, h);
+			camera3.aspect = w / h;
+			camera3.updateProjectionMatrix();
+		});
+
+		controls = new THREE.OrbitControls( camera3, renderer3.domElement );
+		controls.update();
+
+		render(renderer3, scene3, camera3);
+		animate3();
+	};
+
+
+	function positionCamera(cam, scn) {
+		var arr = scn.children;
+		// console.log(arr)
+		for (var i = 0; i < arr.length; i++) {
+
+			if (arr[i].type == 'Group') {
+
+				cam.position.set( 0, 90, 120 );
+				cam.lookAt(arr[i].position);
+			}
+		}
+
+	}
+
+	initShibe();
+	initBirb();
+	initCat();
+
+
+
+	function render(renderer, scene, camera) {
+		renderer.render( scene, camera );
+	};
+
+	function animate() {
+		requestAnimationFrame( animate );
+
+		var arr = scene.children;
+
+		for (var i = 0; i < arr.length; i++) {
+
+			if (arr[i].type == 'Group') {
+
+				arr[i].rotation.y += .025;
+			}
+		}
+		render(renderer, scene, camera);
+	};
+	function animate2() {
+		requestAnimationFrame( animate2 );
+
+		var arr = scene2.children;
+
+		for (var i = 0; i < arr.length; i++) {
+
+			if (arr[i].type == 'Group') {
+
+				arr[i].rotation.y += .025;
+			}
+		}
+		render(renderer2, scene2, camera2);
+	};
+	function animate3() {
+		requestAnimationFrame( animate3 );
+
+		var arr = scene3.children;
+
+		for (var i = 0; i < arr.length; i++) {
+
+			if (arr[i].type == 'Group') {
+
+				arr[i].rotation.y += .025;
+			}
+		}
+		render(renderer3, scene3, camera3);
+	};
+
+
+</script>
+
+
