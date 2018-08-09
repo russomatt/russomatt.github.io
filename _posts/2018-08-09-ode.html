@@ -1,0 +1,670 @@
+---
+layout: "blog-content"
+title: "Particle & Non-linear Systems"
+desc: "Animated loops of non-linear systems over time."
+date: "2018-08-09"
+nav: "particles"
+---
+<p>
+	Here are scenes that loop the phase of four systems over a time period. I was inspired by phase portraits of ordinary differential equations and thought that it could create an interesting effect on a particle system by animating the state of the systems  on a timed loop. I think this could be useful as if you want just a part of a system's animation you could clip the time interval to the desired length, rather than starting from an initial time of 0. The effect could be used to distort 2D images or textures changing the matrix of pixels rather than particles or just as a textural background for other objects.
+</p>
+<br/>
+<br/>
+
+<div id='canvas-container'>
+</div>
+<br/>
+<div id='canvas-container2'>
+</div>
+<br/>
+<div id='canvas-container3'>
+</div>
+<br/>
+<div id='canvas-container4'>
+</div>
+<script src="/js/three.js"></script>
+<script>
+	var count = 35000;
+	var time = 0;
+	var time2 = 0;
+	var time3 = 0;
+	var time4 = 0;
+	var w = document.getElementById('canvas-container').scrollWidth;
+	var h = w;
+	var tStore = [];
+	var timeLimit = 800;
+	var tStore2 = [];
+	var timeLimit2 = 800;
+	var tStore3 = [];
+	var timeLimit3 = 800;
+	var tStore4 = [];
+	var timeLimit4 = 800;
+	var scene,
+		camera,
+		renderer,
+		scene2,
+		camera2,
+		renderer2,
+		scene3,
+		camera3,
+		renderer3,
+		scene4,
+		camera4,
+		renderer4;
+
+	function init() {
+
+		var container = document.getElementById('canvas-container');
+		scene = new THREE.Scene(); 
+		var bg = new THREE.Color("#3F2E53");
+		var aml = new THREE.Color("rgb(150, 150, 150)");
+		var light = new THREE.AmbientLight( aml ); 
+
+		scene.background = bg;
+		scene.add( light );
+
+		camera = new THREE.PerspectiveCamera( 25, w / h, 1, 20000 );
+		
+		renderer = new THREE.WebGLRenderer({ alpha: false });
+		renderer.setClearColor( 0xC5C5C3 );
+		renderer.setPixelRatio( window.devicePixelRatio );
+		renderer.setSize(w, h);
+
+		container.appendChild(renderer.domElement);
+
+		var directionalLight = new THREE.DirectionalLight( 0xffffff );
+		directionalLight.position.set( 0, 1, 1 ).normalize();
+		scene.add( directionalLight );				
+
+		var pm = new THREE.PointsMaterial();
+		pm.blending= THREE.AdditiveBlending;
+		pm.transparent = true;
+		pm.opacity=.75;
+		pm.size=.75;
+		pm.vertexColors = true;
+
+		var geom = new THREE.Geometry();
+		geom.name = 'Particles';
+		var width = 80;
+		var depth = 80;
+
+		for (var i = 0; i < width; i++) {
+
+			for (var j = 0; j < depth; j++) {
+
+				var v = new THREE.Vector3(i / 2 - (width / 2) / 2
+					, 0, j / 2 - (depth / 2) / 2);
+
+				geom.vertices.push(v);
+				geom.colors.push(new THREE.Color('#FF6A17'));
+
+			}
+		}
+
+		var system = new THREE.Points(geom, pm);
+		system.name = 'System';
+		scene.add(system);
+		system.position.z = -45;
+		system.rotation.x = -.5*Math.PI;
+		camera.position.set( 0, 0, 70 );
+		camera.lookAt(system.position);
+		animate();
+
+		window.addEventListener('resize', function() {
+			w = container.clientWidth;
+			h = w;
+			renderer.setSize(w, h);
+			camera.aspect = w / h;
+			camera.updateProjectionMatrix();
+		});
+		var bg2 = new THREE.Color("red");
+		var texture = new THREE.Texture( generateTexture('#46335D', '#1B0A2E') );
+		var textureImage = texture.image;
+		texture.needsUpdate = true;
+		var mat2 = new THREE.MeshBasicMaterial( { map: texture } );
+		var planegeo = new THREE.PlaneGeometry(100,100, 1, 1);
+		var plane = new THREE.Mesh(planegeo, mat2)
+
+		plane.name = 'Plane';
+		plane.receiveShadow = true;
+		plane.position.z = -55;
+		plane.geometry.verticesNeedUpdate = true;
+		scene.add(plane);
+
+		render(renderer, scene, camera);
+	};
+
+	function init2() {
+
+		var container = document.getElementById('canvas-container2');
+		scene2 = new THREE.Scene(); 
+		var bg = new THREE.Color("#3F2E53");
+		var aml = new THREE.Color("rgb(150, 150, 150)");
+		var light = new THREE.AmbientLight( aml ); 
+
+		scene2.background = bg;
+		scene2.add( light );
+
+		camera2 = new THREE.PerspectiveCamera( 25, w / h, 1, 20000 );
+		
+		renderer2 = new THREE.WebGLRenderer({ alpha: false });
+		renderer2.setClearColor( 0xC5C5C3 );
+		renderer2.setPixelRatio( window.devicePixelRatio );
+		renderer2.setSize(w, h);
+
+		container.appendChild(renderer2.domElement);
+
+		var directionalLight = new THREE.DirectionalLight( 0xffffff );
+		directionalLight.position.set( 0, 1, 1 ).normalize();
+		scene2.add( directionalLight );				
+
+		var pm = new THREE.PointsMaterial();
+		pm.blending= THREE.AdditiveBlending;
+		pm.transparent = true;
+		pm.opacity=.75;
+		pm.size=.75;
+		pm.vertexColors = true;
+
+		var geom = new THREE.Geometry();
+		geom.name = 'Particles';
+		var width = 80;
+		var depth = 80;
+
+		for (var i = 0; i < width; i++) {
+
+			for (var j = 0; j < depth; j++) {
+
+				var v = new THREE.Vector3(i / 2 - (width / 2) / 2
+					, 0, j / 2 - (depth / 2) / 2);
+
+				geom.vertices.push(v);
+				geom.colors.push(new THREE.Color('#FF6A17'));
+
+			}
+		}
+
+		var system = new THREE.Points(geom, pm);
+		system.name = 'System';
+		scene2.add(system);
+		system.position.z = -45;
+		system.rotation.x = -.5*Math.PI;
+		camera2.position.set( 0, 0, 70 );
+		camera2.lookAt(system.position);
+		animate2();
+
+		window.addEventListener('resize', function() {
+			w = container.clientWidth;
+			h = w;
+			renderer2.setSize(w, h);
+			camera2.aspect = w / h;
+			camera2.updateProjectionMatrix();
+		});
+		var bg2 = new THREE.Color("red");
+		var texture = new THREE.Texture( generateTexture('#46335D', '#1B0A2E') );
+		var textureImage = texture.image;
+		texture.needsUpdate = true;
+		var mat2 = new THREE.MeshBasicMaterial( { map: texture } );
+		var planegeo = new THREE.PlaneGeometry(100,100, 1, 1);
+		var plane = new THREE.Mesh(planegeo, mat2)
+
+		plane.name = 'Plane';
+		plane.receiveShadow = true;
+		plane.position.z = -55;
+		plane.geometry.verticesNeedUpdate = true;
+		scene2.add(plane);
+
+		render(renderer2, scene2, camera2);
+	};
+
+	function init3() {
+
+		var container = document.getElementById('canvas-container3');
+		scene3 = new THREE.Scene(); 
+		var bg = new THREE.Color("#3F2E53");
+		var aml = new THREE.Color("rgb(150, 150, 150)");
+		var light = new THREE.AmbientLight( aml ); 
+
+		scene3.background = bg;
+		scene3.add( light );
+
+		camera3 = new THREE.PerspectiveCamera( 25, w / h, 1, 20000 );
+		
+		renderer3 = new THREE.WebGLRenderer({ alpha: false });
+		renderer3.setClearColor( 0xC5C5C3 );
+		renderer3.setPixelRatio( window.devicePixelRatio );
+		renderer3.setSize(w, h);
+
+		container.appendChild(renderer3.domElement);
+
+		var directionalLight = new THREE.DirectionalLight( 0xffffff );
+		directionalLight.position.set( 0, 1, 1 ).normalize();
+		scene3.add( directionalLight );				
+
+		var pm = new THREE.PointsMaterial();
+		pm.blending= THREE.AdditiveBlending;
+		pm.transparent = true;
+		pm.opacity=.75;
+		pm.size=.75;
+		pm.vertexColors = true;
+
+		var geom = new THREE.Geometry();
+		geom.name = 'Particles';
+		var width = 80;
+		var depth = 80;
+
+		for (var i = 0; i < width; i++) {
+
+			for (var j = 0; j < depth; j++) {
+
+				var v = new THREE.Vector3(i / 2 - (width / 2) / 2
+					, 0, j / 2 - (depth / 2) / 2);
+
+				geom.vertices.push(v);
+				geom.colors.push(new THREE.Color('#FF6A17'));
+
+			}
+		}
+
+		var system = new THREE.Points(geom, pm);
+		system.name = 'System';
+		scene3.add(system);
+		system.position.z = -45;
+		system.rotation.x = -.5*Math.PI;
+		camera3.position.set( 0, 0, 70 );
+		camera3.lookAt(system.position);
+		animate3();
+
+		window.addEventListener('resize', function() {
+			w = container.clientWidth;
+			h = w;
+			renderer3.setSize(w, h);
+			camera3.aspect = w / h;
+			camera3.updateProjectionMatrix();
+		});
+		var bg2 = new THREE.Color("red");
+		var texture = new THREE.Texture( generateTexture('#46335D', '#1B0A2E') );
+		var textureImage = texture.image;
+		texture.needsUpdate = true;
+		var mat2 = new THREE.MeshBasicMaterial( { map: texture } );
+		var planegeo = new THREE.PlaneGeometry(100,100, 1, 1);
+		var plane = new THREE.Mesh(planegeo, mat2)
+
+		plane.name = 'Plane';
+		plane.receiveShadow = true;
+		plane.position.z = -55;
+		plane.geometry.verticesNeedUpdate = true;
+		scene3.add(plane);
+
+		render(renderer3, scene3, camera3);
+	};
+
+	function init4() {
+
+		var container = document.getElementById('canvas-container4');
+		scene4 = new THREE.Scene(); 
+		var bg = new THREE.Color("#3F2E53");
+		var aml = new THREE.Color("rgb(150, 150, 150)");
+		var light = new THREE.AmbientLight( aml ); 
+
+		scene4.background = bg;
+		scene4.add( light );
+
+		camera4 = new THREE.PerspectiveCamera( 25, w / h, 1, 20000 );
+		
+		renderer4 = new THREE.WebGLRenderer({ alpha: false });
+		renderer4.setClearColor( 0xC5C5C3 );
+		renderer4.setPixelRatio( window.devicePixelRatio );
+		renderer4.setSize(w, h);
+
+		container.appendChild(renderer4.domElement);
+
+		var directionalLight = new THREE.DirectionalLight( 0xffffff );
+		directionalLight.position.set( 0, 1, 1 ).normalize();
+		scene4.add( directionalLight );				
+
+		var pm = new THREE.PointsMaterial();
+		pm.blending= THREE.AdditiveBlending;
+		pm.transparent = true;
+		pm.opacity=.75;
+		pm.size=.75;
+		pm.vertexColors = true;
+
+		var geom = new THREE.Geometry();
+		geom.name = 'Particles';
+		var width = 80;
+		var depth = 80;
+
+		for (var i = 0; i < width; i++) {
+
+			for (var j = 0; j < depth; j++) {
+
+				var v = new THREE.Vector3(i / 2 - (width / 2) / 2
+					, 0, j / 2 - (depth / 2) / 2);
+
+				geom.vertices.push(v);
+				geom.colors.push(new THREE.Color('#FF6A17'));
+
+			}
+		}
+
+		var system = new THREE.Points(geom, pm);
+		system.name = 'System';
+		scene4.add(system);
+		system.position.z = -45;
+		system.rotation.x = -.5*Math.PI;
+		camera4.position.set( 0, 0, 70 );
+		camera4.lookAt(system.position);
+		animate4();
+
+		window.addEventListener('resize', function() {
+			w = container.clientWidth;
+			h = w;
+			renderer4.setSize(w, h);
+			camera4.aspect = w / h;
+			camera4.updateProjectionMatrix();
+		});
+		var bg2 = new THREE.Color("red");
+		var texture = new THREE.Texture( generateTexture('#46335D', '#1B0A2E') );
+		var textureImage = texture.image;
+		texture.needsUpdate = true;
+		var mat2 = new THREE.MeshBasicMaterial( { map: texture } );
+		var planegeo = new THREE.PlaneGeometry(100,100, 1, 1);
+		var plane = new THREE.Mesh(planegeo, mat2)
+
+		plane.name = 'Plane';
+		plane.receiveShadow = true;
+		plane.position.z = -55;
+		plane.geometry.verticesNeedUpdate = true;
+		scene4.add(plane);
+
+		render(renderer4, scene4, camera4);
+	};
+
+	function animate() {
+		var arr = scene.children;
+		var vertices;
+		var vertices2;
+		var system;
+
+		window.requestAnimationFrame(animate);
+
+		for (var i = 0; i < arr.length; i++) {
+
+			if (arr[i].name == 'System') {
+				system = arr[i];
+				vertices = system.geometry.vertices;
+				vertices2 = system.vertices;
+			}
+		}
+
+		if(time < timeLimit) {
+			var obj = {'time' : time, 'vertices' : [] };
+			for (var j = 0; j < vertices.length; j++) {
+
+				var x = vertices[j].x;
+				var y = vertices[j].y;
+				var z = vertices[j].z;
+				var t = time/count;
+
+				var val;
+				var val2;
+
+				val = -2*t*z*(2*x^2+t*z^2-1)-x;
+				val2 =z;
+
+				vertices[j].z = val;
+				vertices[j].x = val2;
+
+				obj.vertices.push({'x' : val2, 'z' : val});
+			}
+
+			tStore.push(obj);
+			time = time + 1;
+
+		} else if(time < timeLimit*2) {
+			var deltaT = time - timeLimit;
+			var idx = timeLimit - deltaT - 1;
+			var newVerts = tStore[idx];
+
+			for (var j = 0; j < vertices.length; j++) {
+			
+				vertices[j].z = newVerts.vertices[j].z;
+				vertices[j].x = newVerts.vertices[j].x;
+			}
+
+			time = time + 1;
+		} else {
+			time = 0;
+			tStore = [];
+		}
+
+		system.geometry.verticesNeedUpdate = true;
+
+		render(renderer, scene, camera);
+
+	}
+
+	function animate2() {
+		var arr = scene2.children;
+		var vertices;
+		var vertices2;
+		var system;
+
+		window.requestAnimationFrame(animate2);
+
+		for (var i = 0; i < arr.length; i++) {
+
+			if (arr[i].name == 'System') {
+				system = arr[i];
+				vertices = system.geometry.vertices;
+				vertices2 = system.vertices;
+			}
+		}
+
+		if(time2 < timeLimit2) {
+			var obj = {'time' : time2, 'vertices' : [] };
+			for (var j = 0; j < vertices.length; j++) {
+
+				var x = vertices[j].x;
+				var y = vertices[j].y;
+				var z = vertices[j].z;
+				var t = time2/(count);
+
+				var val;
+				var val2;
+
+				val = (1-x^2)*z*t-x;
+				val2 = z-Math.sin(x+t);
+
+				vertices[j].z = val;
+				vertices[j].x = val2;
+
+				obj.vertices.push({'x' : val2, 'z' : val});
+			}
+
+			tStore2.push(obj);
+			time2 = time2 + 1;
+
+		} else if(time2 < timeLimit2*2) {
+			var deltaT = time2 - timeLimit2;
+			var idx = timeLimit2 - deltaT - 1;
+			var newVerts = tStore2[idx];
+
+			for (var j = 0; j < vertices.length; j++) {
+			
+				vertices[j].z = newVerts.vertices[j].z;
+				vertices[j].x = newVerts.vertices[j].x;
+			}
+
+			time2 = time2 + 1;
+		} else {
+			time2 = 0;
+			tStore2 = [];
+		}
+
+		system.geometry.verticesNeedUpdate = true;
+
+		render(renderer2, scene2, camera2);
+
+	}
+
+	function animate3() {
+		var arr = scene3.children;
+		var vertices;
+		var vertices2;
+		var system;
+
+		window.requestAnimationFrame(animate3);
+
+		for (var i = 0; i < arr.length; i++) {
+
+			if (arr[i].name == 'System') {
+				system = arr[i];
+				vertices = system.geometry.vertices;
+				vertices2 = system.vertices;
+			}
+		}
+
+		if(time3 < timeLimit3) {
+			var obj = {'time' : time3, 'vertices' : [] };
+			for (var j = 0; j < vertices.length; j++) {
+
+				var x = vertices[j].x;
+				var y = vertices[j].y;
+				var z = vertices[j].z;
+				var t = time3/(count*2);
+
+				var val;
+				var val2;
+
+				val = (1-x^2)*z*t-x;
+				val2 = z+t-x-1;
+
+				vertices[j].z = val;
+				vertices[j].x = val2;
+
+				obj.vertices.push({'x' : val2, 'z' : val});
+			}
+
+			tStore3.push(obj);
+			time3 = time3 + 1;
+
+		} else if(time3 < timeLimit3*2) {
+			var deltaT = time3 - timeLimit3;
+			var idx = timeLimit3 - deltaT - 1;
+			var newVerts = tStore3[idx];
+
+			for (var j = 0; j < vertices.length; j++) {
+			
+				vertices[j].z = newVerts.vertices[j].z;
+				vertices[j].x = newVerts.vertices[j].x;
+			}
+
+			time3 = time3 + 1;
+		} else {
+			time3 = 0;
+			tStore3 = [];
+		}
+
+		system.geometry.verticesNeedUpdate = true;
+
+		render(renderer3, scene3, camera3);
+
+	}
+
+	function animate4() {
+		var arr = scene4.children;
+		var vertices;
+		var system;
+
+		window.requestAnimationFrame(animate4);
+
+		for (var i = 0; i < arr.length; i++) {
+
+			if (arr[i].name == 'System') {
+				system = arr[i];
+				vertices = system.geometry.vertices;
+			}
+		}
+
+		if(time4 < timeLimit4) {
+			var obj = {'time' : time4, 'vertices' : [] };
+			for (var j = 0; j < vertices.length; j++) {
+
+				var x = vertices[j].x;
+				var y = vertices[j].y;
+				var z = vertices[j].z;
+				var t = time4/(count*.25);
+
+				var val;
+				var val2;
+
+				val2 = Math.sin(x^2-t)*z*t-x;
+				val = z+t-Math.sin(x^2+t);
+
+				vertices[j].z = val;
+				vertices[j].x = val2;
+
+				obj.vertices.push({'x' : val2, 'z' : val});
+			}
+
+			tStore4.push(obj);
+			time4 = time4 + 1;
+
+		} else if(time4 < timeLimit4*2) {
+			var deltaT = time4 - timeLimit4;
+			var idx = timeLimit4 - deltaT - 1;
+			var newVerts = tStore4[idx];
+
+			for (var j = 0; j < vertices.length; j++) {
+			
+				vertices[j].z = newVerts.vertices[j].z;
+				vertices[j].x = newVerts.vertices[j].x;
+			}
+
+			time4 = time4 + 1;
+		} else {
+			time4 = 0;
+			tStore4 = [];
+		}
+
+		system.geometry.verticesNeedUpdate = true;
+
+		render(renderer4, scene4, camera4);
+
+	}
+
+	init();
+	init2();
+	init3();
+	init4();
+
+	function render(renderer, scene, camera) {
+		renderer.render( scene, camera );
+	};
+
+	function generateTexture(color1, color2) {
+
+		var size = 512;
+
+		// create canvas
+		canvas = document.createElement( 'canvas' );
+		canvas.width = size;
+		canvas.height = size;
+
+		// get context
+		var context = canvas.getContext( '2d' );
+
+		// draw gradient
+		context.rect( 0, 0, size, size );
+
+		var gradient = context.createLinearGradient( 0, 0, 0, size/1.75 );
+		gradient.addColorStop(0, color1);
+		gradient.addColorStop(1, color2);
+		context.fillStyle = gradient;
+		context.fill();
+
+		return canvas;
+
+	}
+</script>
