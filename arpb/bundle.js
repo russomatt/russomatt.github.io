@@ -395,6 +395,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var timeArray = exports.timeArray = ['00:00', '00:10', '00:20', '00:30', '00:40', '00:50', '01:00', '01:10', '01:20', '01:30', '01:40', '01:50', '02:00', '02:10', '02:20', '02:30', '02:40', '02:50', '03:00', '03:10', '03:20', '03:30', '03:40', '03:50', '04:00', '04:10', '04:20', '04:30', '04:40', '04:50', '05:00', '05:10', '05:20', '05:30', '05:40', '05:50', '06:00', '06:10', '06:20', '06:30', '06:40', '06:50', '07:00', '07:10', '07:20', '07:30', '07:40', '07:50', '08:00', '08:10', '08:20', '08:30', '08:40', '08:50', '09:00', '09:10', '09:20', '09:30', '09:40', '09:50', '10:00', '10:10', '10:20', '10:30', '10:40', '10:50', '11:00', '11:10', '11:20', '11:30', '11:40', '11:50', '12:00', '12:10', '12:20', '12:30', '12:40', '12:50', '13:00', '13:10', '13:20', '13:30', '13:40', '13:50', '14:00', '14:10', '14:20', '14:30', '14:40', '14:50', '15:00', '15:10', '15:20', '15:30', '15:40', '15:50', '16:00', '16:10', '16:20', '16:30', '16:40', '16:50', '17:00', '17:10', '17:20', '17:30', '17:40', '17:50', '18:00', '18:10', '18:20', '18:30', '18:40', '18:50', '19:00', '19:10', '19:20', '19:30', '19:40', '19:50', '20:00', '20:10', '20:20', '20:30', '20:40', '20:50', '21:00', '21:10', '21:20', '21:30', '21:40', '21:50', '22:00', '22:10', '22:20', '22:30', '22:40', '22:50', '23:00', '23:10', '23:20', '23:30', '23:40', '23:50'];
 
 var monthArr = [{ 'month': 'january', 'monthNum': '01', 'monthLen': 31 }, { 'month': 'february', 'monthNum': '02', 'monthLen': 28 }, { 'month': 'march', 'monthNum': '03', 'monthLen': 31 }, { 'month': 'april', 'monthNum': '04', 'monthLen': 30 }, { 'month': 'may', 'monthNum': '05', 'monthLen': 31 }, { 'month': 'june', 'monthNum': '06', 'monthLen': 30 }, { 'month': 'july', 'monthNum': '07', 'monthLen': 31 }, { 'month': 'august', 'monthNum': '08', 'monthLen': 31 }, { 'month': 'september', 'monthNum': '09', 'monthLen': 30 }, { 'month': 'october', 'monthNum': '10', 'monthLen': 31 }, { 'month': 'november', 'monthNum': '11', 'monthLen': 30 }, { 'month': 'december', 'monthNum': '12', 'monthLen': 31 }];
+
 // return correct data for the select year, takes in data as an array of year objects,
 // and the selected year
 function getSelectedYear(data, year) {
@@ -757,7 +758,6 @@ function format(data) {
 	var day;
 	var index = -1;
 	for (var i = 0; i < data.length; i++) {
-		201712211630;
 
 		var day2 = data[i].date[6] + '' + data[i].date[7];
 		var month = data[i].date[4] + '' + data[i].date[5];
@@ -20142,72 +20142,129 @@ var ImageTest = function (_React$Component) {
     }
 
     _createClass(ImageTest, [{
+        key: 'imageTest',
+        value: function imageTest() {
+            var node = document.getElementById('img');
+            var height = node.height;
+            var width = node.width;
+            var canvas2 = document.getElementById('canvas2');
+            var canvas = document.createElement('canvas');
+            canvas.height = height;
+            canvas.width = width;
+            var context = canvas.getContext('2d');
+            context.drawImage(node, 0, 0, width, height);
+
+            canvas2.height = height;
+            canvas2.width = width;
+            var context2 = canvas2.getContext('2d');
+
+            var midHor = Math.floor(width / 4);
+            var midVer = Math.floor(height / 4);
+            var q1 = { x: 0, y: 0 };
+            var q2 = { x: midHor, y: 0 };
+            var q3 = { x: midHor * 2, y: 0 };
+            var q4 = { x: midHor * 3, y: 0 };
+
+            var q5 = { x: 0, y: midVer };
+            var q6 = { x: midHor, y: midVer };
+            var q7 = { x: midHor * 2, y: midVer };
+            var q8 = { x: midHor * 3, y: midVer };
+
+            var q9 = { x: 0, y: midVer * 2 };
+            var q10 = { x: midHor, y: midVer * 2 };
+            var q11 = { x: midHor * 2, y: midVer * 2 };
+            var q12 = { x: midHor * 3, y: midVer * 2 };
+
+            var q13 = { x: 0, y: midVer * 3 };
+            var q14 = { x: midHor, y: midVer * 3 };
+            var q15 = { x: midHor * 2, y: midVer * 3 };
+            var q16 = { x: midHor * 3, y: midVer * 3 };
+
+            var qArr = [q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, q13, q14, q15, q16];
+
+            var colors = [];
+
+            for (var i = 0; i < qArr.length; i++) {
+                var x = qArr[i].x;
+                var y = qArr[i].y;
+                var color = this.averageRGB(context, x, x + midHor, y, y + midVer);
+                colors.push(color);
+
+                context2.beginPath();
+                context2.strokeRect(x, y, midHor, midVer);
+                context2.strokeStyle = color;
+
+                context2.fill();
+                context2.beginPath();
+                context2.rect(x, y, midHor, midVer);
+                context2.fillStyle = color;
+
+                context2.fill();
+            }
+
+            for (var i = 0; i < 4; i++) {
+                var div = document.createElement('div');
+                var el = document.getElementById('gradients');
+                var gradient = 'linear-gradient(' + colors[i] + ',' + colors[i + 4] + ',' + colors[i + 8] + ',' + colors[i + 12] + ')';
+                div.setAttribute('style', 'background: ' + gradient + '; height: 100%; width: 25%; display: inline-block; float: left;');
+                el.append(div);
+            }
+        }
+    }, {
+        key: 'averageRGB',
+        value: function averageRGB(context, xMin, xMax, yMin, yMax) {
+            var r = 0;
+            var g = 0;
+            var b = 0;
+            var col = yMax + 1;
+            var row = xMax + 1;
+            var max = xMax * yMax;
+
+            for (var i = xMin; i < row; i++) {
+                var r2 = 0;
+                var g2 = 0;
+                var b2 = 0;
+                var count = 0;
+                for (var j = yMin; j < col; j++) {
+                    var data = context.getImageData(i, j, 1, 1).data;
+                    r2 = r2 + Math.pow(data[0], 2);
+                    g2 = g2 + Math.pow(data[1], 2);
+                    b2 = b2 + Math.pow(data[2], 2);
+                    count = count + 1;
+                }
+                r2 = Math.floor(Math.sqrt(r2 / count));
+                g2 = Math.floor(Math.sqrt(g2 / count));
+                b2 = Math.floor(Math.sqrt(b2 / count));
+
+                r = r + r2;
+                g = g + g2;
+                b = b + b2;
+            }
+            var total = xMax - xMin;
+            r = Math.floor(r / total);
+            g = Math.floor(g / total);
+            b = Math.floor(b / total);
+
+            return 'rgb(' + r + ',' + g + ',' + b + ')';
+        }
+    }, {
         key: 'render',
         value: function render() {
-
-            function getRandomInt(min, max) {
-                min = Math.ceil(min);
-                max = Math.floor(max);
-                return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-            }
-            function test1() {
-                var node = document.getElementById('img1');
-                var height = node.height;
-                var width = node.width;
-                var canvas = document.createElement('canvas');
-                canvas.height = height;
-                canvas.width = width;
-
-                canvas.getContext('2d').drawImage(node, 0, 0, width, height);
-
-                var rgbData = [];
-                var gradient = 'linear-gradient(';
-                var w = Math.floor(width / 2);
-
-                for (var i = 1; i < height; i++) {
-                    var randomW = getRandomInt(0, width);
-                    var test = canvas.getContext('2d').getImageData(randomW, i, 1, 1).data;
-                    var rgb = 'rgb(' + test[0] + ',' + test[1] + ',' + test[2] + ')';
-                    if (i < height - 1 && i % 20 == 0) {
-                        gradient = gradient + rgb + ', ';
-                    } else if (i < height - 1 && i % 20 != 0) {
-                        gradient = gradient + '';
-                    } else {
-                        gradient = gradient + rgb + ')';
-                    }
-
-                    rgbData.push(rgb);
-                }
-                document.getElementById('imgGradient').style.background = gradient;
-            }
-            function test2() {
-                // var node = document.getElementById('img2');
-                // var height = node.height;
-                // var width = node.width;
-                // var canvas = document.createElement('canvas');
-                // canvas.height = height;
-                // canvas.width = width;
-
-                // canvas.getContext('2d').drawImage(node, 0, 0, width, height);
-
-                document.getElementById('imgGradient2').innerHTML = 'This doesn\'t do anything yet';
-            }
 
             return _react2.default.createElement(
                 'div',
                 { className: 'testContainer' },
                 _react2.default.createElement(
                     'div',
-                    { className: 'test' },
-                    _react2.default.createElement('img', { id: 'img1', src: '../img/sky1.jpeg', onClick: test1 }),
-                    _react2.default.createElement('div', { id: 'imgGradient', className: 'gradient' })
+                    { id: 'sky' },
+                    _react2.default.createElement('img', { id: 'img', src: '../img/sky5.png', onClick: this.imageTest })
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'test2' },
-                    _react2.default.createElement('img', { id: 'img2', src: '../img/sky1.jpeg', onClick: test2 }),
-                    _react2.default.createElement('div', { id: 'imgGradient2', className: 'gradient' })
-                )
+                    { id: 'canvas-container' },
+                    _react2.default.createElement('canvas', { id: 'canvas2' })
+                ),
+                _react2.default.createElement('div', { id: 'gradients' })
             );
         }
     }]);
@@ -20258,7 +20315,7 @@ exports = module.exports = __webpack_require__(18)(false);
 exports.i(__webpack_require__(46), "");
 
 // module
-exports.push([module.i, ".hidden {\n  display: none; }\n\nbody {\n  font-family: \"Helvetica Neue\", Helvetica, arial, sans-serif;\n  color: #000;\n  margin: 0;\n  padding: 0; }\n\n.control-box {\n  background: rgba(0, 0, 0, 0.7);\n  width: 20em;\n  margin: 2em 2em;\n  padding: 1em;\n  position: absolute;\n  color: #fff;\n  z-index: 10;\n  transition-delay: .2s;\n  transition: 0.6s;\n  /* Special styling for WebKit/Blink */\n  /* All the same stuff for Firefox */\n  /* All the same stuff for IE */ }\n  .control-box .controls {\n    transition: .03s;\n    transition-delay: .6s;\n    visibility: visible;\n    opacity: 1 !important;\n    padding-bottom: 1em; }\n    .control-box .controls .title {\n      margin-top: 1em;\n      margin-bottom: 1.5em; }\n    .control-box .controls .selects {\n      border-top: 2px solid;\n      margin-top: -2px; }\n    .control-box .controls .select-holder {\n      border-bottom: 2px solid #fff;\n      margin-right: .5em;\n      display: inline-block;\n      margin-top: 0.5em;\n      margin-bottom: 1em; }\n      .control-box .controls .select-holder select {\n        cursor: pointer; }\n      .control-box .controls .select-holder.select-day {\n        width: 20%; }\n      .control-box .controls .select-holder.select-month {\n        width: 55%; }\n        .control-box .controls .select-holder.select-month select {\n          text-transform: capitalize; }\n      .control-box .controls .select-holder span {\n        font-size: .7em;\n        text-transform: uppercase;\n        letter-spacing: 0.1em; }\n      .control-box .controls .select-holder.select-display {\n        width: 100%;\n        margin: 0; }\n    .control-box .controls select {\n      width: 100%;\n      font-size: .95em;\n      margin: .5em 0;\n      background: transparent;\n      border: none;\n      color: #fff;\n      outline: none;\n      font-weight: 900; }\n      .control-box .controls select hr {\n        position: absolute;\n        bottom: 0; }\n  .control-box .min-button {\n    width: 1.4em;\n    height: 1.4em;\n    text-align: center;\n    position: absolute;\n    top: 0;\n    right: 0;\n    transition: 0.4s;\n    cursor: pointer; }\n    .control-box .min-button span {\n      transition: .6s;\n      transform: rotate(45deg);\n      display: block; }\n  .control-box.minimized {\n    left: -2em;\n    width: 0em;\n    padding: .75em 1.4em; }\n    .control-box.minimized .min-button {\n      right: 0; }\n      .control-box.minimized .min-button span {\n        transform: rotate(0); }\n    .control-box.minimized .controls {\n      transition: .1s;\n      visibility: hidden;\n      height: 0 !important;\n      opacity: 0 !important; }\n  .control-box h1 {\n    margin: 0;\n    font-size: 2.5em; }\n  .control-box h2 {\n    margin: 0;\n    font-weight: 400;\n    font-size: 1.2em;\n    margin-left: 0.15em; }\n  .control-box .time-slider {\n    width: 100%; }\n  .control-box input[type=range] {\n    position: relative;\n    z-index: 2;\n    -webkit-appearance: none;\n    /* Hides the slider so that custom slider can be made */\n    width: 100%;\n    /* Specific width is required for Firefox. */\n    background: transparent;\n    /* Otherwise white in Chrome */ }\n  .control-box input[type=range]::-webkit-slider-thumb {\n    -webkit-appearance: none; }\n  .control-box input[type=range]:focus {\n    outline: none;\n    /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */ }\n  .control-box input[type=range]::-ms-track {\n    width: 100%;\n    cursor: pointer;\n    /* Hides the slider so custom styles can be added */\n    background: transparent;\n    border-color: transparent;\n    color: transparent; }\n  .control-box input[type=range]::-webkit-slider-thumb {\n    -webkit-appearance: none;\n    border: none;\n    height: 25px;\n    width: 25px;\n    border-radius: 50%;\n    background: #ffffff;\n    cursor: pointer; }\n  .control-box input[type=range]::-moz-range-thumb {\n    border: none;\n    height: 25px;\n    width: 25px;\n    border-radius: 50%;\n    background: #ffffff;\n    cursor: pointer; }\n  .control-box input[type=range]::-ms-thumb {\n    border: none;\n    height: 25px;\n    width: 25px;\n    border-radius: 50%;\n    background: #ffffff;\n    cursor: pointer; }\n  .control-box .slider {\n    position: relative;\n    padding: 2em 0; }\n    .control-box .slider hr {\n      z-index: 1;\n      position: absolute;\n      top: 50%;\n      left: 0;\n      right: 0;\n      margin: 0;\n      border: 2px solid;\n      border-color: rgba(255, 255, 255, 0.3);\n      margin-top: -2px; }\n  .control-box .display-time {\n    font-size: 2em;\n    font-weight: 300;\n    position: absolute;\n    bottom: .5em; }\n  .control-box .view-option {\n    height: 100%;\n    width: 100%;\n    position: relative;\n    display: table;\n    margin-top: 1em; }\n    .control-box .view-option .option {\n      width: 50%;\n      float: left;\n      display: inline-block;\n      text-align: center;\n      background: transparent;\n      border: none;\n      color: #fff;\n      font-size: .83em;\n      transition: .2s;\n      opacity: .7;\n      outline: none;\n      padding: 0 0 1em 0;\n      cursor: pointer;\n      height: 2.6em; }\n      .control-box .view-option .option.selected {\n        font-weight: 900;\n        font-size: 0.85em;\n        opacity: 1; }\n    .control-box .view-option hr {\n      position: absolute;\n      bottom: 0em;\n      width: 50%;\n      margin: 0;\n      transition: 0.2s;\n      border: 3px solid #fff; }\n      .control-box .view-option hr.left {\n        left: 0;\n        right: 50%; }\n      .control-box .view-option hr.right {\n        right: 0;\n        left: 50%; }\n\n.testContainer img {\n  width: 500px;\n  height: auto; }\n\n.testContainer .gradient {\n  width: 500px;\n  height: 332px;\n  border: 1px solid red; }\n\n.tile {\n  display: inline-block;\n  float: left;\n  height: 100%;\n  padding: 0 1px;\n  margin: 0 -1px;\n  background: #000;\n  position: relative; }\n  .tile .tile-gradient {\n    height: 100%;\n    width: 25%;\n    display: inline-block;\n    float: left; }\n  .tile .date-time-container {\n    position: absolute;\n    z-index: 1;\n    background: rgba(0, 0, 0, 0.7);\n    color: #fff;\n    bottom: 1em;\n    left: 1em;\n    padding: 1em; }\n    .tile .date-time-container .date {\n      font-weight: 900; }\n\n.tile-container {\n  width: 100%;\n  height: 100%;\n  display: table;\n  background: black; }\n  .tile-container.week .tile {\n    width: 14.28%; }\n  .tile-container.day .tile {\n    width: 100%; }\n  .tile-container.day .date {\n    font-size: 6em; }\n  .tile-container.day .time {\n    font-size: 3.5em;\n    font-weight: 300; }\n  .tile-container.month .tile {\n    height: 100%;\n    width: 3.2%; }\n  .tile-container.month .divider {\n    display: none; }\n  .tile-container.month .date-month {\n    display: none; }\n  .tile-container.month .date-year {\n    display: none; }\n  .tile-container.month .date-time-container {\n    background: 0;\n    bottom: .25em;\n    padding: 0;\n    left: 5%;\n    width: 90%;\n    text-align: center; }\n  .tile-container.month .time {\n    display: none; }\n  .tile-container.month .no-data {\n    top: 20%;\n    transform: rotate(90deg);\n    white-space: nowrap;\n    left: 0; }\n  .tile-container .no-data {\n    color: #fff;\n    position: absolute;\n    bottom: 40%;\n    text-align: center;\n    width: 100%; }\n    .tile-container .no-data p {\n      background: rgba(0, 0, 0, 0.4);\n      padding: 0.5em 1em;\n      margin: 0 auto;\n      width: auto;\n      display: inline-block;\n      color: #b7b7b7; }\n  .tile-container .no-data-screen {\n    height: 100%;\n    width: 100%;\n    background: url(" + escape(__webpack_require__(19)) + ");\n    opacity: 0.5; }\n  .tile-container .tile-chunk {\n    position: absolute;\n    background: yellow;\n    width: 100%; }\n    .tile-container .tile-chunk.empty-chunk {\n      background: url(" + escape(__webpack_require__(19)) + ");\n      opacity: 0.5; }\n    .tile-container .tile-chunk .tile-gradient {\n      height: 100%;\n      width: 25%;\n      display: inline-block;\n      float: left; }\n\n.time-hover {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0; }\n  .time-hover .time {\n    border-top: 2px dashed #ccc;\n    width: 100%;\n    text-align: right;\n    padding: 10px 20px 0 0;\n    font-weight: 900;\n    color: #fff; }\n  .time-hover .time-text {\n    position: relative;\n    z-index: 2; }\n  .time-hover .time-background {\n    position: absolute;\n    background: rgba(0, 0, 0, 0.4);\n    right: 5px;\n    top: 7px;\n    bottom: -4px;\n    width: 5em;\n    z-index: 1; }\n\n.arrow {\n  position: absolute;\n  bottom: 2em;\n  color: #fff;\n  font-size: 4em;\n  z-index: 9; }\n  .arrow .shadow {\n    color: #000;\n    filter: blur(6px); }\n  .arrow .chevron {\n    position: absolute;\n    left: 0;\n    top: 0;\n    cursor: pointer; }\n  .arrow.back-arrow {\n    left: 0; }\n  .arrow.next-arrow {\n    right: 0; }\n  .arrow.arrow-disabled {\n    opacity: .15; }\n    .arrow.arrow-disabled .chevron {\n      cursor: default; }\n", ""]);
+exports.push([module.i, ".hidden {\n  display: none; }\n\nbody {\n  font-family: \"Helvetica Neue\", Helvetica, arial, sans-serif;\n  color: #000;\n  margin: 0;\n  padding: 0; }\n\n.control-box {\n  background: rgba(0, 0, 0, 0.7);\n  width: 20em;\n  margin: 2em 2em;\n  padding: 1em;\n  position: absolute;\n  color: #fff;\n  z-index: 10;\n  transition-delay: .2s;\n  transition: 0.6s;\n  /* Special styling for WebKit/Blink */\n  /* All the same stuff for Firefox */\n  /* All the same stuff for IE */ }\n  .control-box .controls {\n    transition: .03s;\n    transition-delay: .6s;\n    visibility: visible;\n    opacity: 1 !important;\n    padding-bottom: 1em; }\n    .control-box .controls .title {\n      margin-top: 1em;\n      margin-bottom: 1.5em; }\n    .control-box .controls .selects {\n      border-top: 2px solid;\n      margin-top: -2px; }\n    .control-box .controls .select-holder {\n      border-bottom: 2px solid #fff;\n      margin-right: .5em;\n      display: inline-block;\n      margin-top: 0.5em;\n      margin-bottom: 1em; }\n      .control-box .controls .select-holder select {\n        cursor: pointer; }\n      .control-box .controls .select-holder.select-day {\n        width: 20%; }\n      .control-box .controls .select-holder.select-month {\n        width: 55%; }\n        .control-box .controls .select-holder.select-month select {\n          text-transform: capitalize; }\n      .control-box .controls .select-holder span {\n        font-size: .7em;\n        text-transform: uppercase;\n        letter-spacing: 0.1em; }\n      .control-box .controls .select-holder.select-display {\n        width: 100%;\n        margin: 0; }\n    .control-box .controls select {\n      width: 100%;\n      font-size: .95em;\n      margin: .5em 0;\n      background: transparent;\n      border: none;\n      color: #fff;\n      outline: none;\n      font-weight: 900; }\n      .control-box .controls select hr {\n        position: absolute;\n        bottom: 0; }\n  .control-box .min-button {\n    width: 1.4em;\n    height: 1.4em;\n    text-align: center;\n    position: absolute;\n    top: 0;\n    right: 0;\n    transition: 0.4s;\n    cursor: pointer; }\n    .control-box .min-button span {\n      transition: .6s;\n      transform: rotate(45deg);\n      display: block; }\n  .control-box.minimized {\n    left: -2em;\n    width: 0em;\n    padding: .75em 1.4em; }\n    .control-box.minimized .min-button {\n      right: 0; }\n      .control-box.minimized .min-button span {\n        transform: rotate(0); }\n    .control-box.minimized .controls {\n      transition: .1s;\n      visibility: hidden;\n      height: 0 !important;\n      opacity: 0 !important; }\n  .control-box h1 {\n    margin: 0;\n    font-size: 2.5em; }\n  .control-box h2 {\n    margin: 0;\n    font-weight: 400;\n    font-size: 1.2em;\n    margin-left: 0.15em; }\n  .control-box .time-slider {\n    width: 100%; }\n  .control-box input[type=range] {\n    position: relative;\n    z-index: 2;\n    -webkit-appearance: none;\n    /* Hides the slider so that custom slider can be made */\n    width: 100%;\n    /* Specific width is required for Firefox. */\n    background: transparent;\n    /* Otherwise white in Chrome */ }\n  .control-box input[type=range]::-webkit-slider-thumb {\n    -webkit-appearance: none; }\n  .control-box input[type=range]:focus {\n    outline: none;\n    /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */ }\n  .control-box input[type=range]::-ms-track {\n    width: 100%;\n    cursor: pointer;\n    /* Hides the slider so custom styles can be added */\n    background: transparent;\n    border-color: transparent;\n    color: transparent; }\n  .control-box input[type=range]::-webkit-slider-thumb {\n    -webkit-appearance: none;\n    border: none;\n    height: 25px;\n    width: 25px;\n    border-radius: 50%;\n    background: #ffffff;\n    cursor: pointer; }\n  .control-box input[type=range]::-moz-range-thumb {\n    border: none;\n    height: 25px;\n    width: 25px;\n    border-radius: 50%;\n    background: #ffffff;\n    cursor: pointer; }\n  .control-box input[type=range]::-ms-thumb {\n    border: none;\n    height: 25px;\n    width: 25px;\n    border-radius: 50%;\n    background: #ffffff;\n    cursor: pointer; }\n  .control-box .slider {\n    position: relative;\n    padding: 2em 0; }\n    .control-box .slider hr {\n      z-index: 1;\n      position: absolute;\n      top: 50%;\n      left: 0;\n      right: 0;\n      margin: 0;\n      border: 2px solid;\n      border-color: rgba(255, 255, 255, 0.3);\n      margin-top: -2px; }\n  .control-box .display-time {\n    font-size: 2em;\n    font-weight: 300;\n    position: absolute;\n    bottom: .5em; }\n  .control-box .view-option {\n    height: 100%;\n    width: 100%;\n    position: relative;\n    display: table;\n    margin-top: 1em; }\n    .control-box .view-option .option {\n      width: 50%;\n      float: left;\n      display: inline-block;\n      text-align: center;\n      background: transparent;\n      border: none;\n      color: #fff;\n      font-size: .83em;\n      transition: .2s;\n      opacity: .7;\n      outline: none;\n      padding: 0 0 1em 0;\n      cursor: pointer;\n      height: 2.6em; }\n      .control-box .view-option .option.selected {\n        font-weight: 900;\n        font-size: 0.85em;\n        opacity: 1; }\n    .control-box .view-option hr {\n      position: absolute;\n      bottom: 0em;\n      width: 50%;\n      margin: 0;\n      transition: 0.2s;\n      border: 3px solid #fff; }\n      .control-box .view-option hr.left {\n        left: 0;\n        right: 50%; }\n      .control-box .view-option hr.right {\n        right: 0;\n        left: 50%; }\n\n.testContainer img {\n  width: 450px;\n  height: auto;\n  float: left; }\n\n.testContainer #canvas-container {\n  float: left; }\n\n.testContainer #gradients {\n  float: left;\n  width: 450px;\n  height: 476px; }\n\n.tile {\n  display: inline-block;\n  float: left;\n  height: 100%;\n  padding: 0 1px;\n  margin: 0 -1px;\n  background: #000;\n  position: relative; }\n  .tile .tile-gradient {\n    height: 100%;\n    width: 25%;\n    display: inline-block;\n    float: left; }\n  .tile .date-time-container {\n    position: absolute;\n    z-index: 1;\n    background: rgba(0, 0, 0, 0.7);\n    color: #fff;\n    bottom: 1em;\n    left: 1em;\n    padding: 1em; }\n    .tile .date-time-container .date {\n      font-weight: 900; }\n\n.tile-container {\n  width: 100%;\n  height: 100%;\n  display: table;\n  background: black; }\n  .tile-container.week .tile {\n    width: 14.28%; }\n  .tile-container.day .tile {\n    width: 100%; }\n  .tile-container.day .date {\n    font-size: 6em; }\n  .tile-container.day .time {\n    font-size: 3.5em;\n    font-weight: 300; }\n  .tile-container.month .tile {\n    height: 100%;\n    width: 3.2%; }\n  .tile-container.month .divider {\n    display: none; }\n  .tile-container.month .date-month {\n    display: none; }\n  .tile-container.month .date-year {\n    display: none; }\n  .tile-container.month .date-time-container {\n    background: 0;\n    bottom: .25em;\n    padding: 0;\n    left: 5%;\n    width: 90%;\n    text-align: center; }\n  .tile-container.month .time {\n    display: none; }\n  .tile-container.month .no-data {\n    top: 20%;\n    transform: rotate(90deg);\n    white-space: nowrap;\n    left: 0; }\n  .tile-container .no-data {\n    color: #fff;\n    position: absolute;\n    bottom: 40%;\n    text-align: center;\n    width: 100%; }\n    .tile-container .no-data p {\n      background: rgba(0, 0, 0, 0.4);\n      padding: 0.5em 1em;\n      margin: 0 auto;\n      width: auto;\n      display: inline-block;\n      color: #b7b7b7; }\n  .tile-container .no-data-screen {\n    height: 100%;\n    width: 100%;\n    background: url(" + escape(__webpack_require__(19)) + ");\n    opacity: 0.5; }\n  .tile-container .tile-chunk {\n    position: absolute;\n    background: black;\n    width: 100%; }\n    .tile-container .tile-chunk.empty-chunk {\n      background: url(" + escape(__webpack_require__(19)) + ");\n      opacity: 0.5; }\n    .tile-container .tile-chunk .tile-gradient {\n      height: 100%;\n      width: 25%;\n      display: inline-block;\n      float: left; }\n\n.time-hover {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0; }\n  .time-hover .time {\n    border-top: 2px dashed #ccc;\n    width: 100%;\n    text-align: right;\n    padding: 10px 20px 0 0;\n    font-weight: 900;\n    color: #fff; }\n  .time-hover .time-text {\n    position: relative;\n    z-index: 2; }\n  .time-hover .time-background {\n    position: absolute;\n    background: rgba(0, 0, 0, 0.4);\n    right: 5px;\n    top: 7px;\n    bottom: -4px;\n    width: 5em;\n    z-index: 1; }\n\n.arrow {\n  position: absolute;\n  bottom: 2em;\n  color: #fff;\n  font-size: 4em;\n  z-index: 9; }\n  .arrow .shadow {\n    color: #000;\n    filter: blur(6px); }\n  .arrow .chevron {\n    position: absolute;\n    left: 0;\n    top: 0;\n    cursor: pointer; }\n  .arrow.back-arrow {\n    left: 0; }\n  .arrow.next-arrow {\n    right: 0; }\n  .arrow.arrow-disabled {\n    opacity: .15; }\n    .arrow.arrow-disabled .chevron {\n      cursor: default; }\n", ""]);
 
 // exports
 
