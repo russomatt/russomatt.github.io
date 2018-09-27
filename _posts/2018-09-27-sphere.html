@@ -1,0 +1,157 @@
+---
+layout: "blog-content"
+title: "A Sphere With Updating Vertices"
+desc: "Hovering around the sphere will move the vertices to match the mouse position."
+date: "2018-09-27"
+nav: "sphere"
+---
+<p>
+	Here is a scene where the sphere's vertices update on the mouse position. If the mouse position is below a certain distance from a vertex, then the vertex will update to be at the mouse position. When the mouse moves outside of that threshold the vertex will return to its original position, to make the transition a bit smoother, instead of returning to the position directly it updates to the midpoints between its current position and the initial position until it reaches its initial position.
+</p>
+
+<div id="canvas-container">
+</div>
+<script src="/js/three.js"></script>
+<script type="text/javascript">
+	var w = document.getElementById('canvas-container').scrollWidth;
+	var h = w;
+	var scene,
+		camera,
+		renderer,
+		sphere,
+		verts;
+
+	function init() {
+
+		var container = document.getElementById('canvas-container');
+		scene = new THREE.Scene(); 
+		var bg = new THREE.Color('#D8FFBA');
+
+		scene.background = bg;
+
+		camera = new THREE.PerspectiveCamera( 25, w / h, 1, 20000 );
+		camera.position.set( 1, 1, 40 );
+
+		renderer = new THREE.WebGLRenderer({ alpha: false });
+		renderer.setClearColor( 0xC5C5C3 );
+		renderer.setPixelRatio( 2.0 );
+		renderer.setSize(w, h);
+
+		container.appendChild(renderer.domElement);
+
+		var directionalLight = new THREE.DirectionalLight( 0xffffff );
+		directionalLight.position.set( 0, 1, 1 ).normalize();
+		scene.add( directionalLight );				
+
+		window.addEventListener('resize', function() {
+			w = container.clientWidth;
+			h = w;
+			renderer.setSize(w, h);
+			camera.aspect = w / h;
+			camera.updateProjectionMatrix();
+		});
+
+		var geometry = new THREE.SphereGeometry( 4.5, 60, 60);
+		var colors = ['#FFE3C3','#FFE3C3','#FFE3C3', '#9CFFA3', '#7BEB92'];
+		var texture = new THREE.Texture( generateTexture(colors) );
+		var textureImage = texture.image;
+		texture.needsUpdate = true;
+		var mat = new THREE.MeshBasicMaterial( {map: texture} );
+
+		sphere = new THREE.Mesh( geometry, mat );
+
+		scene.add( sphere );
+
+		var clonedSphere = sphere.geometry.clone();
+		verts = clonedSphere.vertices;
+
+		camera.lookAt(sphere.position);
+
+		var raycaster = new THREE.Raycaster();
+		var mouse = new THREE.Vector2();
+
+
+		render(renderer, scene, camera);
+
+		container.addEventListener('mousemove', function() {
+
+			var x = event.clientX - container.offsetLeft;
+			var y = event.clientY - container.getBoundingClientRect().y;
+
+			mouse.x = ( x / w ) * 2 - 1;
+			mouse.y = - ( y / h ) * 2 + 1;
+
+			raycaster.setFromCamera( mouse.clone(), camera );   
+			points(mouse);
+
+		});
+	}
+
+
+	function points(posn) {
+		var x = posn.x;
+		var y = posn.y;
+		var vertices = sphere.geometry.vertices;
+
+		for(var i = 0; i < vertices.length; i++) {
+			var vertex = vertices[i];
+			var dist = Math.sqrt(Math.pow((x - verts[i].x/8), 2) + Math.pow((y - verts[i].y/8), 2));
+
+			if(dist<0.45 && vertex.z > 1) {
+				vertex.x = x*8;
+				vertex.y = y*8;
+
+			} else if (dist>=0.45 && vertex.x != verts[i].x || vertex.y != verts[i].y) {
+				var newX = (vertex.x + verts[i].x)/2;
+				var newY = (vertex.y + verts[i].y)/2;
+
+				vertex.x = newX;
+				vertex.y = newY;
+
+			} else {
+
+				vertex.x = verts[i].x;
+				vertex.y = verts[i].y;
+			}
+
+		}
+
+		sphere.geometry.verticesNeedUpdate = true;
+		render(renderer, scene, camera);
+
+	}
+
+	function render(renderer, scene, camera) {
+		renderer.render( scene, camera );
+	}
+
+	function generateTexture(colors, radial) {
+
+		var size = 512;
+
+		// create canvas
+		var canvas = document.createElement( 'canvas' );
+
+		var context = canvas.getContext( '2d' );
+		context.canvas.width = size;
+		context.canvas.height = size;
+
+		// draw gradient
+		context.rect( 0, 0, size, size );
+
+		var gradient = context.createLinearGradient( 0, 0, 0, size/1.25 );
+		var length = colors.length;
+		var stop = 1/(length-1);
+		for (var i = 0; i < length; i++) {
+			gradient.addColorStop(stop*i, colors[i]);
+		}
+
+		context.fillStyle = gradient;
+		context.fill();
+
+		return canvas;
+
+	}
+
+	init();
+</script>
